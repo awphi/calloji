@@ -6,12 +6,15 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="calloji-client" />
+        <module name="calloji-server" />
+        <module name="calloji-sync" />
         <module name="callojiclient" />
         <module name="callojiserver" />
-        <module name="callojishared" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="calloji-shared" target="1.8" />
       <module name="callojishared" target="1.8" />
     </bytecodeTargetLevel>
   </component>

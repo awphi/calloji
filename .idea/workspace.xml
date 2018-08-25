@@ -1,12 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="18ecc353-5b20-475a-af92-b1422cfb00d3" name="Default" comment="" />
+    <list default="true" id="18ecc353-5b20-475a-af92-b1422cfb00d3" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/calloji-client/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/calloji-client/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/calloji-client/src/main/java/ph/adamw/calloji/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/calloji-client/src/main/java/ph/adamw/calloji/client/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/calloji-client/target/classes/ph/adamw/calloji/client/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/calloji-client/target/classes/ph/adamw/calloji/client/Client.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/calloji-server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/calloji-server/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/ClientConnection.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/packet/PacketManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/calloji-server/target/classes/ph/adamw/calloji/server/ClientConnection.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/calloji-server/target/classes/ph/adamw/calloji/server/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/calloji-server/target/classes/ph/adamw/calloji/server/Server.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/calloji-server/target/classes/ph/adamw/calloji/server/packet/PacketManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/calloji-shared/callojishared.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/calloji-shared/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/map/Map.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/map/Position.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/map/Realm.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/packet/EntityDamagedPacket.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/packet/Packet.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/prop/Prop.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/prop/entity/Entity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/prop/entity/EntityCow.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/prop/entity/event/IDamagable.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/prop/entity/event/IEventListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="$PROJECT_DIR$/calloji-server/target/" />
     <ignored path="$PROJECT_DIR$/calloji-client/target/" />
     <ignored path="$PROJECT_DIR$/calloji-shared/target/" />
+    <ignored path="$PROJECT_DIR$/calloji-packet/target/" />
+    <ignored path="$PROJECT_DIR$/calloji-sync/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -14,44 +44,29 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="CheckStyle-IDEA-workspace">
+    <option name="configuration">
+      <map>
+        <entry key="last-active-plugin-version" value="5.18.6" />
+      </map>
+    </option>
+  </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/callojiparent$Client.ic" NAME="Client Coverage Results" MODIFIED="1535059454496" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>ph.adamw.calloji.client.*</FILTER>
     </SUITE>
+    <SUITE FILE_PATH="coverage/calloji$calloji_client_1_0_jar.ic" NAME="calloji-client-1.0.jar Coverage Results" MODIFIED="1535120966158" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/calloji$Run_Server.ic" NAME="Run Server Coverage Results" MODIFIED="1535213762235" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ph.adamw.calloji.server.packet.*</FILTER>
+    </SUITE>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Server.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/Server.java">
+      <file leaf-file-name="LoggerUtils.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/calloji-sync/src/main/java/ph/adamw/calloji/util/LoggerUtils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="122">
-              <caret line="29" column="40" lean-forward="true" selection-start-line="29" selection-start-column="40" selection-end-line="29" selection-end-column="40" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PacketManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/packet/PacketManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" column="5" lean-forward="true" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#194#195#0" expanded="true" />
-                <element signature="e#251#252#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Client.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/calloji-client/src/main/java/ph/adamw/calloji/client/Client.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="115">
-              <caret line="29" column="17" lean-forward="true" selection-start-line="29" selection-start-column="17" selection-end-line="29" selection-end-column="17" />
+            <state relative-caret-position="379">
+              <caret line="30" column="50" selection-start-line="30" selection-start-column="50" selection-end-line="30" selection-end-column="50" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -60,10 +75,10 @@
         </entry>
       </file>
       <file leaf-file-name="ClientConnection.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/ClientConnection.java">
+        <entry file="file://$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/connection/ClientConnection.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="149">
-              <caret line="25" selection-start-line="25" selection-end-line="25" />
+            <state relative-caret-position="-96">
+              <caret line="15" column="4" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="4" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -71,11 +86,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Packet.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/packet/Packet.java">
+      <file leaf-file-name="ServerRouter.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/ServerRouter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="19" selection-start-line="4" selection-start-column="19" selection-end-line="4" selection-end-column="19" />
+            <state relative-caret-position="189">
+              <caret line="15" column="77" selection-start-line="15" selection-start-column="77" selection-end-line="15" selection-end-column="77" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="253">
+              <caret line="31" column="18" lean-forward="true" selection-start-line="31" selection-start-column="18" selection-end-line="31" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -83,31 +110,17 @@
       <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/calloji-server/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
-              <caret line="31" column="34" selection-start-line="31" selection-start-column="34" selection-end-line="31" selection-end-column="34" />
+            <state relative-caret-position="208">
+              <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Realm.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/map/Realm.java">
+      <file leaf-file-name="Server.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/Server.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="11" column="28" selection-start-line="11" selection-start-column="28" selection-end-line="11" selection-end-column="28" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#458#459#0" expanded="true" />
-                <element signature="e#493#494#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Prop.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/prop/Prop.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="12" column="11" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="11" />
+            <state relative-caret-position="96">
+              <caret line="6" column="40" selection-start-line="6" selection-start-column="40" selection-end-line="6" selection-end-column="40" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -116,10 +129,10 @@
         </entry>
       </file>
       <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/calloji-shared/pom.xml">
+        <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="14" column="10" selection-start-line="14" selection-start-column="10" selection-end-line="14" selection-end-column="10" />
+            <state relative-caret-position="480">
+              <caret line="30" selection-start-line="30" selection-end-line="30" />
             </state>
           </provider>
         </entry>
@@ -129,6 +142,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="FxmlFile" />
+        <option value="Enum" />
         <option value="Interface" />
         <option value="Class" />
       </list>
@@ -140,39 +155,45 @@
       <find>toByte</find>
       <find>write</find>
       <find>writeObject</find>
+      <find>receivePakc</find>
+      <find>config</find>
+      <find>run</find>
+      <find>runConfig</find>
+      <find>build pac</find>
+      <find>m2</find>
+      <find>calloji-packet</find>
+      <find>block</find>
+      <find>ClientPac</find>
+      <find>ClientIdUpdate</find>
+      <find>reuse</find>
+      <find>IdUpdate</find>
+      <find>send</find>
+      <find>&quot;x&quot;</find>
+      <find>System.out</find>
+      <find>log.in</find>
+      <find>log.info</find>
+      <find>heartb</find>
+      <find>log.</find>
+      <find>log.fine</find>
+      <find>log</find>
+      <find>bi</find>
+      <find>bindToConsole</find>
+      <find>SHOW_DATE_TIME_KEY</find>
+      <find>date</find>
     </findStrings>
+    <replaceStrings>
+      <replace>calloji-shared</replace>
+    </replaceStrings>
+    <dirStrings>
+      <dir>D:\1Repo\calloji</dir>
+    </dirStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/prop/PropState.java" />
-        <option value="$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/shared/PropAtlas.java" />
-        <option value="$PROJECT_DIR$/calloji-shared/src/main/resources/ph.adamw.calloji.shared/prop/rock1.json" />
-        <option value="$PROJECT_DIR$/calloji-shared/src/main/resources/ph.adamw.calloji.shared/prop/entity/cow.json" />
-        <option value="$PROJECT_DIR$/calloji-shared/src/main/resources/ph.adamw.calloji.shared/prop/cow.json" />
-        <option value="$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/shared/prop/PropDataParser.java" />
-        <option value="$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/shared/prop/PropParser.java" />
-        <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/location/Location.java" />
-        <option value="$PROJECT_DIR$/calloji-server/src/main/resources/ph.adamw.calloji.server/prop/entity/cow.json" />
-        <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/map/Map.java" />
-        <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/map/Realm.java" />
-        <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/map/Position.java" />
-        <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/prop/entity/Cow.java" />
-        <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/prop/entity/event/IDamagableListener.java" />
-        <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/prop/entity/event/Event.java" />
-        <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/prop/PropFactory.java" />
-        <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/prop/entity/event/GameEvent.java" />
-        <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/prop/entity/event/EntityEventChannel.java" />
-        <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/prop/entity/EntityCow.java" />
-        <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/prop/entity/event/IDamagable.java" />
-        <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/prop/entity/Entity.java" />
-        <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/prop/Prop.java" />
-        <option value="$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/prop/entity/event/IDamagable.java" />
-        <option value="$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/prop/entity/EntityCow.java" />
-        <option value="$PROJECT_DIR$/calloji-shared/pom.xml" />
-        <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/calloji-client/src/main/java/ph/adamw/calloji/client/PacketReceiver.java" />
-        <option value="$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/prop/client/ClientEntity.java" />
         <option value="$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/prop/Prop.java" />
         <option value="$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/map/Position.java" />
         <option value="$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/map/Realm.java" />
@@ -181,13 +202,49 @@
         <option value="$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/packet/GamePacket.java" />
         <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/PacketManager.java" />
         <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/packet/EntityDamagedPacket.java" />
-        <option value="$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/packet/Packet.java" />
         <option value="$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/packet/EntityDamagedPacket.java" />
-        <option value="$PROJECT_DIR$/calloji-server/pom.xml" />
         <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/packet/PacketManager.java" />
+        <option value="$PROJECT_DIR$/calloji-shared/pom.xml" />
+        <option value="$PROJECT_DIR$/.idea/workspace.xml" />
+        <option value="$PROJECT_DIR$/calloji-packet/src/main/java/ph/adamw/calloji/packet/Packet.java" />
+        <option value="$PROJECT_DIR$/calloji-packet/src/main/java/ph/adamw/calloji/packet/ClientIdUpdatePacket.java" />
+        <option value="$PROJECT_DIR$/calloji-packet/pom.xml" />
+        <option value="$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/packet/Packet.java" />
+        <option value="$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/packet/ClientIdUpdatePacket.java" />
+        <option value="$PROJECT_DIR$/calloji-client/src/main/java/ph/adamw/calloji/client/handler/PacketHandler.java" />
+        <option value="$PROJECT_DIR$/calloji-sync/src/main/java/ph/adamw/calloji/packet/PacketAtlas.java" />
+        <option value="$PROJECT_DIR$/calloji-sync/src/main/java/ph/adamw/calloji/packet/IClient.java" />
+        <option value="$PROJECT_DIR$/calloji-client/src/main/java/ph/adamw/calloji/client/PacketHandler.java" />
+        <option value="$PROJECT_DIR$/calloji-sync/src/main/java/ph/adamw/calloji/packet/ClientIdUpdatePacket.java" />
+        <option value="$PROJECT_DIR$/calloji-sync/src/main/java/ph/adamw/calloji/packet/ServerPacket.java" />
+        <option value="$PROJECT_DIR$/calloji-sync/src/main/java/ph/adamw/calloji/packet/ClientPacket.java" />
+        <option value="$PROJECT_DIR$/calloji-sync/src/main/java/ph/adamw/calloji/packet/Packet.java" />
+        <option value="$PROJECT_DIR$/calloji-sync/src/main/java/ph/adamw/calloji/packet/client/HeartbeatPacket.java" />
+        <option value="$PROJECT_DIR$/calloji-sync/src/main/java/ph/adamw/calloji/packet/server/IServer.java" />
+        <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/ClientPool.java" />
         <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/ClientConnection.java" />
+        <option value="$PROJECT_DIR$/calloji-client/pom.xml" />
+        <option value="$PROJECT_DIR$/calloji-sync/src/main/java/ph/adamw/calloji/packet/client/ClientPacket.java" />
+        <option value="$PROJECT_DIR$/calloji-sync/src/main/java/ph/adamw/calloji/packet/client/ClientIdUpdatePacket.java" />
+        <option value="$PROJECT_DIR$/calloji-sync/src/main/java/ph/adamw/calloji/packet/server/ServerPacket.java" />
+        <option value="$PROJECT_DIR$/calloji-sync/src/main/java/ph/adamw/calloji/packet/server/ServerHeartbeatPacket.java" />
+        <option value="$PROJECT_DIR$/calloji-client/src/main/java/ph/adamw/calloji/client/Calloji.java" />
+        <option value="$PROJECT_DIR$/calloji-sync/src/main/java/ph/adamw/calloji/packet/client/IClient.java" />
         <option value="$PROJECT_DIR$/calloji-client/src/main/java/ph/adamw/calloji/client/Client.java" />
+        <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/prop/entity/EntityInteractionMap.java" />
+        <option value="$PROJECT_DIR$/calloji-client/src/main/java/ph/adamw/calloji/client/ServerConnection.java" />
+        <option value="$PROJECT_DIR$/calloji-client/src/main/java/ph/adamw/calloji/client/ClientRouter.java" />
+        <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/Router.java" />
+        <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/connection/ClientConnection.java" />
+        <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/t/Server.java" />
+        <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/connection/ClientPool.java" />
+        <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/connection/Server.java" />
+        <option value="$PROJECT_DIR$/calloji-server/pom.xml" />
+        <option value="$PROJECT_DIR$/calloji-sync/src/main/java/ph/adamw/calloji/util/LoggerUtils.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/Server.java" />
+        <option value="$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/ServerRouter.java" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -209,7 +266,12 @@
       <expand>
         <path>
           <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
-          <item name="calloji-client" type="9519ce18:MavenProjectsStructure$ProjectNode" />
+          <item name="calloji-parent" type="9519ce18:MavenProjectsStructure$ProjectNode" />
+        </path>
+        <path>
+          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
+          <item name="calloji-parent" type="9519ce18:MavenProjectsStructure$ProjectNode" />
+          <item name="Lifecycle" type="58874e2:MavenProjectsStructure$LifecycleNode" />
         </path>
       </expand>
       <select />
@@ -219,10 +281,12 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="y" value="23" />
-    <option name="width" value="1680" />
+    <option name="x" value="33" />
+    <option name="y" value="47" />
+    <option name="width" value="1387" />
     <option name="height" value="928" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -230,77 +294,48 @@
     <panes>
       <pane id="Scope" />
       <pane id="AndroidView" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="callojiparent" type="b2602c69:ProjectViewProjectNode" />
-              <item name="callojiparent" type="462c0819:PsiDirectoryNode" />
+              <item name="calloji" type="b2602c69:ProjectViewProjectNode" />
+              <item name="calloji" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="callojiparent" type="b2602c69:ProjectViewProjectNode" />
-              <item name="callojiparent" type="462c0819:PsiDirectoryNode" />
+              <item name="calloji" type="b2602c69:ProjectViewProjectNode" />
+              <item name="calloji" type="462c0819:PsiDirectoryNode" />
               <item name="calloji-client" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="callojiparent" type="b2602c69:ProjectViewProjectNode" />
-              <item name="callojiparent" type="462c0819:PsiDirectoryNode" />
-              <item name="calloji-client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="callojiparent" type="b2602c69:ProjectViewProjectNode" />
-              <item name="callojiparent" type="462c0819:PsiDirectoryNode" />
-              <item name="calloji-client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="callojiparent" type="b2602c69:ProjectViewProjectNode" />
-              <item name="callojiparent" type="462c0819:PsiDirectoryNode" />
-              <item name="calloji-client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="callojiparent" type="b2602c69:ProjectViewProjectNode" />
-              <item name="callojiparent" type="462c0819:PsiDirectoryNode" />
-              <item name="calloji-client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="client" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="callojiparent" type="b2602c69:ProjectViewProjectNode" />
-              <item name="callojiparent" type="462c0819:PsiDirectoryNode" />
+              <item name="calloji" type="b2602c69:ProjectViewProjectNode" />
+              <item name="calloji" type="462c0819:PsiDirectoryNode" />
               <item name="calloji-server" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="callojiparent" type="b2602c69:ProjectViewProjectNode" />
-              <item name="callojiparent" type="462c0819:PsiDirectoryNode" />
+              <item name="calloji" type="b2602c69:ProjectViewProjectNode" />
+              <item name="calloji" type="462c0819:PsiDirectoryNode" />
               <item name="calloji-server" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="callojiparent" type="b2602c69:ProjectViewProjectNode" />
-              <item name="callojiparent" type="462c0819:PsiDirectoryNode" />
+              <item name="calloji" type="b2602c69:ProjectViewProjectNode" />
+              <item name="calloji" type="462c0819:PsiDirectoryNode" />
               <item name="calloji-server" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="callojiparent" type="b2602c69:ProjectViewProjectNode" />
-              <item name="callojiparent" type="462c0819:PsiDirectoryNode" />
+              <item name="calloji" type="b2602c69:ProjectViewProjectNode" />
+              <item name="calloji" type="462c0819:PsiDirectoryNode" />
               <item name="calloji-server" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="callojiparent" type="b2602c69:ProjectViewProjectNode" />
-              <item name="callojiparent" type="462c0819:PsiDirectoryNode" />
+              <item name="calloji" type="b2602c69:ProjectViewProjectNode" />
+              <item name="calloji" type="462c0819:PsiDirectoryNode" />
               <item name="calloji-server" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
@@ -308,65 +343,19 @@
               <item name="server" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="callojiparent" type="b2602c69:ProjectViewProjectNode" />
-              <item name="callojiparent" type="462c0819:PsiDirectoryNode" />
+              <item name="calloji" type="b2602c69:ProjectViewProjectNode" />
+              <item name="calloji" type="462c0819:PsiDirectoryNode" />
               <item name="calloji-server" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="packet" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="callojiparent" type="b2602c69:ProjectViewProjectNode" />
-              <item name="callojiparent" type="462c0819:PsiDirectoryNode" />
-              <item name="calloji-shared" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="callojiparent" type="b2602c69:ProjectViewProjectNode" />
-              <item name="callojiparent" type="462c0819:PsiDirectoryNode" />
-              <item name="calloji-shared" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="callojiparent" type="b2602c69:ProjectViewProjectNode" />
-              <item name="callojiparent" type="462c0819:PsiDirectoryNode" />
-              <item name="calloji-shared" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="callojiparent" type="b2602c69:ProjectViewProjectNode" />
-              <item name="callojiparent" type="462c0819:PsiDirectoryNode" />
-              <item name="calloji-shared" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="callojiparent" type="b2602c69:ProjectViewProjectNode" />
-              <item name="callojiparent" type="462c0819:PsiDirectoryNode" />
-              <item name="calloji-shared" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="calloji" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="callojiparent" type="b2602c69:ProjectViewProjectNode" />
-              <item name="callojiparent" type="462c0819:PsiDirectoryNode" />
-              <item name="calloji-shared" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="calloji" type="462c0819:PsiDirectoryNode" />
-              <item name="packet" type="462c0819:PsiDirectoryNode" />
+              <item name="connection" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -375,17 +364,18 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.proportion" value="0.15629053" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/calloji-server/src/main/resources/ph.adamw.calloji.server" />
       <recent name="$PROJECT_DIR$/calloji-server/src/main/resources" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -400,11 +390,12 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Client">
-    <configuration name="Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ph.adamw.calloji.client.Client" />
-      <module name="callojiclient" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+  <component name="RunManager" selected="Application.Run Server">
+    <configuration name="Run Client" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="ph.adamw.calloji.client.ClientRouter" />
+      <module name="calloji-client" />
+      <option name="PROGRAM_PARAMETERS" value="--debug --stacktrace" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="ph.adamw.calloji.client.*" />
@@ -412,10 +403,11 @@
         </pattern>
       </extension>
     </configuration>
-    <configuration name="Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ph.adamw.calloji.server.Server" />
-      <module name="callojiserver" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <configuration name="Run Server" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="ph.adamw.calloji.server.ServerRouter" />
+      <module name="calloji-server" />
+      <option name="PROGRAM_PARAMETERS" value="--debug --stacktrace" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="ph.adamw.calloji.server.packet.*" />
@@ -442,6 +434,29 @@
       </option>
       <patterns />
     </configuration>
+    <configuration name="calloji-client-1.0-shaded.jar" type="JarApplication" factoryName="JAR Application" temporary="true">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/calloji-client/target/calloji-client-1.0-shaded.jar" />
+    </configuration>
+    <configuration name="calloji-client-1.0.jar" type="JarApplication" factoryName="JAR Application" temporary="true">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/calloji-client/target/calloji-client-1.0.jar" />
+    </configuration>
+    <configuration name="original-calloji-client-1.0.jar" type="JarApplication" factoryName="JAR Application" temporary="true">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/calloji-client/target/original-calloji-client-1.0.jar" />
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType" factoryName="Kotlin">
+      <module name="calloji-shared" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+    </configuration>
+    <configuration name="Full Run" type="Multirun" factoryName="Multirun" separateTabs="true" startOneByOne="true" markFailedProcess="true" hideSuccessProcess="false" delayTime="0">
+      <runConfiguration name="Run Server" type="Application" />
+      <runConfiguration name="Run Client" type="Application" />
+    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -465,13 +480,18 @@
       <listeners />
     </configuration>
     <list>
-      <item itemvalue="Application.Server" />
-      <item itemvalue="Application.Client" />
+      <item itemvalue="Application.Run Server" />
+      <item itemvalue="Application.Run Client" />
+      <item itemvalue="Multirun.Full Run" />
+      <item itemvalue="JAR Application.calloji-client-1.0.jar" />
+      <item itemvalue="JAR Application.calloji-client-1.0-shaded.jar" />
+      <item itemvalue="JAR Application.original-calloji-client-1.0.jar" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Client" />
-        <item itemvalue="Application.Server" />
+        <item itemvalue="JAR Application.calloji-client-1.0.jar" />
+        <item itemvalue="JAR Application.original-calloji-client-1.0.jar" />
+        <item itemvalue="JAR Application.calloji-client-1.0-shaded.jar" />
       </list>
     </recent_temporary>
   </component>
@@ -496,45 +516,52 @@
       <workItem from="1535025486684" duration="3695000" />
       <workItem from="1535041270741" duration="4908000" />
       <workItem from="1535058478114" duration="1645000" />
+      <workItem from="1535060647588" duration="1437000" />
+      <workItem from="1535107751747" duration="971000" />
+      <workItem from="1535108749197" duration="1245000" />
+      <workItem from="1535110049895" duration="11619000" />
+      <workItem from="1535193165487" duration="12587000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="18190000" />
+    <option name="totallyTimeSpent" value="46049000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1680" height="928" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Messages" order="11" weight="0.32972324" />
-      <window_info anchor="right" id="Palette&#9;" order="8" />
-      <window_info id="Image Layers" order="2" />
-      <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="right" id="Maven Projects" order="7" sideWeight="0.4979757" visible="true" weight="0.13797314" />
+      <window_info anchor="right" id="Maven Projects" order="7" sideWeight="0.49673203" visible="true" weight="0.0368" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="10" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.4055355" />
-      <window_info anchor="right" id="Coverage" sideWeight="0.5020243" side_tool="true" visible="true" weight="0.13797314" />
-      <window_info anchor="bottom" id="Terminal" order="8" />
       <window_info id="Capture Tool" order="6" />
       <window_info id="Designer" order="3" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2899878" />
       <window_info anchor="right" id="Database" order="6" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="4" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39951864" />
+      <window_info anchor="right" id="Code Iris" order="8" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Messages" order="11" weight="0.3267974" />
+      <window_info anchor="right" id="Palette&#9;" order="8" />
+      <window_info id="Image Layers" order="2" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="bottom" id="Version Control" order="10" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.23638344" />
+      <window_info anchor="bottom" id="CheckStyle" order="10" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.2962963" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1744" />
+      <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="right" id="Theme Preview" order="5" />
       <window_info id="Favorites" order="5" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39951864" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="right" id="Coverage" order="9" sideWeight="0.503268" side_tool="true" weight="0.20042644" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -544,286 +571,297 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/location/Location.java" />
-    <entry file="file://$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/prop/entity/Cow.java" />
-    <entry file="jar://$MAVEN_REPOSITORY$/com/google/guava/guava/26.0-jre/guava-26.0-jre.jar!/com/google/common/eventbus/Dispatcher.class">
+    <entry file="file://$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/map/Realm.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" column="15" selection-start-line="13" selection-start-column="15" selection-end-line="13" selection-end-column="15" />
+        <state relative-caret-position="144">
+          <caret line="9" column="28" selection-start-line="9" selection-start-column="28" selection-end-line="9" selection-end-column="28" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/google/guava/guava/26.0-jre/guava-26.0-jre.jar!/com/google/common/eventbus/Subscriber.class">
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="15" column="6" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
+        <state relative-caret-position="246">
+          <caret line="398" column="20" lean-forward="true" selection-start-line="398" selection-start-column="20" selection-end-line="398" selection-end-column="20" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/google/guava/guava/26.0-jre/guava-26.0-jre.jar!/com/google/common/eventbus/SubscriberRegistry.class">
+    <entry file="file://$PROJECT_DIR$/calloji-packet/src/main/java/ph/adamw/calloji/packet/Random.java" />
+    <entry file="file://$PROJECT_DIR$/calloji-packet/src/main/java/ph/adamw/calloji/packet/ClientIdUpdatePacket.java" />
+    <entry file="file://$PROJECT_DIR$/calloji-packet/src/main/java/ph/adamw/calloji/packet/Packet.java" />
+    <entry file="file://$PROJECT_DIR$/calloji-packet/pom.xml" />
+    <entry file="file://$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/packet/Packet.java" />
+    <entry file="file://$PROJECT_DIR$/calloji-shared/pom.xml" />
+    <entry file="file://$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/packet/ClientIdUpdatePacket.java" />
+    <entry file="file://$PROJECT_DIR$/calloji-sync/src/main/java/ph/adamw/calloji/packet/client/ClientPacket.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="100" column="25" selection-start-line="100" selection-start-column="25" selection-end-line="100" selection-end-column="25" />
+        <state relative-caret-position="32">
+          <caret line="2" column="36" selection-start-line="2" selection-start-column="36" selection-end-line="2" selection-end-column="36" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/google/guava/guava/26.0-jre/guava-26.0-jre.jar!/com/google/common/eventbus/EventBus.class">
+    <entry file="file://$PROJECT_DIR$/calloji-client/src/main/java/ph/adamw/calloji/client/handler/PacketHandler.java" />
+    <entry file="file://$PROJECT_DIR$/calloji-sync/src/main/java/ph/adamw/calloji/packet/PacketAtlas.java" />
+    <entry file="file://$PROJECT_DIR$/calloji-client/src/main/java/ph/adamw/calloji/client/PacketHandler.java" />
+    <entry file="file://$PROJECT_DIR$/calloji-client/src/main/java/ph/adamw/calloji/client/C.java" />
+    <entry file="file://$PROJECT_DIR$/calloji-client/src/main/java/ph/adamw/calloji/client/Connection.java" />
+    <entry file="file://$PROJECT_DIR$/calloji-sync/src/main/java/ph/adamw/calloji/packet/Packet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="76" column="74" selection-start-line="76" selection-start-column="74" selection-end-line="76" selection-end-column="74" />
+        <state relative-caret-position="64">
+          <caret line="4" column="52" selection-start-line="4" selection-start-column="52" selection-end-line="4" selection-end-column="52" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/prop/PropFactory.java" />
-    <entry file="file://$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/prop/entity/event/GameEvent.java" />
-    <entry file="file://$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/prop/entity/event/EntityEventChannel.java" />
-    <entry file="file://$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/prop/entity/event/IEventListener.java" />
-    <entry file="file://$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/prop/entity/event/IDamagable.java" />
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/src.zip!/java/net/SocketImpl.java">
+    <entry file="jar://D:/jdk/src.zip!/java/io/ObjectInputStream.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="43" column="22" selection-start-line="43" selection-start-column="22" selection-end-line="43" selection-end-column="22" />
+        <state relative-caret-position="2911">
+          <caret line="501" column="20" selection-start-line="501" selection-start-column="15" selection-end-line="501" selection-end-column="20" />
         </state>
       </provider>
     </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/src.zip!/java/net/AbstractPlainSocketImpl.java">
+    <entry file="jar://D:/jdk/src.zip!/java/net/SocketException.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="386" selection-start-line="386" selection-end-line="386" />
+        <state relative-caret-position="208">
+          <caret line="36" column="18" lean-forward="true" selection-start-line="36" selection-start-column="18" selection-end-line="36" selection-end-column="18" />
         </state>
       </provider>
     </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/src.zip!/java/nio/channels/ServerSocketChannel.java">
+    <entry file="file://$PROJECT_DIR$/calloji-sync/src/main/java/ph/adamw/calloji/packet/client/HeartbeatPacket.java" />
+    <entry file="file://$PROJECT_DIR$/calloji-sync/src/main/java/ph/adamw/calloji/packet/server/IServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="797">
-          <caret line="268" column="34" selection-start-line="268" selection-start-column="34" selection-end-line="268" selection-end-column="34" />
+        <state>
+          <caret column="39" lean-forward="true" selection-start-column="39" selection-end-column="39" />
         </state>
       </provider>
     </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/src.zip!/java/net/InetAddress.java">
+    <entry file="jar://D:/jdk/src.zip!/java/net/Socket.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2804">
-          <caret line="306" column="4" selection-start-line="306" selection-start-column="4" selection-end-line="306" selection-end-column="4" />
+        <state relative-caret-position="244">
+          <caret line="1489" column="29" selection-start-line="1489" selection-start-column="29" selection-end-line="1489" selection-end-column="29" />
         </state>
       </provider>
     </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/src.zip!/java/net/SocketAddress.java">
+    <entry file="jar://D:/jdk/src.zip!/java/net/ServerSocket.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="40" column="28" lean-forward="true" selection-start-line="40" selection-start-column="28" selection-end-line="40" selection-end-column="28" />
+        <state relative-caret-position="467">
+          <caret line="648" column="29" selection-start-line="648" selection-start-column="29" selection-end-line="648" selection-end-column="29" />
         </state>
       </provider>
     </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/src.zip!/java/net/InetSocketAddress.java">
+    <entry file="file://$PROJECT_DIR$/calloji-client/target/classes/ph/adamw/calloji/client/Client.class" />
+    <entry file="file://$PROJECT_DIR$/calloji-client/target/classes/ph/adamw/calloji/client/Calloji.class" />
+    <entry file="file://$PROJECT_DIR$/calloji-sync/src/main/java/ph/adamw/calloji/packet/client/ClientIdUpdatePacket.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4">
-          <caret line="192" column="36" lean-forward="true" selection-start-line="192" selection-start-column="36" selection-end-line="192" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/src.zip!/java/util/HashSet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="46" column="21" selection-start-line="46" selection-start-column="15" selection-end-line="46" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/src.zip!/java/io/Serializable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="413">
-          <caret line="168" column="17" selection-start-line="168" selection-start-column="17" selection-end-line="168" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/prop/Prop.java" />
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/src.zip!/java/io/ObjectOutput.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-292">
-          <caret line="38" column="17" selection-start-line="38" selection-start-column="17" selection-end-line="38" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/src.zip!/java/net/Socket.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="940" column="24" selection-start-line="940" selection-start-column="24" selection-end-line="940" selection-end-column="24" />
+        <state relative-caret-position="176">
+          <caret line="11" column="5" lean-forward="true" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
           <folding>
-            <element signature="e#1829#1830#0" expanded="true" />
-            <element signature="e#1854#1855#0" expanded="true" />
+            <element signature="e#223#224#0" expanded="true" />
+            <element signature="e#260#261#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/src.zip!/java/io/ObjectOutputStream.java">
+    <entry file="file://$PROJECT_DIR$/calloji-sync/src/main/java/ph/adamw/calloji/packet/server/ServerHeartbeatPacket.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="503">
-          <caret line="341" column="22" selection-start-line="341" selection-start-column="22" selection-end-line="341" selection-end-column="22" />
+        <state relative-caret-position="128">
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/prop/entity/Entity.java" />
-    <entry file="file://$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/prop/entity/EntityCow.java" />
-    <entry file="file://$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/prop/entity/event/IDamagable.java">
+    <entry file="file://$PROJECT_DIR$/calloji-sync/src/main/java/ph/adamw/calloji/packet/server/ServerPacket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="9" column="48" selection-start-line="9" selection-start-column="48" selection-end-line="9" selection-end-column="48" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/calloji-client/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="21">
+          <caret line="25" column="16" selection-start-line="25" selection-start-column="16" selection-end-line="25" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/calloji-sync/src/main/java/ph/adamw/calloji/packet/client/IClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="32">
+          <caret line="2" column="26" lean-forward="true" selection-start-line="2" selection-start-column="26" selection-end-line="2" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.16.20/lombok-1.16.20.jar!/lombok/extern/slf4j/Slf4j.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.16.20/lombok-1.16.20.jar!/lombok/extern/java/Log.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="14" column="18" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/calloji-sync/src/main/java/ph/adamw/calloji/packet/client/ClientPacket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LICENSE">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/prop/entity/event/IEventListener.java">
+    <entry file="file://$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/prop/entity/EntityInteractionMap.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/prop/entity/EntityCow.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="53" selection-start-line="4" selection-start-column="53" selection-end-line="4" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/calloji-client/src/main/java/ph/adamw/calloji/client/PacketReceiver.java" />
-    <entry file="file://$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/prop/client/ClientEntity.java" />
-    <entry file="file://$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/map/Map.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/prop/Prop.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="12" column="11" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="11" />
+        <state relative-caret-position="176">
+          <caret line="11" column="29" selection-start-line="11" selection-start-column="28" selection-end-line="11" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/map/Position.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="7" selection-start-line="4" selection-start-column="7" selection-end-line="4" selection-end-column="7" />
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/prop/entity/Entity.java">
+    <entry file="file://$PROJECT_DIR$/calloji-client/src/main/java/ph/adamw/calloji/client/ClientRouter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="5" lean-forward="true" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/src.zip!/java/io/ObjectInputStream.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="213">
-          <caret line="926" column="15" selection-start-line="926" selection-start-column="15" selection-end-line="926" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/calloji-shared/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="10" selection-start-line="14" selection-start-column="10" selection-end-line="14" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="39" selection-start-line="11" selection-start-column="39" selection-end-line="11" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/map/Realm.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="11" column="28" selection-start-line="11" selection-start-column="28" selection-end-line="11" selection-end-column="28" />
+        <state relative-caret-position="176">
+          <caret line="17" column="25" selection-start-line="17" selection-start-column="25" selection-end-line="17" selection-end-column="25" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#458#459#0" expanded="true" />
-            <element signature="e#493#494#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/packet/GamePacket.java" />
-    <entry file="file://$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/p/EntityPig.java" />
-    <entry file="file://$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/GamePacket.java" />
-    <entry file="file://$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/packet/EntityDamagedPacket.java" />
-    <entry file="file://$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/packet/Packet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="19" selection-start-line="4" selection-start-column="19" selection-end-line="4" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/calloji-shared/src/main/java/ph/adamw/calloji/packet/EntityDamagedPacket.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/calloji-server/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="31" column="34" selection-start-line="31" selection-start-column="34" selection-end-line="31" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/packet/PacketManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="5" lean-forward="true" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#194#195#0" expanded="true" />
-            <element signature="e#251#252#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/calloji-client/src/main/java/ph/adamw/calloji/client/Client.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="29" column="17" lean-forward="true" selection-start-line="29" selection-start-column="17" selection-end-line="29" selection-end-column="17" />
+        <state>
+          <caret column="32" selection-start-column="32" selection-end-column="32" />
+          <folding>
+            <element signature="e#332#333#0" expanded="true" />
+            <element signature="e#357#358#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/jdk/src.zip!/java/util/logging/Logger.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="174">
+          <caret line="276" column="27" selection-start-line="276" selection-start-column="27" selection-end-line="276" selection-end-column="27" />
+          <folding>
+            <element signature="e#72755#72756#0" expanded="true" />
+            <element signature="e#72789#72790#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/calloji-server/target/classes/ph/adamw/calloji/server/ServerRouter.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#1700#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/calloji-sync/pom.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/connection/ClientPool.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="20" column="31" selection-start-line="20" selection-start-column="31" selection-end-line="20" selection-end-column="31" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/ClientConnection.java">
+    <entry file="file://$PROJECT_DIR$/calloji-sync/src/main/java/ph/adamw/calloji/util/LoggerUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
-          <caret line="25" selection-start-line="25" selection-end-line="25" />
+        <state relative-caret-position="379">
+          <caret line="30" column="50" selection-start-line="30" selection-start-column="50" selection-end-line="30" selection-end-column="50" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/src.zip!/java/lang/Runnable.java">
+    <entry file="file://$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/connection/ClientConnection.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="412">
-          <caret line="67" column="25" selection-start-line="67" selection-start-column="25" selection-end-line="67" selection-end-column="25" />
+        <state relative-caret-position="-96">
+          <caret line="15" column="4" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="4" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/src.zip!/java/net/ServerSocket.java">
+    <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2236">
-          <caret line="506" column="18" selection-start-line="506" selection-start-column="18" selection-end-line="506" selection-end-column="18" />
+        <state relative-caret-position="480">
+          <caret line="30" selection-start-line="30" selection-end-line="30" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/Server.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="122">
-          <caret line="29" column="40" lean-forward="true" selection-start-line="29" selection-start-column="40" selection-end-line="29" selection-end-column="40" />
+        <state relative-caret-position="96">
+          <caret line="6" column="40" selection-start-line="6" selection-start-column="40" selection-end-line="6" selection-end-column="40" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/calloji-server/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-simple/1.7.25/slf4j-simple-1.7.25.jar!/org/slf4j/impl/SimpleLogger.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="79" column="38" selection-start-line="79" selection-start-column="34" selection-end-line="79" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/calloji-server/src/main/java/ph/adamw/calloji/server/ServerRouter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="15" column="77" selection-start-line="15" selection-start-column="77" selection-end-line="15" selection-end-column="77" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/calloji-server/dependency-reduced-pom.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/calloji-client/dependency-reduced-pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="13" column="8" lean-forward="true" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="31" column="18" lean-forward="true" selection-start-line="31" selection-start-column="18" selection-end-line="31" selection-end-column="18" />
         </state>
       </provider>
     </entry>
@@ -856,6 +894,7 @@
       </state>
       <state key="GlobalLibrariesConfigurable.UI">
         <settings>
+          <last-edited>lombok</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -879,12 +918,11 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>callojiserver</last-edited>
+          <last-edited>calloji-server</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.2" />
-                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>
@@ -904,7 +942,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>Maven: com.google.code.findbugs:jsr305:3.0.2</last-edited>
+          <last-edited>Maven: ph.adamw:calloji-shared:1.0</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
