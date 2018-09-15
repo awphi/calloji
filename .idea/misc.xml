@@ -9,6 +9,8 @@
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/calloji-mapeditor/pom.xml" />
+        <option value="$PROJECT_DIR$/calloji-renderer/pom.xml" />
         <option value="$PROJECT_DIR$/calloji-shared/pom.xml" />
       </set>
     </option>

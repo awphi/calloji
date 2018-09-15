@@ -1,12 +1,15 @@
 package ph.adamw.calloji.server.connection;
 
+import com.google.common.collect.ImmutableSet;
 import lombok.Getter;
-import ph.adamw.calloji.packet.client.ClientIdUpdatePacket;
+import lombok.extern.slf4j.Slf4j;
+import ph.adamw.calloji.packet.client.PClientConnect;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.util.TreeMap;
 
+@Slf4j
 public class ClientPool {
 	private final TreeMap<Long, ClientConnection> map = new TreeMap<>();
 
@@ -36,15 +39,19 @@ public class ClientPool {
 		return -1;
 	}
 
-	public ClientConnection addConnection(Socket conn) {
-		System.out.println("Received connection from: " + conn.getInetAddress().toString());
-		final ClientConnection cc;
+	public ImmutableSet<ClientConnection> getImmutableConnections() {
+		return new ImmutableSet.Builder<ClientConnection>().addAll(map.values()).build();
+	}
 
+	public ClientConnection addConnection(Socket conn) {
 		final long clientId = getNextClientId();
 
 		if(clientId == -1) {
 			throw new RuntimeException("All client IDs are occupied! Did you make sure the pool is not full when adding a new connection?");
 		}
+
+		log.info("Received connection from: " + conn.getInetAddress().toString() + ", assigned ID: " + clientId);
+		final ClientConnection cc;
 
 		try {
 			cc = new ClientConnection(clientId, this, conn);
@@ -53,7 +60,7 @@ public class ClientPool {
 			return null;
 		}
 
-		cc.send(new ClientIdUpdatePacket(clientId));
+		cc.send(new PClientConnect());
 
 		return map.put(clientId, cc);
 	}

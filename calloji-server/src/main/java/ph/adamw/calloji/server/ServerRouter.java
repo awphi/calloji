@@ -1,8 +1,6 @@
 package ph.adamw.calloji.server;
 
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.impl.SimpleLogger;
 import ph.adamw.calloji.server.connection.ClientPool;
 import ph.adamw.calloji.util.LoggerUtils;
 
@@ -10,21 +8,10 @@ import java.io.IOException;
 import java.net.ServerSocket;
 
 public class ServerRouter {
-	static {
-		System.setProperty("org.slf4j.simpleLogger.showDateTime", "true");
-		System.setProperty("org.slf4j.simpleLogger.dateTimeFormat", "[dd/MM/yy HH:mm:ss]");
-		System.setProperty("org.slf4j.simpleLogger.levelInBrackets", "true");
-	}
-
-	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(ServerRouter.class);
-
 	@Getter
-	private static final Server server = new Server();
+	private static ClientPool clientPool;
 
 	private static final ServerSocket socket;
-
-	@Getter
-	private static final ClientPool clientPool = new ClientPool(12);
 
 	static {
 		try {
@@ -35,7 +22,12 @@ public class ServerRouter {
 	}
 
 	public static void main(String[] args) {
-		log.info("ServerRouter started!");
+		// Establish logger defaults then instantiate everything that uses a logger
+		LoggerUtils.setFormatting();
+		LoggerUtils.setProperty("defaultLogLevel", "info");
+		LoggerUtils.establishLevels(args);
+
+		clientPool = new ClientPool(12);
 
 		new Thread(ServerRouter::waitForNextConnection).start();
 	}

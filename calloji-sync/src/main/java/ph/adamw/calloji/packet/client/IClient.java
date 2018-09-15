@@ -1,7 +1,11 @@
 package ph.adamw.calloji.packet.client;
 
 public interface IClient {
-	void setId(long id);
+	void onConnected();
 
-	Long getId();
+	void onDisconnectAcknowledged();
+
+    void onChatReceived(String from, String message);
+
+    void onNickChanged(String nick);
 }

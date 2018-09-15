@@ -51,14 +51,39 @@
 
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>ph.adamw.calloji.client.ClientRouter</mainClass>
+                                    <mainClass>ph.adamw.calloji.client.Client</mainClass>
                                 </transformer>
                             </transformers>
+
+                            <shadedArtifactAttached>false</shadedArtifactAttached>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
 
+            <plugin>
+                <groupId>com.github.wvengen</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals><goal>proguard</goal></goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <obfuscate>true</obfuscate>
+                    <injar>${project.build.finalName}.jar</injar>
+                    <outjar>${project.build.finalName}-small.jar</outjar>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+                    <proguardInclude>${basedir}/proguard.conf</proguardInclude>
+
+                    <libs>
+                        <lib>${java.home}/lib/rt.jar</lib>
+                        <lib>${java.home}/lib/jsse.jar</lib>
+                        <lib>${java.home}/lib/ext/jfxrt.jar</lib>
+                    </libs>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

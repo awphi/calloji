@@ -1,10 +1,10 @@
 package ph.adamw.calloji.client;
 
-import lombok.extern.java.Log;
-import ph.adamw.calloji.packet.client.ClientPacket;
-import ph.adamw.calloji.packet.server.ServerHeartbeatPacket;
-import ph.adamw.calloji.packet.server.ServerPacket;
-import ph.adamw.calloji.util.LoggerUtils;
+import lombok.extern.slf4j.Slf4j;
+import ph.adamw.calloji.packet.client.IClient;
+import ph.adamw.calloji.packet.client.PClient;
+import ph.adamw.calloji.packet.server.PServerDisconnect;
+import ph.adamw.calloji.packet.server.PServer;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -12,20 +12,18 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.logging.Level;
 
-@Log
+@Slf4j
 public class ClientRouter {
-	private static final Client client = new Client();
+	private final IClient clientPacketHandler = new ClientPacketHandler(this);
 
-	private static final Socket socket = new Socket();
-	private static ObjectInputStream objectInputStream;
-	private static ObjectOutputStream objectOutputStream;
+	private final Socket socket = new Socket();
 
-	public static void main(String[] args) throws IOException {
-		log.setLevel(Level.SEVERE);
-		LoggerUtils.establishLevels(args, log);
+	private ObjectInputStream objectInputStream;
+	private ObjectOutputStream objectOutputStream;
 
+	//TODO implement server choice w/ passwords etc.
+	public void connect() throws IOException {
 		socket.connect(new InetSocketAddress("0.0.0.0", 8080));
 
 		objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
@@ -34,39 +32,28 @@ public class ClientRouter {
 		objectInputStream = new ObjectInputStream(socket.getInputStream());
 
 		// Data receiving thread
-		new Thread(ClientRouter::receive).start();
-
-		// Heartbeat thread
-		new Thread(() -> {
-			while(client.getId() == null) {
-				try {
-					Thread.sleep(10);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-					return;
-				}
-			}
-
-			while(socket.isConnected()) {
-				ClientRouter.send(new ServerHeartbeatPacket(client.getId()));
-				System.out.println("Sent heartbeat to server.");
-
-				try {
-					Thread.sleep(2500);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}).start();
+		new Thread(this::receive).start();
 	}
 
-	private static void receive() {
-		while(socket.isConnected()) {
+	public void requestDisconnect() {
+		send(new PServerDisconnect());
+	}
+
+	void forceDisconnect() {
+		try {
+			socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void receive() {
+		while(!socket.isClosed()) {
 			try {
 				final Object x = objectInputStream.readObject();
 
-				if (x instanceof ClientPacket) {
-					((ClientPacket) x).handle(client);
+				if (x instanceof PClient) {
+					((PClient) x).handle(clientPacketHandler);
 				}
 			} catch (IOException | ClassNotFoundException e) {
 				if(!(e instanceof EOFException)) {
@@ -76,7 +63,11 @@ public class ClientRouter {
 		}
 	}
 
-	public static void send(ServerPacket packet) {
+	public boolean isConnected() {
+		return !socket.isClosed();
+	}
+
+	public void send(PServer packet) {
 		try {
 			objectOutputStream.writeObject(packet);
 		} catch (IOException e) {
