@@ -9,15 +9,7 @@
         <module name="calloji-client" />
         <module name="calloji-server" />
         <module name="calloji-sync" />
-        <module name="callojiclient" />
-        <module name="callojiserver" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="calloji-mapeditor" target="1.8" />
-      <module name="calloji-renderer" target="1.8" />
-      <module name="calloji-shared" target="1.8" />
-      <module name="callojishared" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

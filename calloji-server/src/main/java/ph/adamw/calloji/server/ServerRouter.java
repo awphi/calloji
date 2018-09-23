@@ -1,17 +1,22 @@
 package ph.adamw.calloji.server;
 
+import com.google.common.eventbus.EventBus;
 import lombok.Getter;
 import ph.adamw.calloji.server.connection.ClientPool;
+import ph.adamw.calloji.server.monopoly.MonoGame;
 import ph.adamw.calloji.util.LoggerUtils;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 
 public class ServerRouter {
-	@Getter
 	private static ClientPool clientPool;
-
 	private static final ServerSocket socket;
+
+	private static MonoGame game;
+
+	@Getter
+	private static EventBus eventBus = new EventBus();
 
 	static {
 		try {
@@ -27,7 +32,10 @@ public class ServerRouter {
 		LoggerUtils.setProperty("defaultLogLevel", "info");
 		LoggerUtils.establishLevels(args);
 
-		clientPool = new ClientPool(12);
+		clientPool = new ClientPool(4);
+
+		// Bound to the client pool (well technically all client pools) on instantiation via the eventbus
+		game = new MonoGame();
 
 		new Thread(ServerRouter::waitForNextConnection).start();
 	}
@@ -36,7 +44,7 @@ public class ServerRouter {
 		while (!socket.isClosed()) {
 			try {
 				if(clientPool.getCapacity() > clientPool.getConnected()) {
-					clientPool.addConnection(socket.accept());
+					clientPool.connect(socket.accept());
 				}
 			} catch (IOException e) {
 				e.printStackTrace();

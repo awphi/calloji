@@ -1,9 +1,9 @@
 package ph.adamw.calloji.packet.server;
 
 import ph.adamw.calloji.packet.client.IClient;
-import ph.adamw.calloji.packet.client.PClient;
+import ph.adamw.calloji.packet.client.PC;
 
-public class PServerDisconnect extends PServer {
+public class PSDisconnect extends PS {
 	@Override
 	public void handle(IClientConnection server) {
 		server.onDisconnect();
@@ -15,9 +15,9 @@ public class PServerDisconnect extends PServer {
 	// Ack packets are used to send the result of an input after validation or calculations i.e. validating
 	// a user can currently roll the dice or play a certain card etc.
 
-	// However, in this example case it holds no data aside from its existence since there is no validation to be done
+	// However, in this example case it holds no plot aside from its existence since there is no validation to be done
 	// on a onDisconnect request.
-	public static class Ack extends PClient {
+	public static class Ack extends PC {
 		@Override
 		public void handle(IClient client) {
 			client.onDisconnectAcknowledged();

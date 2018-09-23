@@ -2,9 +2,9 @@ package ph.adamw.calloji.client;
 
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.client.IClient;
-import ph.adamw.calloji.packet.client.PClient;
-import ph.adamw.calloji.packet.server.PServerDisconnect;
-import ph.adamw.calloji.packet.server.PServer;
+import ph.adamw.calloji.packet.client.PC;
+import ph.adamw.calloji.packet.server.PSDisconnect;
+import ph.adamw.calloji.packet.server.PS;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -36,7 +36,7 @@ public class ClientRouter {
 	}
 
 	public void requestDisconnect() {
-		send(new PServerDisconnect());
+		send(new PSDisconnect());
 	}
 
 	void forceDisconnect() {
@@ -52,8 +52,8 @@ public class ClientRouter {
 			try {
 				final Object x = objectInputStream.readObject();
 
-				if (x instanceof PClient) {
-					((PClient) x).handle(clientPacketHandler);
+				if (x instanceof PC) {
+					((PC) x).handle(clientPacketHandler);
 				}
 			} catch (IOException | ClassNotFoundException e) {
 				if(!(e instanceof EOFException)) {
@@ -64,10 +64,10 @@ public class ClientRouter {
 	}
 
 	public boolean isConnected() {
-		return !socket.isClosed();
+		return !socket.isClosed() && objectOutputStream != null;
 	}
 
-	public void send(PServer packet) {
+	public void send(PS packet) {
 		try {
 			objectOutputStream.writeObject(packet);
 		} catch (IOException e) {

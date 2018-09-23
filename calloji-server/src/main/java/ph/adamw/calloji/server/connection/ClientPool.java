@@ -3,7 +3,10 @@ package ph.adamw.calloji.server.connection;
 import com.google.common.collect.ImmutableSet;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import ph.adamw.calloji.packet.client.PClientConnect;
+import ph.adamw.calloji.packet.client.PCConnect;
+import ph.adamw.calloji.server.ServerRouter;
+import ph.adamw.calloji.server.connection.event.ClientConnectedEvent;
+import ph.adamw.calloji.server.connection.event.ClientDisconnectedEvent;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -43,7 +46,7 @@ public class ClientPool {
 		return new ImmutableSet.Builder<ClientConnection>().addAll(map.values()).build();
 	}
 
-	public ClientConnection addConnection(Socket conn) {
+	public ClientConnection connect(Socket conn) {
 		final long clientId = getNextClientId();
 
 		if(clientId == -1) {
@@ -60,12 +63,17 @@ public class ClientPool {
 			return null;
 		}
 
-		cc.send(new PClientConnect());
+		final ClientConnection x = map.put(clientId, cc);
 
-		return map.put(clientId, cc);
+		cc.send(new PCConnect());
+		ServerRouter.getEventBus().post(new ClientConnectedEvent(clientId, this));
+
+		return x;
+
 	}
 
-	public boolean removeConnection(long id) {
+	public boolean disconnect(long id) {
+		ServerRouter.getEventBus().post(new ClientDisconnectedEvent(id, this));
 		return map.remove(id) != null;
 	}
 }

@@ -1,0 +1,42 @@
+.plot {
+    -fx-background-color: #D5E8D4;
+    -fx-background-size: 100% 100%;
+}
+
+.border {
+    -fx-border-width: 2px;
+}
+
+.border-out {
+    -fx-border-style: solid outside;
+    -fx-border-insets: 0px;
+}
+
+.border-in {
+    -fx-border-style: solid inside;
+    -fx-border-insets: -1px;
+}
+
+.window {
+    -fx-font-family: roboto;
+}
+
+.bold {
+    -fx-font-weight: bolder;
+}
+
+.strikethrough {
+    -fx-strikethrough: true;
+}
+
+.centred {
+    -fx-alignment: center center;
+}
+
+.house {
+    -fx-background-color: green;
+}
+
+.plot-header {
+    -fx-padding: 10px 5px 10px 5px;
+}

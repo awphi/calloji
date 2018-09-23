@@ -3,8 +3,10 @@ package ph.adamw.calloji.client;
 import javafx.application.Platform;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.client.gui.MessageType;
+import ph.adamw.calloji.data.Board;
+import ph.adamw.calloji.data.UIState;
 import ph.adamw.calloji.packet.client.IClient;
-import ph.adamw.calloji.packet.server.PServerHeartbeat;
+import ph.adamw.calloji.packet.server.PSHeartbeat;
 
 @Slf4j
 public class ClientPacketHandler implements IClient {
@@ -20,7 +22,7 @@ public class ClientPacketHandler implements IClient {
 
         new Thread(() -> {
             while(router.isConnected()) {
-                router.send(new PServerHeartbeat());
+                router.send(new PSHeartbeat());
 
                 try {
                     Thread.sleep(2500);
@@ -52,5 +54,15 @@ public class ClientPacketHandler implements IClient {
             Client.getGui().getNicknameMenu().show();
             Client.getGui().getNicknameMenu().hide();
         });
+    }
+
+    @Override
+    public void onBoardUpdate(Board board) {
+        Client.getGui().loadBoard(board);
+    }
+
+    @Override
+    public void onUIUpdate(UIState state) {
+        //TODO
     }
 }

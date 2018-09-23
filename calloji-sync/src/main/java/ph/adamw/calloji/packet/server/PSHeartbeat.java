@@ -1,6 +1,6 @@
 package ph.adamw.calloji.packet.server;
 
-public class PServerHeartbeat extends PServer {
+public class PSHeartbeat extends PS {
 	@Override
 	public void handle(IClientConnection server) {
 		server.onHeartbeat();

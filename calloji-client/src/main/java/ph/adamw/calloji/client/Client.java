@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import ph.adamw.calloji.util.LoggerUtils;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.PriorityQueue;
 
 public class Client extends Application {
 	@Getter
@@ -23,6 +25,8 @@ public class Client extends Application {
 	private static GuiController gui;
 
 	private final static SimpleDateFormat dateFormat = new SimpleDateFormat("K:mm");
+
+	private final static PriorityQueue<Text> messageQueue = new PriorityQueue<>();
 
 	public static void main(String[] args) {
 		// Establish logger defaults then instantiate everything that uses a logger
@@ -46,15 +50,28 @@ public class Client extends Application {
 		final Text text = new Text("[" + dateFormat.format(new Date()) + "] " + txt);
 		text.setFill(type.getColor());
 
-		gui.addMessageToList(text);
+		if(gui != null) {
+			gui.addMessageToList(text);
+		} else {
+			messageQueue.add(text);
+		}
 	}
 
 	@Override
 	public void start(Stage stage) throws Exception {
+		// Register fonts
+		Font.loadFont(getClass().getResource("/fxml/roboto.ttf").toExternalForm(), 16);
+
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/gui.fxml"));
 		Parent root = fxmlLoader.load();
 
 		gui = fxmlLoader.getController();
+
+		for(Text i : messageQueue) {
+			gui.addMessageToList(i);
+		}
+
+		messageQueue.clear();
 
 		final Scene scene = new Scene(root);
 

@@ -11,8 +11,12 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="760" prefWidth="1280" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.adamw.calloji.client.gui.GuiController">
-   <right>
+<?import java.net.URL?>
+<BorderPane fx:id="mainBorderPane" styleClass="window" minHeight="760" minWidth="1280" prefHeight="760" prefWidth="1280" xmlns="http://javafx.com/javafx/8.0.91" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.adamw.calloji.client.gui.GuiController">
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
+    <right>
       <VBox prefHeight="1.0E8" prefWidth="400.0" style="-fx-alignment: center;" BorderPane.alignment="CENTER">
          <children>
             <ListView fx:id="chatListView" prefHeight="1000000.0" prefWidth="1000000.0">
