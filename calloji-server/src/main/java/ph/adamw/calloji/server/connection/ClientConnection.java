@@ -73,20 +73,22 @@ public class ClientConnection implements IClientConnection {
         }
     }
 
-    public void send(PacketType type, JsonElement content) {
+    public void send(PacketType type, Object content) {
         final JsonObject parent = new JsonObject();
+
         parent.addProperty("packet_id", type.getId());
-        parent.add("data", content);
+
+        if(content instanceof JsonElement) {
+            parent.add("data", (JsonElement) content);
+        } else {
+            parent.add("data", JsonUtils.getJsonElement(content));
+        }
 
         try {
             objectOutputStream.writeObject(parent.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void send(PacketType type) {
-        send(type, new JsonObject());
     }
 
     @Override
@@ -138,7 +140,7 @@ public class ClientConnection implements IClientConnection {
             e.printStackTrace();
         }
 
-        send(PacketType.CLIENT_CONNECTION_UPDATE, JsonUtils.getJsonElement(new ConnectionUpdate(false, id)));
+        send(PacketType.CLIENT_CONNECTION_UPDATE, new ConnectionUpdate(false, id));
     }
 
     @Override
@@ -148,7 +150,7 @@ public class ClientConnection implements IClientConnection {
         }
 
         for(ClientConnection c : pool.getImmutableConnections()) {
-            c.send(PacketType.CHAT, JsonUtils.getJsonElement(new ChatMessage(message, nick)));
+            c.send(PacketType.CHAT, new ChatMessage(message, nick));
         }
     }
 

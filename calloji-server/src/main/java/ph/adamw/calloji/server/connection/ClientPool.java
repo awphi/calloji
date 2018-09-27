@@ -1,8 +1,6 @@
 package ph.adamw.calloji.server.connection;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.data.ConnectionUpdate;
@@ -70,7 +68,7 @@ public class ClientPool {
 		final ClientConnection x = map.put(clientId, cc);
 		cc.onHeartbeat();
 
-		cc.send(PacketType.CLIENT_CONNECTION_UPDATE, JsonUtils.getJsonElement(new ConnectionUpdate(false, clientId)));
+		cc.send(PacketType.CLIENT_CONNECTION_UPDATE, new ConnectionUpdate(false, clientId));
 		ServerRouter.getEventBus().post(new ClientConnectedEvent(clientId, this));
 
 		return x;

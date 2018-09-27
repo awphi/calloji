@@ -113,7 +113,7 @@ public class MonoGame extends ClientPoolListener {
             log.info("Deleting player " + mp.getConnectionId() + " due to a disconnect.");
 
             for(MonoPlayer i : playerList) {
-                i.send(PacketType.CLIENT_CONNECTION_UPDATE, JsonUtils.getJsonElement(new ConnectionUpdate(true, mp.getConnectionId())));
+                i.send(PacketType.CLIENT_CONNECTION_UPDATE, new ConnectionUpdate(true, mp.getConnectionId()));
             }
         }
     }
@@ -140,8 +140,7 @@ public class MonoGame extends ClientPoolListener {
 
     void updatePlayerOnAllClients(MonoPlayer monoPlayer) {
         for(MonoPlayer i : playerList) {
-            i.send(PacketType.PLAYER_UPDATE,
-                    JsonUtils.getJsonElement(new PlayerUpdate(monoPlayer.getPlayer(), monoPlayer.getConnectionId(), monoPlayer.getConnectionNick())));
+            i.send(PacketType.PLAYER_UPDATE, new PlayerUpdate(monoPlayer.getPlayer(), monoPlayer.getConnectionId(), monoPlayer.getConnectionNick()));
         }
     }
 

@@ -12,7 +12,6 @@ import ph.adamw.calloji.data.plot.PropertyPlot;
 import ph.adamw.calloji.data.plot.StreetPlot;
 import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.server.connection.ClientConnection;
-import ph.adamw.calloji.util.JsonUtils;
 
 @Slf4j
 @AllArgsConstructor
@@ -27,7 +26,7 @@ class MonoPlayer {
     @Getter
     private final Player player;
 
-    void send(PacketType type, JsonElement content) {
+    void send(PacketType type, Object content) {
         connection.send(type, content);
     }
 
@@ -172,6 +171,6 @@ class MonoPlayer {
     }
 
     public void updateBoard() {
-        send(PacketType.BOARD_UPDATE, JsonUtils.getJsonElement(game.getMonoBoard().getBoard()));
+        send(PacketType.BOARD_UPDATE, game.getMonoBoard().getBoard());
     }
 }
