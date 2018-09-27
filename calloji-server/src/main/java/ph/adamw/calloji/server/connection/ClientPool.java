@@ -1,12 +1,16 @@
 package ph.adamw.calloji.server.connection;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import ph.adamw.calloji.packet.client.PCConnect;
+import ph.adamw.calloji.data.ConnectionUpdate;
+import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.server.ServerRouter;
 import ph.adamw.calloji.server.connection.event.ClientConnectedEvent;
 import ph.adamw.calloji.server.connection.event.ClientDisconnectedEvent;
+import ph.adamw.calloji.util.JsonUtils;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -46,7 +50,7 @@ public class ClientPool {
 		return new ImmutableSet.Builder<ClientConnection>().addAll(map.values()).build();
 	}
 
-	public ClientConnection connect(Socket conn) {
+	public ClientConnection addConn(Socket conn) {
 		final long clientId = getNextClientId();
 
 		if(clientId == -1) {
@@ -64,15 +68,16 @@ public class ClientPool {
 		}
 
 		final ClientConnection x = map.put(clientId, cc);
+		cc.onHeartbeat();
 
-		cc.send(new PCConnect());
+		cc.send(PacketType.CLIENT_CONNECTION_UPDATE, JsonUtils.getJsonElement(new ConnectionUpdate(false, clientId)));
 		ServerRouter.getEventBus().post(new ClientConnectedEvent(clientId, this));
 
 		return x;
 
 	}
 
-	public boolean disconnect(long id) {
+	public boolean removeConn(long id) {
 		ServerRouter.getEventBus().post(new ClientDisconnectedEvent(id, this));
 		return map.remove(id) != null;
 	}

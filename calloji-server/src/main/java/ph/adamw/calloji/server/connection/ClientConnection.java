@@ -1,11 +1,18 @@
 package ph.adamw.calloji.server.connection;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import ph.adamw.calloji.packet.client.PC;
+import ph.adamw.calloji.data.ChatMessage;
+import ph.adamw.calloji.data.ConnectionUpdate;
+import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.packet.server.*;
 import ph.adamw.calloji.server.ServerRouter;
-import ph.adamw.calloji.server.connection.event.ClientDisconnectedEvent;
+import ph.adamw.calloji.server.connection.event.ClientNickChangeEvent;
+import ph.adamw.calloji.util.JsonUtils;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -29,7 +36,10 @@ public class ClientConnection implements IClientConnection {
     @Getter
     private final long id;
 
+    @Getter
     private String nick = "Calloji User";
+
+    private final JsonParser parser = new JsonParser();
 
     ClientConnection(long id, ClientPool pool, Socket socket) throws IOException {
         this.socket = socket;
@@ -46,7 +56,7 @@ public class ClientConnection implements IClientConnection {
     }
 
     private void receive() {
-        while(!isDead) {
+        while(!isDead && !socket.isClosed()) {
             try {
                 final Object x = objectInputStream.readObject();
                 if (x instanceof PS) {
@@ -63,12 +73,20 @@ public class ClientConnection implements IClientConnection {
         }
     }
 
-    public void send(PC o) {
+    public void send(PacketType type, JsonElement content) {
+        final JsonObject parent = new JsonObject();
+        parent.addProperty("packet_id", type.getId());
+        parent.add("data", content);
+
         try {
-            objectOutputStream.writeObject(o);
+            objectOutputStream.writeObject(parent.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void send(PacketType type) {
+        send(type, new JsonObject());
     }
 
     @Override
@@ -82,14 +100,14 @@ public class ClientConnection implements IClientConnection {
         // We need to receive a heart beat every 5 seconds to keep the heart beating, if it's not
         killThread = new Thread(() -> {
             try {
-                Thread.sleep(5000);
+                Thread.sleep(10000);
             } catch (InterruptedException ignored) {
                 return;
             }
 
             log.info("Failed to receive a heartbeat from: " + id + ", forcefully closing their connection now!");
 
-            pool.disconnect(id);
+            pool.removeConn(id);
             isDead = true;
 
             try {
@@ -112,7 +130,7 @@ public class ClientConnection implements IClientConnection {
             killThread.interrupt();
         }
 
-        pool.disconnect(id);
+        pool.removeConn(id);
 
         try {
             socket.close();
@@ -120,7 +138,7 @@ public class ClientConnection implements IClientConnection {
             e.printStackTrace();
         }
 
-        send(new PSDisconnect.Ack());
+        send(PacketType.CLIENT_CONNECTION_UPDATE, JsonUtils.getJsonElement(new ConnectionUpdate(false, id)));
     }
 
     @Override
@@ -130,7 +148,7 @@ public class ClientConnection implements IClientConnection {
         }
 
         for(ClientConnection c : pool.getImmutableConnections()) {
-            c.send(new PSChat.Ack(nick, message));
+            c.send(PacketType.CHAT, JsonUtils.getJsonElement(new ChatMessage(message, nick)));
         }
     }
 
@@ -143,6 +161,7 @@ public class ClientConnection implements IClientConnection {
         }
 
         nick = req;
-        send(new PSNickEdit.Ack(nick));
+        send(PacketType.NICK_APPROVED, new JsonPrimitive(nick));
+        ServerRouter.getEventBus().post(new ClientNickChangeEvent(id, nick));
     }
 }

@@ -2,10 +2,12 @@ package ph.adamw.calloji.client.gui.monopoly;
 
 import com.google.common.collect.ImmutableMap;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.data.plot.Plot;
 import ph.adamw.calloji.data.plot.PlotType;
@@ -18,11 +20,15 @@ public class PlotUI extends BorderPane {
 
     private final VBox bottomBox = new VBox();
 
+    private final HBox centreBox = new HBox();
+
     public PlotUI(BoardUI board) {
         this.board = board;
 
+        centreBox.getStyleClass().add("centred");
         bottomBox.getStyleClass().add("centred");
         setBottom(bottomBox);
+        setCenter(centreBox);
     }
 
     private static final ImmutableMap<PlotType, Color> colorMap = new ImmutableMap.Builder<PlotType, Color>()
@@ -48,6 +54,8 @@ public class PlotUI extends BorderPane {
 
     public void load(Plot plot) {
         getStyleClass().addAll("border", "border-in", "plot");
+
+        bottomBox.getChildren().clear();
 
         bottomBox.getChildren().add(generatePlotText(plot.getName()));
 
@@ -81,5 +89,13 @@ public class PlotUI extends BorderPane {
                 ((HBox) getTop()).getChildren().add(pane);
             }
         }
+    }
+
+    public void addCentre(Node i) {
+        centreBox.getChildren().add(i);
+    }
+
+    public void removeCentre(Node i) {
+        centreBox.getChildren().remove(i);
     }
 }

@@ -1,69 +1,86 @@
 package ph.adamw.calloji.server.monopoly;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.data.Player;
 import ph.adamw.calloji.data.plot.Plot;
 import ph.adamw.calloji.data.plot.PlotType;
 import ph.adamw.calloji.data.plot.PropertyPlot;
 import ph.adamw.calloji.data.plot.StreetPlot;
-import ph.adamw.calloji.packet.client.PC;
-import ph.adamw.calloji.packet.client.PCBoardUpdate;
+import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.server.connection.ClientConnection;
+import ph.adamw.calloji.util.JsonUtils;
 
-import java.io.Serializable;
-
+@Slf4j
 @AllArgsConstructor
-public class MonoPlayer extends Player implements Serializable {
+class MonoPlayer {
     private final ClientConnection connection;
+
+    private final Gson gson = new Gson();
+
+    @Getter
     private final MonoGame game;
 
-    public void send(PC p) {
-        connection.send(p);
+    @Getter
+    private final Player player;
+
+    void send(PacketType type, JsonElement content) {
+        connection.send(type, content);
     }
 
-    public long getConnectionId() {
+    long getConnectionId() {
         return connection.getId();
     }
 
-    public void moveTo(int x) {
-        moveSpaces((40 % getBoardPosition()) + x);
+    String getConnectionNick() {
+        return connection.getNick();
     }
 
-    public void moveSpaces(int x) {
-        final int boardPosition = getBoardPosition();
+    private void moveTo(Integer x) {
+        if(x == null) {
+            log.debug("Plot index given was null when attempting to move - board is probably missing the given type!");
+            return;
+        }
 
-        setBoardPosition((boardPosition + x) % 40);
+        moveSpaces((40 % player.getBoardPosition()) + x);
+    }
 
-        final Plot plot = game.getBoard().plotAt(boardPosition);
+    private void moveSpaces(int x) {
+        player.boardPosition = (player.boardPosition + x) % 40;
+        final Plot plot = game.getMonoBoard().getBoard().plotAt(player.boardPosition);
+
+        game.updatePlayerOnAllClients(this);
 
         if(plot instanceof PropertyPlot) {
             final PropertyPlot p = (PropertyPlot) plot;
 
             if(p.getOwner() == null) {
                 // Offer to buy (if they have the money) or auction it
-            } else if(p.getOwner() != this && !p.isMortgaged()){
-                boolean bankrupted = false;
+            } else if(p.getOwner() != player && !p.isMortgaged()){
+                int rem = 0;
 
                 if(p instanceof StreetPlot) {
                     final StreetPlot st = (StreetPlot) p;
-                    bankrupted = tryRemoveMoney(st.getRent());
+                     rem = tryRemoveMoney(st.getRent());
                 } else {
                     if(p.getType() == PlotType.UTILITY) {
                         final int owned = p.getOwner().getOwnedType(PlotType.UTILITY);
-                        bankrupted = tryRemoveMoney(owned * 5 + (owned - 2) * x);
+                        rem = tryRemoveMoney(owned * 5 + (owned - 2) * x);
                     } else if(p.getType() == PlotType.STATION) {
                         final int owned = p.getOwner().getOwnedType(PlotType.STATION);
-                        bankrupted = tryRemoveMoney(25 * (int) Math.pow(2, owned - 1));
+                        rem = tryRemoveMoney(25 * (int) Math.pow(2, owned - 1));
                     }
                 }
 
-                if(bankrupted) {
-                    setBankrupt(true);
+                if(player.isBankrupt()) {
                     // Since we can guarantee we're on the server side we can cast over the player
-                    ((MonoPlayer) p.getOwner()).addMoney(getBalance());
-                    setBalance(0);
-                    game.updateClientUIs();
+                    game.getMonoPlayer(p.getOwner()).addMoney(rem);
                 }
+
+                game.updatePlayerOnAllClients(this);
             }
         } else {
             switch (plot.getType()) {
@@ -84,47 +101,77 @@ public class MonoPlayer extends Player implements Serializable {
                     break;
                 case GO_TO_JAIL:
                     setJailed(3);
-                    moveTo(game.getBoard().indexOfFirstPlot(PlotType.JAIL));
+                    moveTo(game.getMonoBoard().indexOfFirstPlot(PlotType.JAIL));
                     break;
             }
         }
 
-        game.updateClientBoards();
+        game.updateBoardOnAllClients();
     }
 
-    public void decrementJail() {
-        setJailed(getJailed() - 1);
-        updateClientUI();
-    }
-
-    public void addMoney(int money) {
-        setBalance(getBalance() + money);
-        updateClientUI();
-    }
-
-    // Returns true if went bankrupt
-    public boolean tryRemoveMoney(int money) {
-        if(getBalance() >= money) {
-            setBalance(getBalance() - money);
-
-            // Return - all good, paid with their cash pile
-            return false;
+    public int getAssetsSellValue() {
+        int v = 0;
+        for(Plot i : player.getOwnedPlots()) {
+            if(i instanceof PropertyPlot) {
+                final PropertyPlot p = (PropertyPlot) i;
+                v += p.getValue() / 2;
+            }
         }
 
-        if(getBalance() + getAssetsSellValue() + getBuildingsSellValue() >= money) {
+        return v;
+    }
+
+    public int getBuildingsSellValue() {
+        int v = 0;
+        for(Plot i : player.getOwnedPlots()) {
+            if(i instanceof StreetPlot) {
+                final StreetPlot y = (StreetPlot) i;
+                v += y.getHouses() * (y.getBuildCost() / 2);
+            }
+        }
+
+        return v;
+    }
+
+    private void setJailed(int y) {
+        player.jailed = y;
+        game.updatePlayerOnAllClients(this);
+    }
+
+    void addMoney(int money) {
+        player.balance += money;
+        game.updatePlayerOnAllClients(this);
+    }
+
+    void decJailed() {
+        player.jailed --;
+        game.updatePlayerOnAllClients(this);
+    }
+
+    void setBankrupt(boolean b) {
+        player.isBankrupt = b;
+        game.updatePlayerOnAllClients(this);
+    }
+
+    int tryRemoveMoney(int money) {
+        int ret = money;
+
+        if(player.balance >= money) {
+            player.balance -= money;
+        } else if(player.balance + getAssetsSellValue() + getBuildingsSellValue() >= money) {
             game.extendCurrentTurn(20);
             //TODO (ForceAssetManagement) - if they exit the menu or dont send a response in x seconds then autosell
-            return false;
+        } else {
+            ret = player.balance;
+            player.balance = 0;
+            player.isBankrupt = true;
         }
 
-        return true;
+        game.updatePlayerOnAllClients(this);
+        return ret;
     }
 
-    public void updateClientUI() {
-        //TODO
-    }
-
-    public void updateClientBoard() {
-        send(new PCBoardUpdate(game.getBoard()));
+    public void updateBoard() {
+        send(PacketType.BOARD_UPDATE, JsonUtils.getJsonElement(game.getMonoBoard().getBoard()));
     }
 }

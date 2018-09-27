@@ -14,8 +14,9 @@ import ph.adamw.calloji.util.LoggerUtils;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.PriorityQueue;
+import java.util.List;
 
 public class Client extends Application {
 	@Getter
@@ -26,7 +27,7 @@ public class Client extends Application {
 
 	private final static SimpleDateFormat dateFormat = new SimpleDateFormat("K:mm");
 
-	private final static PriorityQueue<Text> messageQueue = new PriorityQueue<>();
+	private final static List<Text> messageQueue = new ArrayList<>();
 
 	public static void main(String[] args) {
 		// Establish logger defaults then instantiate everything that uses a logger
@@ -38,7 +39,7 @@ public class Client extends Application {
 
 		//TODO remove this connecting here and use a splash screen
 		try {
-			router.connect();
+			router.connect("0.0.0.0", 8080);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

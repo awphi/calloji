@@ -44,7 +44,7 @@ public class ServerRouter {
 		while (!socket.isClosed()) {
 			try {
 				if(clientPool.getCapacity() > clientPool.getConnected()) {
-					clientPool.connect(socket.accept());
+					clientPool.addConn(socket.accept());
 				}
 			} catch (IOException e) {
 				e.printStackTrace();

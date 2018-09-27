@@ -3,16 +3,18 @@ package ph.adamw.calloji.client.gui.monopoly;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.data.Board;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 public class BoardUI extends GridPane {
     private static final int SIZE = 11;
+
+    private final List<PlotUI> renderedPlots = new ArrayList<>();
 
     public BoardUI() {
         super();
@@ -64,7 +66,11 @@ public class BoardUI extends GridPane {
         for(int i = 0; i < board.getPlots().size(); i ++) {
             final Node y = getManagedChildren().get(row * getCols() + col);
             if(y instanceof PlotUI) {
-                ((PlotUI) y).load(board.plotAt(i));
+                final PlotUI x = (PlotUI) y;
+                x.load(board.plotAt(i));
+                if(renderedPlots.size() < 40) {
+                    renderedPlots.add(x);
+                }
             }
 
             col += xDir;
@@ -85,6 +91,10 @@ public class BoardUI extends GridPane {
                 yDir = 1;
             }
         }
+    }
+
+    public PlotUI getRenderedPlot(int x) {
+        return renderedPlots.get(x);
     }
 
     public int getRows() {

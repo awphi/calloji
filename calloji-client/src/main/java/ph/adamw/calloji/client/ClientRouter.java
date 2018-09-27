@@ -1,10 +1,14 @@
 package ph.adamw.calloji.client;
 
+import com.google.gson.JsonObject;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import ph.adamw.calloji.packet.client.IClient;
-import ph.adamw.calloji.packet.client.PC;
+import ph.adamw.calloji.client.chain.*;
+import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.packet.server.PSDisconnect;
 import ph.adamw.calloji.packet.server.PS;
+import ph.adamw.calloji.util.JsonUtils;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -15,16 +19,28 @@ import java.net.Socket;
 
 @Slf4j
 public class ClientRouter {
-	private final IClient clientPacketHandler = new ClientPacketHandler(this);
+	private final PacketLink linkChain;
 
 	private final Socket socket = new Socket();
+
+	@Setter
+	@Getter
+	private long pid;
 
 	private ObjectInputStream objectInputStream;
 	private ObjectOutputStream objectOutputStream;
 
-	//TODO implement server choice w/ passwords etc.
-	public void connect() throws IOException {
-		socket.connect(new InetSocketAddress("0.0.0.0", 8080));
+	public ClientRouter() {
+		linkChain = new PacketLinkConnect();
+		linkChain.setSuccessor(new PacketLinkChat())
+				.setSuccessor(new PacketLinkNickChange())
+				.setSuccessor(new PacketLinkPlayerUpdate())
+				.setSuccessor(new PacketLinkBoardUpdate())
+				.setSuccessor(new PacketLinkTurnUpdate());
+	}
+
+	public void connect(String hostname, int port) throws IOException {
+		socket.connect(new InetSocketAddress(hostname, port));
 
 		objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
 		objectOutputStream.flush();
@@ -35,11 +51,11 @@ public class ClientRouter {
 		new Thread(this::receive).start();
 	}
 
-	public void requestDisconnect() {
+	void requestDisconnect() {
 		send(new PSDisconnect());
 	}
 
-	void forceDisconnect() {
+	public void forceDisconnect() {
 		try {
 			socket.close();
 		} catch (IOException e) {
@@ -52,8 +68,9 @@ public class ClientRouter {
 			try {
 				final Object x = objectInputStream.readObject();
 
-				if (x instanceof PC) {
-					((PC) x).handle(clientPacketHandler);
+				if (x instanceof String) {
+					final JsonObject json = JsonUtils.parseJson((String) x).getAsJsonObject();
+					linkChain.handleLink(PacketType.getPacket(json.get("packet_id").getAsInt()), json.get("data"));
 				}
 			} catch (IOException | ClassNotFoundException e) {
 				if(!(e instanceof EOFException)) {

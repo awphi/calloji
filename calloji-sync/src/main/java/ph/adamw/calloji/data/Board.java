@@ -1,17 +1,17 @@
 package ph.adamw.calloji.data;
 
-import com.google.common.collect.ImmutableList;
 import lombok.Getter;
 import ph.adamw.calloji.data.plot.PlotType;
 import ph.adamw.calloji.data.plot.*;
 
-import javax.annotation.Nullable;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Board implements Serializable {
     @Getter
-    private final ImmutableList<Plot> plots = ImmutableList.<Plot>builder().addAll(Arrays.asList(
+    private final List<Plot> plots = new ArrayList<>(Arrays.asList(
             Plot.getCommonInstance(PlotType.GO),
             new StreetPlot("Old Kent Road", PlotType.BROWN, 60, 50),
             Plot.getCommonInstance(PlotType.COMMUNITY_CHEST),
@@ -52,31 +52,9 @@ public class Board implements Serializable {
             new StreetPlot("Park Lane", PlotType.BLUE, 350, 200),
             new Plot("Super Tax", PlotType.SUPER_TAX),
             new StreetPlot("Mayfair", PlotType.BLUE, 400, 200)
-    )).build();
+    ));
 
     public Plot plotAt(int i) {
-        return plots.get(i);
-    }
-
-    @Nullable
-    public Plot getByName(String name) {
-        for(Plot i : plots) {
-            if(i.getName().equals(name)) {
-                return i;
-            }
-        }
-
-        return null;
-    }
-
-    @Nullable
-    public Integer indexOfFirstPlot(PlotType e) {
-        for(int i = 0; i < plots.size(); i ++) {
-            if(plots.get(i).getType() == e) {
-                return i;
-            }
-        }
-
-        return null;
+        return getPlots().get(i);
     }
 }

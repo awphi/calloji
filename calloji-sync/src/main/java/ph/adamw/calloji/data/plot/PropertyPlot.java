@@ -6,16 +6,14 @@ import ph.adamw.calloji.data.Player;
 
 import java.io.Serializable;
 
+@Getter
 public class PropertyPlot extends Plot implements Serializable {
-    @Getter
     @Setter
     private Player owner = null;
 
-    @Getter
     @Setter
     private boolean isMortgaged = false;
 
-    @Getter
     private final int value;
 
     public PropertyPlot(String name, PlotType type, int value) {

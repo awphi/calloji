@@ -1,25 +1,31 @@
 package ph.adamw.calloji.server.monopoly;
 
-import ph.adamw.calloji.data.plot.PlotType;
+import lombok.Getter;
 import ph.adamw.calloji.data.plot.PropertyPlot;
 
-public class MonoPropertyPlot extends PropertyPlot {
-    public MonoPropertyPlot(String name, PlotType type, int value) {
-        super(name, type, value);
+public class MonoPropertyPlot {
+    @Getter
+    private final PropertyPlot plot;
+
+    final MonoGame game;
+
+    MonoPropertyPlot(MonoGame game, PropertyPlot plot) {
+        this.plot = plot;
+        this.game = game;
     }
 
 
     public void mortgage() {
-        if(getOwner() != null) {
-            setMortgaged(true);
-            ((MonoPlayer) getOwner()).addMoney(getValue() / 2);
+        if(plot.getOwner() != null) {
+            plot.setMortgaged(true);
+            game.getMonoPlayer(plot.getOwner()).addMoney(plot.getValue() / 2);
         }
     }
 
     public void unmortgage() {
-        if(getOwner() != null) {
-            setMortgaged(false);
-            ((MonoPlayer) getOwner()).tryRemoveMoney((int) ((getValue() / 2) + (getValue() * 0.1)));
+        if(plot.getOwner() != null) {
+            plot.setMortgaged(false);
+            game.getMonoPlayer(plot.getOwner()).tryRemoveMoney((int) ((plot.getValue() / 2) + (plot.getValue() * 0.1)));
         }
     }
 }
