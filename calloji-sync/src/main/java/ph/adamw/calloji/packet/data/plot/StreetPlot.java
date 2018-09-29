@@ -1,4 +1,4 @@
-package ph.adamw.calloji.data.plot;
+package ph.adamw.calloji.packet.data.plot;
 
 import lombok.Getter;
 import lombok.Setter;

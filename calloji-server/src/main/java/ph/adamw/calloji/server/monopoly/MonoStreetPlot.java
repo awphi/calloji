@@ -1,6 +1,6 @@
 package ph.adamw.calloji.server.monopoly;
 
-import ph.adamw.calloji.data.plot.StreetPlot;
+import ph.adamw.calloji.packet.data.plot.StreetPlot;
 
 public class MonoStreetPlot extends MonoPropertyPlot {
     private StreetPlot plot;

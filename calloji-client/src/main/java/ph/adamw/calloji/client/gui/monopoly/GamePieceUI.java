@@ -1,14 +1,12 @@
 package ph.adamw.calloji.client.gui.monopoly;
 
-import javafx.event.EventHandler;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.client.Client;
 import ph.adamw.calloji.client.gui.GuiUtils;
-import ph.adamw.calloji.data.GamePiece;
+import ph.adamw.calloji.packet.data.GamePiece;
 
 @Slf4j
 public class GamePieceUI extends ImageView {

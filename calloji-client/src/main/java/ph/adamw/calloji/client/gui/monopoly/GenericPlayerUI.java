@@ -10,8 +10,8 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.client.Client;
 import ph.adamw.calloji.client.gui.GuiUtils;
-import ph.adamw.calloji.data.Player;
-import ph.adamw.calloji.data.PlayerUpdate;
+import ph.adamw.calloji.packet.data.Player;
+import ph.adamw.calloji.packet.data.PlayerUpdate;
 
 @Slf4j
 public class GenericPlayerUI extends HBox {

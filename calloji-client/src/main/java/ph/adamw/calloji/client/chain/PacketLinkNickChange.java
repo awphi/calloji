@@ -4,13 +4,12 @@ import com.google.gson.JsonElement;
 import javafx.application.Platform;
 import ph.adamw.calloji.client.Client;
 import ph.adamw.calloji.client.gui.MessageType;
+import ph.adamw.calloji.packet.PacketLinkBase;
+import ph.adamw.calloji.packet.PacketLinkType;
 import ph.adamw.calloji.packet.PacketType;
 
-public class PacketLinkNickChange extends PacketLink {
-    public PacketLinkNickChange() {
-        super(PacketType.NICK_APPROVED);
-    }
-
+@PacketLinkType(PacketType.NICK_APPROVED)
+public class PacketLinkNickChange extends PacketLinkBase {
     @Override
     public void handle(PacketType type, JsonElement content) {
         final String nick = content.getAsString();

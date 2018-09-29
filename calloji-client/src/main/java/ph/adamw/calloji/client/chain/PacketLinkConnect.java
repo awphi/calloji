@@ -1,19 +1,18 @@
 package ph.adamw.calloji.client.chain;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import javafx.application.Platform;
 import ph.adamw.calloji.client.Client;
 import ph.adamw.calloji.client.gui.MessageType;
-import ph.adamw.calloji.data.ConnectionUpdate;
+import ph.adamw.calloji.packet.PacketLinkBase;
+import ph.adamw.calloji.packet.data.ConnectionUpdate;
+import ph.adamw.calloji.packet.PacketLinkType;
 import ph.adamw.calloji.packet.PacketType;
-import ph.adamw.calloji.packet.server.PSHeartbeat;
 import ph.adamw.calloji.util.JsonUtils;
 
-public class PacketLinkConnect extends PacketLink {
-    public PacketLinkConnect() {
-        super(PacketType.CLIENT_CONNECTION_UPDATE);
-    }
-
+@PacketLinkType(PacketType.CLIENT_CONNECTION_UPDATE)
+public class PacketLinkConnect extends PacketLinkBase {
     @Override
     public void handle(PacketType type, JsonElement content) {
         final ConnectionUpdate conn = JsonUtils.getObject(content, ConnectionUpdate.class);
@@ -31,7 +30,7 @@ public class PacketLinkConnect extends PacketLink {
 
             new Thread(() -> {
                 while(Client.getRouter().isConnected()) {
-                    Client.getRouter().send(new PSHeartbeat());
+                    Client.getRouter().send(PacketType.HEARTBEAT, new JsonObject());
 
                     try {
                         Thread.sleep(5000);

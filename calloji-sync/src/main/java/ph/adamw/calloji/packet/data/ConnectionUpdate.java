@@ -1,4 +1,4 @@
-package ph.adamw.calloji.data;
+package ph.adamw.calloji.packet.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

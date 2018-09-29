@@ -6,7 +6,9 @@ public enum PacketType {
     CLIENT_CONNECTION_UPDATE,
     TURN_UPDATE,
     CHAT,
-    NICK_APPROVED;
+    NICK_APPROVED,
+    NICK_EDIT,
+    HEARTBEAT;
 
     private static PacketType[] VALUES = values();
 

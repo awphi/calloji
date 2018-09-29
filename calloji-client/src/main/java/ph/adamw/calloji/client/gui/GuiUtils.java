@@ -1,7 +1,7 @@
 package ph.adamw.calloji.client.gui;
 
 import javafx.scene.image.Image;
-import ph.adamw.calloji.data.GamePiece;
+import ph.adamw.calloji.packet.data.GamePiece;
 
 import java.io.InputStream;
 

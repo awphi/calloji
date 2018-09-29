@@ -5,7 +5,7 @@ import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.layout.*;
 import lombok.extern.slf4j.Slf4j;
-import ph.adamw.calloji.data.Board;
+import ph.adamw.calloji.packet.data.Board;
 
 import java.util.ArrayList;
 import java.util.List;

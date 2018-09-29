@@ -1,8 +1,8 @@
-package ph.adamw.calloji.data.plot;
+package ph.adamw.calloji.packet.data.plot;
 
 import lombok.Getter;
 import lombok.Setter;
-import ph.adamw.calloji.data.Player;
+import ph.adamw.calloji.packet.data.Player;
 
 import java.io.Serializable;
 

@@ -1,7 +1,7 @@
-package ph.adamw.calloji.data;
+package ph.adamw.calloji.packet.data;
 
 import lombok.Getter;
-import ph.adamw.calloji.data.plot.*;
+import ph.adamw.calloji.packet.data.plot.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;

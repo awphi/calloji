@@ -1,5 +1,6 @@
 package ph.adamw.calloji.client.gui;
 
+import com.google.gson.JsonPrimitive;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,10 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.client.Client;
 import ph.adamw.calloji.client.gui.monopoly.BoardUI;
 import ph.adamw.calloji.client.gui.monopoly.GenericPlayerUI;
-import ph.adamw.calloji.data.Board;
-import ph.adamw.calloji.data.PlayerUpdate;
-import ph.adamw.calloji.packet.server.PSChat;
-import ph.adamw.calloji.packet.server.PSNickEdit;
+import ph.adamw.calloji.packet.PacketType;
+import ph.adamw.calloji.packet.data.Board;
+import ph.adamw.calloji.packet.data.ChatMessage;
+import ph.adamw.calloji.packet.data.PlayerUpdate;
 
 import java.util.Optional;
 
@@ -77,7 +78,7 @@ public class GuiController {
 			return;
 		}
 
-		Client.getRouter().send(new PSChat(chatTextField.getText()));
+		Client.getRouter().send(PacketType.CHAT, new ChatMessage(chatTextField.getText(), ""));
 		chatTextField.clear();
 	}
 
@@ -100,7 +101,7 @@ public class GuiController {
 
 		result.ifPresent(name -> {
 			if(!name.isEmpty()) {
-				Client.getRouter().send(new PSNickEdit(name));
+				Client.getRouter().send(PacketType.NICK_EDIT, new JsonPrimitive(name));
 			}
 		});
 	}

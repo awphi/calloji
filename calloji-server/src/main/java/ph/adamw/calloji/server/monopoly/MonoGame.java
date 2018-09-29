@@ -3,13 +3,12 @@ package ph.adamw.calloji.server.monopoly;
 import com.google.gson.JsonPrimitive;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import ph.adamw.calloji.data.*;
+import ph.adamw.calloji.packet.data.*;
 import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.server.connection.event.ClientConnectedEvent;
 import ph.adamw.calloji.server.connection.event.ClientDisconnectedEvent;
 import ph.adamw.calloji.server.connection.event.ClientNickChangeEvent;
 import ph.adamw.calloji.server.connection.event.ClientPoolListener;
-import ph.adamw.calloji.util.JsonUtils;
 
 import javax.annotation.Nullable;
 import java.util.*;

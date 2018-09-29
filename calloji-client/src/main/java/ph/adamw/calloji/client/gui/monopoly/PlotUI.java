@@ -7,12 +7,11 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import ph.adamw.calloji.data.plot.Plot;
-import ph.adamw.calloji.data.plot.PlotType;
-import ph.adamw.calloji.data.plot.PropertyPlot;
-import ph.adamw.calloji.data.plot.StreetPlot;
+import ph.adamw.calloji.packet.data.plot.Plot;
+import ph.adamw.calloji.packet.data.plot.PlotType;
+import ph.adamw.calloji.packet.data.plot.PropertyPlot;
+import ph.adamw.calloji.packet.data.plot.StreetPlot;
 
 @Slf4j
 public class PlotUI extends BorderPane {

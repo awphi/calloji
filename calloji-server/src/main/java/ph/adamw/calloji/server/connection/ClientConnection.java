@@ -2,16 +2,13 @@ package ph.adamw.calloji.server.connection;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import ph.adamw.calloji.data.ChatMessage;
-import ph.adamw.calloji.data.ConnectionUpdate;
+import ph.adamw.calloji.packet.PacketDispatcher;
 import ph.adamw.calloji.packet.PacketType;
-import ph.adamw.calloji.packet.server.*;
-import ph.adamw.calloji.server.ServerRouter;
-import ph.adamw.calloji.server.connection.event.ClientNickChangeEvent;
+import ph.adamw.calloji.server.connection.chain.*;
 import ph.adamw.calloji.util.JsonUtils;
 
 import java.io.EOFException;
@@ -22,79 +19,50 @@ import java.net.Socket;
 import java.net.SocketException;
 
 @Slf4j
-public class ClientConnection implements IClientConnection {
+public class ClientConnection extends PacketDispatcher {
     @Getter
     private final Socket socket;
+
+    @Getter(AccessLevel.PROTECTED)
     private final ObjectOutputStream objectOutputStream;
+
+    @Getter(AccessLevel.PROTECTED)
     private final ObjectInputStream objectInputStream;
 
+    @Getter
     private Thread killThread;
     private boolean isDead = false;
 
+    @Getter
     private final ClientPool pool;
 
     @Getter
     private final long id;
 
+    @Setter
     @Getter
     private String nick = "Calloji User";
 
-    private final JsonParser parser = new JsonParser();
+    private final PacketLinkMono linkChain = new PacketLinkMonoConnect(this);
 
     ClientConnection(long id, ClientPool pool, Socket socket) throws IOException {
         this.socket = socket;
         this.pool = pool;
         this.id = id;
 
+        linkChain.setSuccessor(new PacketLinkMonoChat(this))
+                .setSuccessor(new PacketLinkMonoHeartbeat(this))
+                .setSuccessor(new PacketLinkMonoNickEdit(this));
+
         objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         objectOutputStream.flush();
 
         objectInputStream = new ObjectInputStream(socket.getInputStream());
 
-        // Data receiving thread
-        new Thread(this::receive).start();
+        startReceiving();
     }
 
-    private void receive() {
-        while(!isDead && !socket.isClosed()) {
-            try {
-                final Object x = objectInputStream.readObject();
-                if (x instanceof PS) {
-                    final PS inc = (PS) x;
-                    inc.handle(this);
-                }
-
-            } catch (IOException | ClassNotFoundException e) {
-                if(!(e instanceof EOFException || e instanceof SocketException)) {
-                    e.printStackTrace();
-                }
-            }
-
-        }
-    }
-
-    public void send(PacketType type, Object content) {
-        final JsonObject parent = new JsonObject();
-
-        parent.addProperty("packet_id", type.getId());
-
-        if(content instanceof JsonElement) {
-            parent.add("data", (JsonElement) content);
-        } else {
-            parent.add("data", JsonUtils.getJsonElement(content));
-        }
-
-        try {
-            objectOutputStream.writeObject(parent.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onHeartbeat() {
-        log.debug("Received heartbeat from client: " + id);
-
+    public void restartKillThread() {
         if(killThread != null) {
             killThread.interrupt();
         }
@@ -107,16 +75,8 @@ public class ClientConnection implements IClientConnection {
                 return;
             }
 
+            disconnect();
             log.info("Failed to receive a heartbeat from: " + id + ", forcefully closing their connection now!");
-
-            pool.removeConn(id);
-            isDead = true;
-
-            try {
-                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         });
 
         if(!isDead) {
@@ -124,46 +84,24 @@ public class ClientConnection implements IClientConnection {
         }
     }
 
-    @Override
-    public void onDisconnect() {
-        log.debug("Disconnecting client peacefully: " + id);
-
-        if(killThread != null) {
-            killThread.interrupt();
-        }
-
+    public void disconnect() {
         pool.removeConn(id);
+        isDead = true;
 
         try {
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        send(PacketType.CLIENT_CONNECTION_UPDATE, new ConnectionUpdate(false, id));
     }
 
     @Override
-    public void onChatReceived(String message) {
-        if(message.equals("::bank")) {
-            message = "Hey, everyone, I just tried to do something very silly!";
-        }
-
-        for(ClientConnection c : pool.getImmutableConnections()) {
-            c.send(PacketType.CHAT, new ChatMessage(message, nick));
-        }
+    protected void handleLink(PacketType packetType, JsonElement content) {
+        linkChain.handleLink(packetType, content);
     }
 
     @Override
-    public void onNickEditRequest(String req) {
-        for(ClientConnection i : pool.getImmutableConnections()) {
-            if(i.nick.equals(req)) {
-                return;
-            }
-        }
-
-        nick = req;
-        send(PacketType.NICK_APPROVED, new JsonPrimitive(nick));
-        ServerRouter.getEventBus().post(new ClientNickChangeEvent(id, nick));
+    protected boolean isConnected() {
+        return !isDead && !socket.isClosed() && objectOutputStream != null;
     }
 }

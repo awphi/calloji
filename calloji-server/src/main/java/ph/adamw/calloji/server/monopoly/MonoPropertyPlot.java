@@ -1,7 +1,7 @@
 package ph.adamw.calloji.server.monopoly;
 
 import lombok.Getter;
-import ph.adamw.calloji.data.plot.PropertyPlot;
+import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 
 public class MonoPropertyPlot {
     @Getter

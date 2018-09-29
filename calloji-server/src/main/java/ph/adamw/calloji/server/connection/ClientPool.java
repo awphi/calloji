@@ -3,12 +3,11 @@ package ph.adamw.calloji.server.connection;
 import com.google.common.collect.ImmutableSet;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import ph.adamw.calloji.data.ConnectionUpdate;
+import ph.adamw.calloji.packet.data.ConnectionUpdate;
 import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.server.ServerRouter;
 import ph.adamw.calloji.server.connection.event.ClientConnectedEvent;
 import ph.adamw.calloji.server.connection.event.ClientDisconnectedEvent;
-import ph.adamw.calloji.util.JsonUtils;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -66,7 +65,7 @@ public class ClientPool {
 		}
 
 		final ClientConnection x = map.put(clientId, cc);
-		cc.onHeartbeat();
+		cc.restartKillThread();
 
 		cc.send(PacketType.CLIENT_CONNECTION_UPDATE, new ConnectionUpdate(false, clientId));
 		ServerRouter.getEventBus().post(new ClientConnectedEvent(clientId, this));
