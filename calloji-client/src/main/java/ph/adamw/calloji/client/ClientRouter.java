@@ -11,9 +11,7 @@ import ph.adamw.calloji.packet.PacketLinkBase;
 import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.packet.data.ConnectionUpdate;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
@@ -28,10 +26,10 @@ public class ClientRouter extends PacketDispatcher {
 	private long pid;
 
 	@Getter(AccessLevel.PROTECTED)
-	private ObjectInputStream objectInputStream;
+	private InputStream inputStream;
 
 	@Getter(AccessLevel.PROTECTED)
-	private ObjectOutputStream objectOutputStream;
+	private OutputStream outputStream;
 
 	public ClientRouter() {
 		linkChain.setSuccessor(new PacketLinkChat())
@@ -44,10 +42,10 @@ public class ClientRouter extends PacketDispatcher {
 	public void connect(String hostname, int port) throws IOException {
 		socket.connect(new InetSocketAddress(hostname, port));
 
-		objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-		objectOutputStream.flush();
+		outputStream = socket.getOutputStream();
+		outputStream.flush();
 
-		objectInputStream = new ObjectInputStream(socket.getInputStream());
+		inputStream = socket.getInputStream();
 
 		startReceiving();
 	}
@@ -71,6 +69,6 @@ public class ClientRouter extends PacketDispatcher {
 
 	@Override
 	public boolean isConnected() {
-		return !socket.isClosed() && objectOutputStream != null;
+		return !socket.isClosed() && outputStream != null;
 	}
 }

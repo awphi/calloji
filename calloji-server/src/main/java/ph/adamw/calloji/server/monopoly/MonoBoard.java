@@ -69,7 +69,7 @@ public class MonoBoard {
         }
     }
 
-    Integer indexOfFirstPlot(PlotType e) {
+    public Integer indexOfFirstPlot(PlotType e) {
         for(int i = 0; i < board.getPlots().size(); i ++) {
             if(board.getPlots().get(i).getType() == e) {
                 return i;

@@ -20,7 +20,6 @@ public class Player implements Serializable {
 
     protected final List<Plot> ownedPlots = new ArrayList<>();
 
-    // TODO - add some way of allowing users to pick character or vary them - maybe pick a random, unused one on connect
     private final GamePiece gamePiece;
 
     public Player(GamePiece piece) {

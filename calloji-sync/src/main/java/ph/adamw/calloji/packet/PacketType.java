@@ -17,6 +17,10 @@ public enum PacketType {
     }
 
     public static PacketType getPacket(int id) {
+        if(id < 0 || id >= VALUES.length) {
+            return null;
+        }
+
         return VALUES[id];
     }
 }

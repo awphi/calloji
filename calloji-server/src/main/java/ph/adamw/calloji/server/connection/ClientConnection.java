@@ -1,7 +1,6 @@
 package ph.adamw.calloji.server.connection;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,14 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.PacketDispatcher;
 import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.server.connection.chain.*;
-import ph.adamw.calloji.util.JsonUtils;
 
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
-import java.net.SocketException;
 
 @Slf4j
 public class ClientConnection extends PacketDispatcher {
@@ -24,10 +18,10 @@ public class ClientConnection extends PacketDispatcher {
     private final Socket socket;
 
     @Getter(AccessLevel.PROTECTED)
-    private final ObjectOutputStream objectOutputStream;
+    private final OutputStream outputStream;
 
     @Getter(AccessLevel.PROTECTED)
-    private final ObjectInputStream objectInputStream;
+    private final InputStream inputStream;
 
     @Getter
     private Thread killThread;
@@ -54,10 +48,10 @@ public class ClientConnection extends PacketDispatcher {
                 .setSuccessor(new PacketLinkMonoHeartbeat(this))
                 .setSuccessor(new PacketLinkMonoNickEdit(this));
 
-        objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-        objectOutputStream.flush();
+        outputStream = socket.getOutputStream();
+        outputStream.flush();
 
-        objectInputStream = new ObjectInputStream(socket.getInputStream());
+        inputStream = socket.getInputStream();
 
         startReceiving();
     }
@@ -67,7 +61,7 @@ public class ClientConnection extends PacketDispatcher {
             killThread.interrupt();
         }
 
-        // We need to receive a heart beat every 5 seconds to keep the heart beating, if it's not
+        // We need to receive a heart beat every x milliseconds to keep the heart beating, if it's not
         killThread = new Thread(() -> {
             try {
                 Thread.sleep(10000);
@@ -75,8 +69,8 @@ public class ClientConnection extends PacketDispatcher {
                 return;
             }
 
-            disconnect();
             log.info("Failed to receive a heartbeat from: " + id + ", forcefully closing their connection now!");
+            disconnect();
         });
 
         if(!isDead) {
@@ -102,6 +96,6 @@ public class ClientConnection extends PacketDispatcher {
 
     @Override
     protected boolean isConnected() {
-        return !isDead && !socket.isClosed() && objectOutputStream != null;
+        return !isDead && !socket.isClosed() && outputStream != null && socket.isConnected();
     }
 }

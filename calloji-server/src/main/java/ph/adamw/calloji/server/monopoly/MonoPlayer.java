@@ -14,7 +14,7 @@ import ph.adamw.calloji.server.connection.ClientConnection;
 
 @Slf4j
 @AllArgsConstructor
-class MonoPlayer {
+public class MonoPlayer {
     private final ClientConnection connection;
 
     private final Gson gson = new Gson();
@@ -37,7 +37,7 @@ class MonoPlayer {
         return connection.getNick();
     }
 
-    private void moveTo(Integer x) {
+    public void moveTo(Integer x) {
         if(x == null) {
             log.debug("Plot index given was null when attempting to move - board is probably missing the given type!");
             return;
@@ -136,7 +136,7 @@ class MonoPlayer {
         game.updatePlayerOnAllClients(this);
     }
 
-    void addMoney(int money) {
+    public void addMoney(int money) {
         player.balance += money;
         game.updatePlayerOnAllClients(this);
     }
@@ -151,7 +151,7 @@ class MonoPlayer {
         game.updatePlayerOnAllClients(this);
     }
 
-    int tryRemoveMoney(int money) {
+    public int tryRemoveMoney(int money) {
         int ret = money;
 
         if(player.balance >= money) {
