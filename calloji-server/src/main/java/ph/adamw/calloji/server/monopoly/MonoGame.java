@@ -9,12 +9,20 @@ import ph.adamw.calloji.server.connection.event.ClientConnectedEvent;
 import ph.adamw.calloji.server.connection.event.ClientDisconnectedEvent;
 import ph.adamw.calloji.server.connection.event.ClientNickChangeEvent;
 import ph.adamw.calloji.server.connection.event.ClientPoolListener;
+import ph.adamw.calloji.server.monopoly.card.MonoCard;
+import ph.adamw.calloji.server.monopoly.card.MonoCardPile;
 
 import javax.annotation.Nullable;
 import java.util.*;
 
 @Slf4j
 public class MonoGame extends ClientPoolListener {
+    @Getter
+    private final MonoCardPile communityChestPile = new MonoCardPile(MonoCardPile.COMM_CHEST);
+
+    @Getter
+    private final MonoCardPile chancePile = new MonoCardPile(MonoCardPile.CHANCE);
+
     private final List<MonoPlayer> playerList = new ArrayList<>();
 
     private int currentTurnTime = 30;
@@ -27,7 +35,7 @@ public class MonoGame extends ClientPoolListener {
     @Getter
     private boolean inProgress = false;
 
-    private void start() {
+    public void start() {
         if(inProgress) return;
         inProgress = true;
 

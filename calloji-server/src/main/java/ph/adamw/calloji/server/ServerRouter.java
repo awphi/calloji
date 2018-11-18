@@ -38,6 +38,8 @@ public class ServerRouter {
 		game = new MonoGame();
 
 		new Thread(ServerRouter::waitForNextConnection).start();
+
+		game.start();
 	}
 
 	private static void waitForNextConnection() {
