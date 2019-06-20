@@ -8,11 +8,9 @@ import java.util.Arrays;
 public class MonoCardPile extends ArrayList<MonoCard> {
     public static final MonoCard[] CHANCE = {
             new MonoCard.DynamicMove("Advance to go. Collect 200.", PlotType.GO),
+            new MonoCard.DynamicMove("Go to jail. Move directly to jail. Do not pass 'Go'. Do not collect 200.", PlotType.JAIL),
             new MonoCard.MoveMoney("Advance to Pall Mall. If you pass go, collect 200.", 0, 11),
-            new MonoCard.MoveMoney("Advance to The Anglel, Islington. If you pass go, collect 200.", 0, 6),
-            new MonoCard.DynamicMove("Advance token to nearest Utility. If unowned, you may buy it from the Bank.", PlotType.UTILITY),
-            new MonoCard.DynamicMove("Advance token to the nearest Railroad and pay owner the rental to which he is otherwise entitled. If Railroad is unowned, you may buy it from the Bank.", PlotType.STATION),
-            new MonoCard.MoveMoney("Bank pays you dividend of $50.", 50, -1),
+            new MonoCard.MoveMoney("Bank pays you dividend of 50.", 50, -1),
             new MonoCard.GetOutOfJailFree()
 
     };

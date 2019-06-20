@@ -9,7 +9,6 @@ import ph.adamw.calloji.server.connection.event.ClientConnectedEvent;
 import ph.adamw.calloji.server.connection.event.ClientDisconnectedEvent;
 import ph.adamw.calloji.server.connection.event.ClientNickChangeEvent;
 import ph.adamw.calloji.server.connection.event.ClientPoolListener;
-import ph.adamw.calloji.server.monopoly.card.MonoCard;
 import ph.adamw.calloji.server.monopoly.card.MonoCardPile;
 
 import javax.annotation.Nullable;
@@ -28,9 +27,12 @@ public class MonoGame extends ClientPoolListener {
     private int currentTurnTime = 30;
 
     @Getter
+    private MonoPlayer currentTurnPlayer = null;
+
+    @Getter
     private MonoBoard monoBoard = new MonoBoard(this);
 
-    private int nextPlayer = 0;
+    private int nextTurnPlayerIndex = 0;
 
     @Getter
     private boolean inProgress = false;
@@ -52,19 +54,17 @@ public class MonoGame extends ClientPoolListener {
     }
 
     private void playTurn() {
-        MonoPlayer monoPlayer = null;
-
-        while(monoPlayer == null || !monoPlayer.getPlayer().isBankrupt()) {
-            monoPlayer = playerList.get(nextPlayer);
-            nextPlayer = (nextPlayer + 1) % playerList.size();
+        while(currentTurnPlayer == null || !currentTurnPlayer.getPlayer().isBankrupt()) {
+            currentTurnPlayer = playerList.get(nextTurnPlayerIndex);
+            nextTurnPlayerIndex = (nextTurnPlayerIndex + 1) % playerList.size();
         }
 
-        monoPlayer.send(PacketType.TURN_UPDATE, new JsonPrimitive(true));
+        currentTurnPlayer.send(PacketType.TURN_UPDATE, new JsonPrimitive(true));
         currentTurnTime = 30;
 
-        if(monoPlayer.getPlayer().getJailed() > 0) {
+        if(currentTurnPlayer.getPlayer().getJailed() > 0) {
             currentTurnTime = 0;
-            monoPlayer.decJailed();
+            currentTurnPlayer.decJailed();
         }
 
         // Allows turns to be extended from a separate thread
@@ -79,7 +79,7 @@ public class MonoGame extends ClientPoolListener {
             }
         }
 
-        monoPlayer.send(PacketType.TURN_UPDATE, new JsonPrimitive(false));
+        currentTurnPlayer.send(PacketType.TURN_UPDATE, new JsonPrimitive(false));
     }
 
     private MonoPlayer getWinner() {
