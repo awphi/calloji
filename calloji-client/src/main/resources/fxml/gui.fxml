@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="mainBorderPane" minHeight="760" minWidth="1280" prefHeight="760" prefWidth="1280" styleClass="window" xmlns="http://javafx.com/javafx/8.0.91" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.adamw.calloji.client.gui.GuiController">
+<BorderPane fx:id="mainBorderPane" minHeight="760" minWidth="1280" prefHeight="760" prefWidth="1280" styleClass="window" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.adamw.calloji.client.gui.GuiController">
     <stylesheets>
         <URL value="@style.css" />
     </stylesheets>

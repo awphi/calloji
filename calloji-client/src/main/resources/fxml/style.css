@@ -17,10 +17,6 @@
     -fx-border-insets: -1px;
 }
 
-.window {
-    -fx-font-family: roboto;
-}
-
 .bold {
     -fx-font-weight: bolder;
 }
