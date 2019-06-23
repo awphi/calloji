@@ -16,6 +16,8 @@ public class Player implements Serializable {
 
     public int jailed = 0;
 
+    public int getOutOfJails = 0;
+
     public boolean isBankrupt = false;
 
     protected final List<Plot> ownedPlots = new ArrayList<>();

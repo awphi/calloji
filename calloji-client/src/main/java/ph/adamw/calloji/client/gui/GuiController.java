@@ -5,11 +5,15 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.client.Client;
@@ -22,6 +26,7 @@ import ph.adamw.calloji.packet.data.ChatMessage;
 import ph.adamw.calloji.packet.data.PlayerUpdate;
 import ph.adamw.calloji.packet.data.TurnUpdate;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Slf4j
@@ -159,8 +164,12 @@ public class GuiController {
 	public void loadThisPlayer(PlayerUpdate player) {
 		// Add us to the player list and sets up our board piece
 		loadGenericPlayer(player);
-		// TODO - load our info and properties into gui in some way
+		// TODO - load our own info and properties into gui in some way
 	}
+
+    public void setOurTurn(boolean isInputAllowed) {
+		// TODO set our turn
+    }
 
 	public void focusGenericPlayer(GenericPlayerUI owner) {
 		rightTabPane.getSelectionModel().select(playersTab);

@@ -53,7 +53,7 @@ public class MonoPlayer {
             final PropertyPlot p = (PropertyPlot) plot;
 
             if(p.getOwner() == null) {
-                // Offer to buy (if they have the money) or auction it
+                //TODO Offer to buy (if they have the money) or auction it
             } else if(p.getOwner() != player && !p.isMortgaged()){
                 int rem = 0;
 
@@ -74,8 +74,6 @@ public class MonoPlayer {
                     // Since we can guarantee we're on the server side we can cast over the player
                     game.getMonoPlayer(p.getOwner()).addMoney(rem);
                 }
-
-                game.updatePlayerOnAllClients(this);
             }
         } else {
             switch (plot.getType()) {
@@ -89,19 +87,19 @@ public class MonoPlayer {
                     tryRemoveMoney(200);
                     break;
                 case CHANCE:
-                    //TODO
+                    game.getChancePile().draw().handle(this);
                     break;
                 case COMMUNITY_CHEST:
-                    //TODO
+                    game.getCommunityChestPile().draw().handle(this);
                     break;
                 case GO_TO_JAIL:
                     setJailed(3);
-                    moveTo(game.getMonoBoard().indexOfFirstPlot(PlotType.JAIL));
                     break;
             }
         }
 
         game.updateBoardOnAllClients();
+        game.updatePlayerOnAllClients(this);
     }
 
     public int getAssetsSellValue() {
@@ -130,6 +128,7 @@ public class MonoPlayer {
 
     private void setJailed(int y) {
         player.jailed = y;
+        moveTo(game.getMonoBoard().indexOfFirstPlot(PlotType.JAIL));
         game.updatePlayerOnAllClients(this);
     }
 
@@ -159,7 +158,7 @@ public class MonoPlayer {
         } else {
             ret = player.balance;
             player.balance = 0;
-            player.isBankrupt = true;
+            setBankrupt(true);
         }
 
         game.updatePlayerOnAllClients(this);

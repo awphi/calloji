@@ -40,7 +40,7 @@ public class ClientRouter extends PacketDispatcher {
 	}
 
 	public void connect(String hostname, int port) throws IOException {
-		socket.connect(new InetSocketAddress(hostname, port));
+		socket.connect(new InetSocketAddress(hostname, port), 5000);
 
 		outputStream = socket.getOutputStream();
 		outputStream.flush();

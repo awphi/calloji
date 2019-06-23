@@ -1,6 +1,7 @@
 package ph.adamw.calloji.server.monopoly.card;
 
 import lombok.Getter;
+import ph.adamw.calloji.packet.data.plot.PlotType;
 import ph.adamw.calloji.server.monopoly.MonoPlayer;
 
 public abstract class MonoCard {
@@ -18,10 +19,10 @@ public abstract class MonoCard {
     public abstract void handle(MonoPlayer player);
 
     public static class MoveMoney extends MonoCard {
-        private final int boardSpot;
+        private Integer boardSpot;
         private final int money;
 
-        public MoveMoney(String text, int money, int boardSpot) {
+        public MoveMoney(String text, Integer money, int boardSpot) {
             super(text, false);
             this.money = money;
             this.boardSpot = boardSpot;
@@ -29,7 +30,7 @@ public abstract class MonoCard {
 
         @Override
         public void handle(MonoPlayer player) {
-            if(boardSpot != player.getPlayer().getBoardPosition()) {
+            if(boardSpot != null && boardSpot != player.getPlayer().getBoardPosition()) {
                 player.moveTo(boardSpot);
             }
 
@@ -38,6 +39,31 @@ public abstract class MonoCard {
             } else if(money < 0) {
                 player.tryRemoveMoney(money);
             }
+        }
+    }
+
+    public static class DynamicMove extends MonoCard {
+        private final PlotType type;
+
+        public DynamicMove(String text, PlotType type) {
+            super(text, false);
+            this.type = type;
+        }
+
+        @Override
+        public void handle(MonoPlayer player) {
+            player.moveTo(player.getGame().getMonoBoard().indexOfFirstPlot(type));
+        }
+    }
+
+    public static class GetOutOfJailFree extends MonoCard {
+        public GetOutOfJailFree() {
+            super("Get out of jail free.", true);
+        }
+
+        @Override
+        public void handle(MonoPlayer player) {
+            player.getPlayer().getOutOfJails ++;
         }
     }
 }

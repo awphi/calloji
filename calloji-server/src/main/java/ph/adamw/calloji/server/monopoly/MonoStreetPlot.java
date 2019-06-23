@@ -12,8 +12,8 @@ public class MonoStreetPlot extends MonoPropertyPlot {
     }
 
 
-    public void buildHouse() {
-        plot.setHouses(plot.getHouses() + 1);
+    public void buildHouses(int i) {
+        plot.setHouses(plot.getHouses() + i);
     }
 
     public void sellHouses(int amount) {
