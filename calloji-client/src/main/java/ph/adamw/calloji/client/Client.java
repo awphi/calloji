@@ -94,9 +94,6 @@ public class Client extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		// Register fonts
-		Font.loadFont(getClass().getResource("/fxml/roboto.ttf").toExternalForm(), 16);
-
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/gui.fxml"));
 		Parent root = fxmlLoader.load();
 

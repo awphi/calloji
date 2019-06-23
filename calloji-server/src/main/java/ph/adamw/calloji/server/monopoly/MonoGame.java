@@ -59,7 +59,7 @@ public class MonoGame extends ClientPoolListener {
             nextTurnPlayerIndex = (nextTurnPlayerIndex + 1) % playerList.size();
         }
 
-        sendToAll(PacketType.TURN_UPDATE, new TurnUpdate(monoPlayer.getConnectionId(), currentTurnTime));
+        sendToAll(PacketType.TURN_UPDATE, new TurnUpdate(currentTurnPlayer.getConnectionId(), currentTurnTime));
         currentTurnTime = 30;
 
         if(currentTurnPlayer.getPlayer().getJailed() > 0) {

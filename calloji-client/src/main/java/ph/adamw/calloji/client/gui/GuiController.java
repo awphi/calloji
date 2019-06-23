@@ -144,7 +144,7 @@ public class GuiController {
 		boardUI.loadBoard(board);
 	}
 
-    public void loadGenericPlayer(PlayerUpdate update) {
+    public void loadPlayer(PlayerUpdate update) {
 		for(GenericPlayerUI i : playerListView.getItems()) {
 			if(i.getPid() == update.getId()) {
 				i.reload(update);
@@ -159,16 +159,10 @@ public class GuiController {
 		} else {
 			playerListView.getItems().add(gen);
 		}
-    }
 
-	public void loadThisPlayer(PlayerUpdate player) {
-		// Add us to the player list and sets up our board piece
-		loadGenericPlayer(player);
-		// TODO - load our own info and properties into gui in some way
-	}
-
-    public void setOurTurn(boolean isInputAllowed) {
-		// TODO set our turn
+		if(update.getId() == Client.getRouter().getPid()) {
+			//TODO load info of us to OUR gui (assets, cash, jail)
+		}
     }
 
 	public void focusGenericPlayer(GenericPlayerUI owner) {
@@ -189,6 +183,6 @@ public class GuiController {
 
     public void setTurn(TurnUpdate update) {
 		turnTime = update.getTurnTime();
-		//TODO enable/disable roll dice buttons, property mortgage etc.
+		//TODO enable/disable roll dice buttons, property mortgage etc. based on update pid (is it ours or not?)
     }
 }

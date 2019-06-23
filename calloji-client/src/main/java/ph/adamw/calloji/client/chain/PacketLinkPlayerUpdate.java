@@ -17,10 +17,6 @@ public class PacketLinkPlayerUpdate extends PacketLinkBase {
     public void handle(PacketType type, JsonElement content) {
         final PlayerUpdate update = JsonUtils.getObject(content, PlayerUpdate.class);
 
-        if(update.getId() == Client.getRouter().getPid()) {
-            Platform.runLater(() ->  Client.getGui().loadThisPlayer(update));
-        } else {
-            Platform.runLater(() -> Client.getGui().loadGenericPlayer(update));
-        }
+        Platform.runLater(() ->  Client.getGui().loadPlayer(update));
     }
 }
