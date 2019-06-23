@@ -51,7 +51,7 @@ public class MonoGame extends ClientPoolListener {
             nextPlayer = (nextPlayer + 1) % playerList.size();
         }
 
-        monoPlayer.send(PacketType.TURN_UPDATE, new JsonPrimitive(true));
+        sendToAll(PacketType.TURN_UPDATE, new TurnUpdate(monoPlayer.getConnectionId(), currentTurnTime));
         currentTurnTime = 30;
 
         if(monoPlayer.getPlayer().getJailed() > 0) {
@@ -140,6 +140,12 @@ public class MonoGame extends ClientPoolListener {
     void updatePlayerOnAllClients(MonoPlayer monoPlayer) {
         for(MonoPlayer i : playerList) {
             i.send(PacketType.PLAYER_UPDATE, new PlayerUpdate(monoPlayer.getPlayer(), monoPlayer.getConnectionId(), monoPlayer.getConnectionNick()));
+        }
+    }
+
+    void sendToAll(PacketType type, Object element) {
+        for(MonoPlayer player : playerList) {
+            player.send(type, element);
         }
     }
 

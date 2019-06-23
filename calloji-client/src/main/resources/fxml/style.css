@@ -21,6 +21,12 @@
     -fx-font-family: roboto;
 }
 
+.button-look {
+    -fx-border-color: #ACACAC;
+    -fx-border-radius: 4px;
+    -fx-background-color: linear-gradient(to bottom, rgb(238, 238, 238), rgb(217, 217, 217))
+}
+
 .bold {
     -fx-font-weight: bolder;
 }

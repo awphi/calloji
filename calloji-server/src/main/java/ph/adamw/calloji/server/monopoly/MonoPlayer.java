@@ -1,6 +1,5 @@
 package ph.adamw.calloji.server.monopoly;
 
-import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +15,6 @@ import ph.adamw.calloji.server.connection.ClientConnection;
 @AllArgsConstructor
 public class MonoPlayer {
     private final ClientConnection connection;
-
-    private final Gson gson = new Gson();
 
     @Getter
     private final MonoGame game;

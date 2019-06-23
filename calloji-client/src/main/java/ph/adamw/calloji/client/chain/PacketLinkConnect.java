@@ -18,12 +18,7 @@ public class PacketLinkConnect extends PacketLinkBase {
         final ConnectionUpdate conn = JsonUtils.getObject(content, ConnectionUpdate.class);
 
         if(conn.isDisconnect()) {
-            if (conn.getId() == Client.getRouter().getPid()) {
-                Client.printMessage(MessageType.SYSTEM, "Disconnected from server.");
-                Client.getRouter().forceDisconnect();
-            } else {
-                Platform.runLater(() -> Client.getGui().removeOtherPlayer(conn.getId()));
-            }
+            Platform.runLater(() -> Client.getGui().removeOtherPlayer(conn.getId()));
         } else {
             Client.getRouter().setPid(conn.getId());
             Client.printMessage(MessageType.SYSTEM, "Connected to server!");

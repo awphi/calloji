@@ -31,7 +31,5 @@ public class PacketLinkMonoConnect extends PacketLinkMono {
         }
 
         connection.disconnect();
-        connection.send(PacketType.CLIENT_CONNECTION_UPDATE, new ConnectionUpdate(false, connection.getId()));
-
     }
 }

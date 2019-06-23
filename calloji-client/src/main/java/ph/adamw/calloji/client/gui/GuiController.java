@@ -2,6 +2,7 @@ package ph.adamw.calloji.client.gui;
 
 import com.google.gson.JsonPrimitive;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -12,12 +13,14 @@ import javafx.scene.text.Text;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.client.Client;
+import ph.adamw.calloji.client.StringUtil;
 import ph.adamw.calloji.client.gui.monopoly.BoardUI;
 import ph.adamw.calloji.client.gui.monopoly.GenericPlayerUI;
 import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.packet.data.Board;
 import ph.adamw.calloji.packet.data.ChatMessage;
 import ph.adamw.calloji.packet.data.PlayerUpdate;
+import ph.adamw.calloji.packet.data.TurnUpdate;
 
 import java.util.Optional;
 
@@ -49,6 +52,14 @@ public class GuiController {
 	@FXML
 	private Tab playersTab;
 
+	@FXML
+	private Button rollDiceButton;
+
+	@FXML
+	private Text turnTimer;
+
+	private int turnTime = 0;
+
 	public void addMessageToList(Text txt) {
 		Platform.runLater(() -> chatListView.getItems().add(txt));
 	}
@@ -70,6 +81,24 @@ public class GuiController {
 		Player p2 = new Player(GamePiece.next());
 		p2.setCachedPid(21);
 		*/
+
+		new Thread(() -> {
+			while(true) {
+				decrementTurnTimer();
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
+
+	private void decrementTurnTimer() {
+		if(turnTime > 0) {
+			turnTime --;
+			turnTimer.setText(StringUtil.formatSecondMinutes(turnTime));
+		}
 	}
 
 	@FXML
@@ -133,10 +162,6 @@ public class GuiController {
 		// TODO - load our info and properties into gui in some way
 	}
 
-    public void setOurTurn(boolean isInputAllowed) {
-		// TODO
-    }
-
 	public void focusGenericPlayer(GenericPlayerUI owner) {
 		rightTabPane.getSelectionModel().select(playersTab);
 		playerListView.scrollTo(owner);
@@ -152,4 +177,9 @@ public class GuiController {
 			}
 		}
 	}
+
+    public void setTurn(TurnUpdate update) {
+		turnTime = update.getTurnTime();
+		//TODO enable/disable roll dice buttons, property mortgage etc.
+    }
 }
