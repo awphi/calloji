@@ -2,7 +2,10 @@ package ph.adamw.calloji.server.monopoly.card;
 
 import lombok.Getter;
 import ph.adamw.calloji.packet.data.plot.PlotType;
+import ph.adamw.calloji.packet.data.plot.StreetPlot;
 import ph.adamw.calloji.server.monopoly.MonoPlayer;
+import ph.adamw.calloji.server.monopoly.MonoPropertyPlot;
+import ph.adamw.calloji.server.monopoly.MonoStreetPlot;
 
 public abstract class MonoCard {
     @Getter
@@ -31,7 +34,7 @@ public abstract class MonoCard {
         @Override
         public void handle(MonoPlayer player) {
             if(boardSpot != null && boardSpot != player.getPlayer().getBoardPosition()) {
-                player.moveTo(boardSpot);
+                player.moveForward(boardSpot);
             }
 
             if(money > 0) {
@@ -42,17 +45,31 @@ public abstract class MonoCard {
         }
     }
 
-    public static class DynamicMove extends MonoCard {
-        private final PlotType type;
+    public static class BuildingRepairs extends MonoCard {
+        private final int hotel;
+        private final int house;
 
-        public DynamicMove(String text, PlotType type) {
+        public BuildingRepairs(String text, int house, int hotel) {
             super(text, false);
-            this.type = type;
+            this.house = house;
+            this.hotel = hotel;
         }
 
         @Override
         public void handle(MonoPlayer player) {
-            player.moveTo(player.getGame().getMonoBoard().indexOfFirstPlot(type));
+            int sum = 0;
+
+            for(MonoPropertyPlot i : player.getGame().getMonoBoard().getMonoPlots()) {
+                if(i instanceof MonoStreetPlot) {
+                    final MonoStreetPlot sp = (MonoStreetPlot) i;
+
+                    if(sp.getPlot().getOwner().equals(player.getPlayer())) {
+                        sum +=  (sp.getPlot().getHouses() % 4) * house + (sp.getPlot().getHouses() / 4) * hotel;
+                    }
+                }
+            }
+
+            player.tryRemoveMoney(sum);
         }
     }
 
@@ -63,7 +80,18 @@ public abstract class MonoCard {
 
         @Override
         public void handle(MonoPlayer player) {
-            player.getPlayer().getOutOfJails ++;
+            player.setGetOutOfJails(player.getPlayer().getGetOutOfJails() + 1);
+        }
+    }
+
+    public static class GoToJail extends MonoCard {
+        public GoToJail() {
+            super("\"Go to jail. Move directly to jail. Do not pass \\\"Go\\\". Do not collect £200\"", false);
+        }
+
+        @Override
+        public void handle(MonoPlayer player) {
+            player.setJailed(3);
         }
     }
 }

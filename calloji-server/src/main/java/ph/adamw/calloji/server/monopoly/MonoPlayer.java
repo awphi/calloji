@@ -19,7 +19,9 @@ public class MonoPlayer {
     @Getter
     private final MonoGame game;
 
+    /* NEVER DIRECTLY MODIFY THE PLAYER OBJECT W/O UPDATING THE CLIENTS therefore try to use the helper methods in here */
     @Getter
+    @Deprecated
     private final Player player;
 
     void send(PacketType type, Object content) {
@@ -34,16 +36,16 @@ public class MonoPlayer {
         return connection.getNick();
     }
 
-    public void moveTo(Integer x) {
+    public void moveForward(Integer x) {
         if(x == null) {
             log.debug("Plot index given was null when attempting to move - board is probably missing the given type!");
             return;
         }
 
-        moveSpaces((40 % player.getBoardPosition()) + x);
+        moveSpaces((x - player.getBoardPosition()) % 40);
     }
 
-    private void moveSpaces(int x) {
+    public void moveSpaces(int x) {
         player.boardPosition = (player.boardPosition + x) % 40;
         final Plot plot = game.getMonoBoard().getBoard().plotAt(player.boardPosition);
 
@@ -126,9 +128,9 @@ public class MonoPlayer {
         return v;
     }
 
-    private void setJailed(int y) {
+    public void setJailed(int y) {
         player.jailed = y;
-        moveTo(game.getMonoBoard().indexOfFirstPlot(PlotType.JAIL));
+        moveForward(game.getMonoBoard().indexOfFirstPlot(PlotType.JAIL));
         game.updatePlayerOnAllClients(this);
     }
 
@@ -167,5 +169,10 @@ public class MonoPlayer {
 
     public void updateBoard() {
         send(PacketType.BOARD_UPDATE, game.getMonoBoard().getBoard());
+    }
+
+    public void setGetOutOfJails(int i) {
+        player.getOutOfJails = i;
+        game.updatePlayerOnAllClients(this);
     }
 }

@@ -21,10 +21,7 @@ import ph.adamw.calloji.client.StringUtil;
 import ph.adamw.calloji.client.gui.monopoly.BoardUI;
 import ph.adamw.calloji.client.gui.monopoly.GenericPlayerUI;
 import ph.adamw.calloji.packet.PacketType;
-import ph.adamw.calloji.packet.data.Board;
-import ph.adamw.calloji.packet.data.ChatMessage;
-import ph.adamw.calloji.packet.data.PlayerUpdate;
-import ph.adamw.calloji.packet.data.TurnUpdate;
+import ph.adamw.calloji.packet.data.*;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -76,16 +73,6 @@ public class GuiController {
 
 		playersBorderPane.setCenter(playerListView);
 		mainBorderPane.setCenter(boardUI);
-
-		//TODO -- DEBUG ZONE --
-		/*
-		boardUI.loadBoard(new Board());
-
-		Player p = new Player(GamePiece.next());
-
-		Player p2 = new Player(GamePiece.next());
-		p2.setCachedPid(21);
-		*/
 
 		new Thread(() -> {
 			while(true) {

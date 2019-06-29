@@ -39,4 +39,15 @@ public class Player implements Serializable {
 
         return c;
     }
+
+    /*
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Player) {
+            return gamePiece == ((Player) obj).getGamePiece();
+        }
+
+        return super.equals(obj);
+    }
+    */
 }

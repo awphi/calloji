@@ -1,8 +1,10 @@
 package ph.adamw.calloji.server.monopoly;
 
+import lombok.Getter;
 import ph.adamw.calloji.packet.data.plot.StreetPlot;
 
 public class MonoStreetPlot extends MonoPropertyPlot {
+    @Getter
     private StreetPlot plot;
 
     MonoStreetPlot(MonoGame game, StreetPlot plot) {

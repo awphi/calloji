@@ -160,7 +160,7 @@ public class MonoGame extends ClientPoolListener {
     @Nullable
     MonoPlayer getMonoPlayer(Player owner) {
         for(MonoPlayer i : playerList) {
-            if(i.getPlayer() == owner) {
+            if(i.getPlayer().equals(owner)) {
                 return i;
             }
         }
