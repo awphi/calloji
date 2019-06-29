@@ -2,28 +2,23 @@ package ph.adamw.calloji.client.gui;
 
 import com.google.gson.JsonPrimitive;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.client.Client;
+import ph.adamw.calloji.client.ClientRouter;
 import ph.adamw.calloji.client.StringUtil;
 import ph.adamw.calloji.client.gui.monopoly.BoardUI;
 import ph.adamw.calloji.client.gui.monopoly.GenericPlayerUI;
 import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.packet.data.*;
 
-import java.io.IOException;
 import java.util.Optional;
 
 @Slf4j
@@ -62,6 +57,8 @@ public class GuiController {
 
 	private int turnTime = 0;
 
+	private long currentTurnCache = -1;
+
 	public void addMessageToList(Text txt) {
 		Platform.runLater(() -> chatListView.getItems().add(txt));
 	}
@@ -74,9 +71,11 @@ public class GuiController {
 		playersBorderPane.setCenter(playerListView);
 		mainBorderPane.setCenter(boardUI);
 
+		// Timer decrementing thread
 		new Thread(() -> {
 			while(true) {
-				decrementTurnTimer();
+				Platform.runLater(this::decrementTurnTimer);
+
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
@@ -90,7 +89,21 @@ public class GuiController {
 		if(turnTime > 0) {
 			turnTime --;
 			turnTimer.setText(StringUtil.formatSecondMinutes(turnTime));
+
+			if(turnTime == 10) {
+				Client.printMessage(MessageType.SYSTEM, "10 seconds left!");
+			}
+
+			if(turnTime == 0 && !rollDiceButton.isDisabled()) {
+				Client.printMessage(MessageType.SYSTEM, "Time's up!");
+				setActionsDisabled(true);
+			}
 		}
+	}
+
+	private void setActionsDisabled(boolean b) {
+		//TODO complete this list w/ asset management buttons etc. once they're implemented
+		rollDiceButton.setDisable(b);
 	}
 
 	@FXML
@@ -169,7 +182,16 @@ public class GuiController {
 	}
 
     public void setTurn(TurnUpdate update) {
+		Client.printMessage(MessageType.SYSTEM, "It is now the turn of PID " + update.getPid() + ".");
 		turnTime = update.getTurnTime();
-		//TODO enable/disable roll dice buttons, property mortgage etc. based on update pid (is it ours or not?)
+
+		if(update.getPid() == Client.getRouter().getPid()) {
+			setActionsDisabled(false);
+		}
     }
+
+	@FXML
+	private void onRollDicePressed(ActionEvent actionEvent) {
+		Client.getRouter().send(PacketType.ROLL_DICE_REQ, true);
+	}
 }

@@ -13,6 +13,7 @@ public class ServerRouter {
 	private static ClientPool clientPool;
 	private static final ServerSocket socket;
 
+	@Getter
 	private static MonoGame game;
 
 	@Getter

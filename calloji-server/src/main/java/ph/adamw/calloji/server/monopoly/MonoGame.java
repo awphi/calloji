@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.data.*;
 import ph.adamw.calloji.packet.PacketType;
+import ph.adamw.calloji.server.connection.ClientConnection;
 import ph.adamw.calloji.server.connection.event.ClientConnectedEvent;
 import ph.adamw.calloji.server.connection.event.ClientDisconnectedEvent;
 import ph.adamw.calloji.server.connection.event.ClientNickChangeEvent;
@@ -13,6 +14,7 @@ import ph.adamw.calloji.server.monopoly.card.MonoCardPile;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
 public class MonoGame extends ClientPoolListener {
@@ -33,6 +35,8 @@ public class MonoGame extends ClientPoolListener {
     private MonoBoard monoBoard = new MonoBoard(this);
 
     private int nextTurnPlayerIndex = 0;
+
+    private boolean hasRolled = false;
 
     @Getter
     private boolean inProgress = false;
@@ -59,6 +63,7 @@ public class MonoGame extends ClientPoolListener {
             nextTurnPlayerIndex = (nextTurnPlayerIndex + 1) % playerList.size();
         }
 
+        hasRolled = false;
         sendToAll(PacketType.TURN_UPDATE, new TurnUpdate(currentTurnPlayer.getConnectionId(), currentTurnTime));
         currentTurnTime = 30;
 
@@ -78,8 +83,17 @@ public class MonoGame extends ClientPoolListener {
                 e.printStackTrace();
             }
         }
+    }
 
-        currentTurnPlayer.send(PacketType.TURN_UPDATE, new JsonPrimitive(false));
+    public void rollDice(ClientConnection connection) {
+        if(hasRolled) {
+            return;
+        }
+
+        final int roll = ThreadLocalRandom.current().nextInt(1, 13);
+        connection.send(PacketType.DICE_ROLL_RESPONSE, new JsonPrimitive(roll));
+        getMonoPlayer(connection.getId()).moveSpaces(roll);
+        hasRolled = true;
     }
 
     private MonoPlayer getWinner() {

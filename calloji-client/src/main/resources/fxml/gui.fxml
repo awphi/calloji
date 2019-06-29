@@ -55,7 +55,7 @@
                            <Insets bottom="6.0" left="6.0" right="6.0" top="6.0"/>
                        </padding>
                        <Button fx:id="rollDiceButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="102.0"
-                               text="Roll Dice"/>
+                               text="Roll Dice" onAction="#onRollDicePressed"/>
                        <VBox prefHeight="52.0" prefWidth="182.0" HBox.hgrow="ALWAYS">
                            <children>
                                <Text fx:id="turnTimer" strokeType="OUTSIDE" strokeWidth="0.0" text="00:00"

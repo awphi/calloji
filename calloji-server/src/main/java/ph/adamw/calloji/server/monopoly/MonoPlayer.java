@@ -28,7 +28,7 @@ public class MonoPlayer {
         connection.send(type, content);
     }
 
-    long getConnectionId() {
+    public long getConnectionId() {
         return connection.getId();
     }
 
@@ -46,6 +46,11 @@ public class MonoPlayer {
     }
 
     public void moveSpaces(int x) {
+        // Passed GO
+        if(player.boardPosition + x >= 40) {
+            addMoney(200);
+        }
+
         player.boardPosition = (player.boardPosition + x) % 40;
         final Plot plot = game.getMonoBoard().getBoard().plotAt(player.boardPosition);
 
@@ -73,7 +78,6 @@ public class MonoPlayer {
                 }
 
                 if(player.isBankrupt()) {
-                    // Since we can guarantee we're on the server side we can cast over the player
                     game.getMonoPlayer(p.getOwner()).addMoney(rem);
                 }
             }

@@ -8,7 +8,9 @@ public enum PacketType {
     CHAT,
     NICK_APPROVED,
     NICK_EDIT,
-    HEARTBEAT;
+    HEARTBEAT,
+    ROLL_DICE_REQ,
+    DICE_ROLL_RESPONSE;
 
     private static PacketType[] VALUES = values();
 
