@@ -20,4 +20,14 @@ public class Plot implements Serializable {
 
         return null;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Plot) {
+            final Plot p = (Plot) obj;
+            return p.name.equals(name) && p.type == type;
+        }
+
+        return super.equals(obj);
+    }
 }

@@ -15,6 +15,7 @@ import lombok.Getter;
 import ph.adamw.calloji.client.gui.BuyGuiController;
 import ph.adamw.calloji.client.gui.GuiController;
 import ph.adamw.calloji.client.gui.MessageType;
+import ph.adamw.calloji.client.gui.SplashController;
 import ph.adamw.calloji.packet.data.plot.Plot;
 import ph.adamw.calloji.packet.data.plot.PlotType;
 import ph.adamw.calloji.util.LoggerUtils;
@@ -32,11 +33,12 @@ public class Client extends Application {
 	@Getter
 	private static GuiController gui;
 
+	@Getter
+	private static Stage stage;
+
 	private final static SimpleDateFormat dateFormat = new SimpleDateFormat("K:mm");
 
 	private final static List<Text> messageQueue = new ArrayList<>();
-
-	private static Stage splashStage;
 
 	public static void main(String[] args) {
 		// Establish logger defaults then instantiate everything that uses a logger
@@ -53,36 +55,13 @@ public class Client extends Application {
 		final Text text = new Text("[" + dateFormat.format(new Date()) + "] " + txt);
 		text.setFill(type.getColor());
 
-		if(gui != null) {
+		if (gui != null) {
 			gui.addMessageToList(text);
 		} else {
 			messageQueue.add(text);
 		}
 	}
 
-	public static void openSplash(Window window) {
-		if(splashStage != null) {
-			return;
-		}
-
-		final FXMLLoader fxmlLoader = new FXMLLoader(Client.class.getResource("/fxml/splash.fxml"));
-		try {
-			splashStage = new Stage();
-			splashStage.setTitle("New Calloji connection [awphi]");
-			splashStage.initModality(Modality.WINDOW_MODAL);
-			splashStage.initOwner(window);
-			splashStage.setScene(new Scene(fxmlLoader.load()));
-			splashStage.setResizable(false);
-			splashStage.show();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static void closeSplash() {
-		splashStage.close();
-		splashStage = null;
-	}
 
 	public static boolean attemptConnect(String host, int port) {
 		try {
@@ -97,6 +76,7 @@ public class Client extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
+		Client.stage = stage;
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/gui.fxml"));
 		Parent root = fxmlLoader.load();
 
@@ -113,7 +93,7 @@ public class Client extends Application {
 		stage.setTitle("Calloji Client [awphi]");
 		stage.setScene(scene);
 		//TESTING: stage.setOnShown(event -> BuyGuiController.open((Window) event.getSource(), new Plot("Whitechapel Road", PlotType.BROWN)));
-		stage.setOnShown(event -> openSplash((Window) event.getSource()));
+		stage.setOnShown(event -> SplashController.openSplash((Window) event.getSource()));
 		stage.show();
 	}
 

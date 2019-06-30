@@ -13,14 +13,17 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import ph.adamw.calloji.client.Client;
+import ph.adamw.calloji.client.gui.monopoly.BoardUI;
 import ph.adamw.calloji.client.gui.monopoly.PlotUI;
+import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.packet.data.plot.Plot;
+import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 
 import java.io.IOException;
 
 public class BuyGuiController {
     private static Stage stage;
-    private static Plot plot;
+    private static PropertyPlot plot;
 
     @FXML
     private Label title;
@@ -33,11 +36,12 @@ public class BuyGuiController {
         title.setText("You have been offered the deed to: " + plot.getName());
         final PlotUI plotUI = new PlotUI(null);
         plotUI.load(plot);
+        plotUI.setMinHeight(BoardUI.HEIGHT);
         vbox.getChildren().add(plotUI);
         stage.setOnCloseRequest(event -> onAuctionPressed(null));
     }
 
-    public static void open(Window window, Plot plot) {
+    public static void open(Window window, PropertyPlot plot) {
         final FXMLLoader fxmlLoader = new FXMLLoader(Client.class.getResource("/fxml/buy.fxml"));
         BuyGuiController.plot = plot;
 
@@ -62,7 +66,7 @@ public class BuyGuiController {
 
     @FXML
     private void onPurchasePressed(ActionEvent actionEvent) {
-        //TODO purchased packets
+        Client.getRouter().send(PacketType.PLOT_PURCHASED, plot);
         stage.close();
     }
 }

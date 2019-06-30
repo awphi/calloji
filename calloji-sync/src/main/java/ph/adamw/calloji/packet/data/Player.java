@@ -3,6 +3,7 @@ package ph.adamw.calloji.packet.data;
 import lombok.Getter;
 import ph.adamw.calloji.packet.data.plot.Plot;
 import ph.adamw.calloji.packet.data.plot.PlotType;
+import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Getter
 public class Player implements Serializable {
-    public int balance = 200;
+    public int balance = 1500;
 
     public int boardPosition = 0;
 
@@ -20,20 +21,20 @@ public class Player implements Serializable {
 
     public boolean isBankrupt = false;
 
-    protected final List<Plot> ownedPlots = new ArrayList<>();
-
     private final GamePiece gamePiece;
 
     public Player(GamePiece piece) {
         this.gamePiece = piece;
     }
 
-    public int getOwnedType(PlotType type) {
+    public int getOwnedType(PlotType type, Board board) {
         int c = 0;
 
-        for(Plot i : getOwnedPlots()) {
-            if(i.getType() == type) {
-                c ++;
+        for(Plot i : board.getPlots()) {
+            if(i instanceof PropertyPlot) {
+                if (i.getType() == type  && ((PropertyPlot) i).getOwner().equals(this)) {
+                    c++;
+                }
             }
         }
 

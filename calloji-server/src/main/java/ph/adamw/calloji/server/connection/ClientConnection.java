@@ -47,7 +47,8 @@ public class ClientConnection extends PacketDispatcher {
         linkChain.setSuccessor(new PacketLinkMonoChat(this))
                 .setSuccessor(new PacketLinkMonoHeartbeat(this))
                 .setSuccessor(new PacketLinkMonoNickEdit(this))
-                .setSuccessor(new PacketLinkMonoDiceRequest(this));
+                .setSuccessor(new PacketLinkMonoDiceRequest(this))
+                .setSuccessor(new PacketLinkMonoPlotPurchased(this));
 
         outputStream = socket.getOutputStream();
         outputStream.flush();

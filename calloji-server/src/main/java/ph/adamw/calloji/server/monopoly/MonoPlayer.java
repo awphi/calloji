@@ -45,6 +45,21 @@ public class MonoPlayer {
         moveSpaces((x - player.getBoardPosition()) % 40);
     }
 
+    public void addAsset(MonoPropertyPlot plot) {
+        plot.getPlot().setOwner(player);
+        game.updatePlayerOnAllClients(this);
+        game.updateBoardOnAllClients();
+    }
+
+    public void removeAsset(MonoPropertyPlot plot, boolean update) {
+        plot.getPlot().setOwner(null);
+
+        if(update) {
+            game.updatePlayerOnAllClients(this);
+            game.updateBoardOnAllClients();
+        }
+    }
+
     public void moveSpaces(int x) {
         // Passed GO
         if(player.boardPosition + x >= 40) {
@@ -63,7 +78,7 @@ public class MonoPlayer {
                 if(p.getValue() > player.getBalance()) {
                     //TODO auction it packets
                 } else {
-                    //TODO Offer to buy packets
+                    send(PacketType.PLOT_LANDED_ON, p);
                 }
             } else if(p.getOwner() != player && !p.isMortgaged()){
                 int rem = 0;
@@ -73,10 +88,10 @@ public class MonoPlayer {
                      rem = tryRemoveMoney(st.getRent());
                 } else {
                     if(p.getType() == PlotType.UTILITY) {
-                        final int owned = p.getOwner().getOwnedType(PlotType.UTILITY);
+                        final int owned = p.getOwner().getOwnedType(PlotType.UTILITY, game.getMonoBoard().getBoard());
                         rem = tryRemoveMoney(owned * 5 + (owned - 2) * x);
                     } else if(p.getType() == PlotType.STATION) {
-                        final int owned = p.getOwner().getOwnedType(PlotType.STATION);
+                        final int owned = p.getOwner().getOwnedType(PlotType.STATION, game.getMonoBoard().getBoard());
                         rem = tryRemoveMoney(25 * (int) Math.pow(2, owned - 1));
                     }
                 }
@@ -99,9 +114,11 @@ public class MonoPlayer {
                 case CHANCE:
                     game.getChancePile().draw().handle(this);
                     break;
+                    /*TODO uncomment once comm chest is implemented
                 case COMMUNITY_CHEST:
                     game.getCommunityChestPile().draw().handle(this);
                     break;
+                    */
                 case GO_TO_JAIL:
                     setJailed(3);
                     break;
@@ -114,8 +131,8 @@ public class MonoPlayer {
 
     public int getAssetsSellValue() {
         int v = 0;
-        for(Plot i : player.getOwnedPlots()) {
-            if(i instanceof PropertyPlot) {
+        for(Plot i : game.getMonoBoard().getBoard().getPlots()) {
+            if(i instanceof PropertyPlot && ((PropertyPlot) i).getOwner().equals(player)) {
                 final PropertyPlot p = (PropertyPlot) i;
                 v += p.getValue() / 2;
             }
@@ -126,8 +143,8 @@ public class MonoPlayer {
 
     public int getBuildingsSellValue() {
         int v = 0;
-        for(Plot i : player.getOwnedPlots()) {
-            if(i instanceof StreetPlot) {
+        for(Plot i : game.getMonoBoard().getBoard().getPlots()) {
+            if(i instanceof StreetPlot && ((PropertyPlot) i).getOwner().equals(player)) {
                 final StreetPlot y = (StreetPlot) i;
                 v += y.getHouses() * (y.getBuildCost() / 2);
             }
@@ -153,7 +170,16 @@ public class MonoPlayer {
     }
 
     void setBankrupt(boolean b) {
+        if(b) {
+            for(Plot i : game.getMonoBoard().getBoard().getPlots()) {
+                if(i instanceof PropertyPlot  && ((PropertyPlot) i).getOwner().equals(player)) {
+                    removeAsset(game.getMonoBoard().getMonoPlot((PropertyPlot) i), false);
+                }
+            }
+        }
+
         player.isBankrupt = b;
+        game.updateBoardOnAllClients();
         game.updatePlayerOnAllClients(this);
     }
 

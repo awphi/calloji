@@ -38,17 +38,13 @@ public class MonoGame extends ClientPoolListener {
 
     private boolean hasRolled = false;
 
-    @Getter
-    private boolean inProgress = false;
 
     public void start() {
-        if(inProgress) return;
-        inProgress = true;
-
-        while(getWinner() == null) {
+        while(null == null) {
             playTurn();
         }
 
+        log.debug("Game over! Winner: " + getWinner());
         // TODO Declare winner packet, end game and discard
     }
 
@@ -58,13 +54,14 @@ public class MonoGame extends ClientPoolListener {
     }
 
     private void playTurn() {
-        while(currentTurnPlayer == null || !currentTurnPlayer.getPlayer().isBankrupt()) {
+        log.debug("Turn");
+        while(currentTurnPlayer == null || currentTurnPlayer.getPlayer().isBankrupt()) {
             currentTurnPlayer = playerList.get(nextTurnPlayerIndex);
             nextTurnPlayerIndex = (nextTurnPlayerIndex + 1) % playerList.size();
         }
+        log.debug("Player: " + currentTurnPlayer);
 
         hasRolled = false;
-        sendToAll(PacketType.TURN_UPDATE, new TurnUpdate(currentTurnPlayer.getConnectionId(), currentTurnTime));
         currentTurnTime = 30;
 
         if(currentTurnPlayer.getPlayer().getJailed() > 0) {
@@ -72,17 +69,20 @@ public class MonoGame extends ClientPoolListener {
             currentTurnPlayer.decJailed();
         }
 
-        // Allows turns to be extended from a separate thread
-        while(currentTurnTime > 0) {
-            currentTurnTime = 0;
+        sendToAll(PacketType.TURN_UPDATE, new TurnUpdate(currentTurnPlayer.getConnectionId(), currentTurnTime));
 
+        // Allows turns to be extended from a separate thread
+        do {
+            int cache = currentTurnTime;
             try {
                 // Allow 30 seconds for the user to send the server packets (handled in a separate thread)
                 Thread.sleep(currentTurnTime * 1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
+
+            currentTurnTime -= cache;
+        } while(currentTurnTime > 0);
     }
 
     public void rollDice(ClientConnection connection) {
@@ -183,7 +183,7 @@ public class MonoGame extends ClientPoolListener {
     }
 
     @Nullable
-    private MonoPlayer getMonoPlayer(long id) {
+    public MonoPlayer getMonoPlayer(long id) {
         for(MonoPlayer i : playerList) {
             if(i.getConnectionId() == id) {
                 return i;

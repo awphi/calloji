@@ -17,7 +17,7 @@ public abstract class PacketLinkBase {
     }
 
     public void handleLink(PacketType packet, JsonElement content) {
-        if(packet == null) {
+        if(type == null) {
             log.error(getClass().getSimpleName() + " is not annotated with " + PacketLinkType.class.getSimpleName() + " annotation and therefore will never handle packets!");
         }
 

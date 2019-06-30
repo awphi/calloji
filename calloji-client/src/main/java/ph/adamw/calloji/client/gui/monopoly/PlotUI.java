@@ -30,7 +30,6 @@ public class PlotUI extends BorderPane {
         bottomBox.getStyleClass().add("centred");
         setBottom(bottomBox);
         setCenter(centreBox);
-        setMinHeight(120);
     }
 
     private static final ImmutableMap<PlotType, Color> colorMap = new ImmutableMap.Builder<PlotType, Color>()

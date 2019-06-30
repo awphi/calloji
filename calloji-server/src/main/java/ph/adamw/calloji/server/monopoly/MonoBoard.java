@@ -39,11 +39,15 @@ public class MonoBoard {
 
     public MonoPropertyPlot getMonoPlot(PropertyPlot plot) {
         for(MonoPropertyPlot i : monoPlots) {
-            if(i.getPlot() == plot) {
+            if(i.getPlot().equals(plot)) {
                 return i;
             }
         }
 
         return null;
+    }
+
+    public Plot getIndexedPlot(int index) {
+        return board.getPlots().get(index);
     }
 }

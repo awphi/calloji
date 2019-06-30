@@ -37,7 +37,8 @@ public class ClientRouter extends PacketDispatcher {
 				.setSuccessor(new PacketLinkPlayerUpdate())
 				.setSuccessor(new PacketLinkBoardUpdate())
 				.setSuccessor(new PacketLinkTurnUpdate())
-				.setSuccessor(new PacketLinkDiceRolled());
+				.setSuccessor(new PacketLinkDiceRolled())
+				.setSuccessor(new PacketLinkPlotLandedOn());
 	}
 
 	public void connect(String hostname, int port) throws IOException {
