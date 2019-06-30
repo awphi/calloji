@@ -32,7 +32,25 @@ public class MonoCardPile extends ArrayList<MonoCard> {
     };
 
     public static final MonoCard[] COMM_CHEST = {
-
+            new MonoCard.MoveMoney("Advance to \"Go\"", 0, 0),
+            new MonoCard("Go back to Old Kent Road", false) {
+                @Override
+                public void handle(MonoPlayer player) {
+                    player.moveSpaces(-(player.getPlayer().getBoardPosition() - 1));
+                }
+            },
+            new MonoCard.GoToJail(),
+            new MonoCard.MoveMoney("Pay hospital £100", -100, 0),
+            new MonoCard.MoveMoney("Doctor's fee. Pay £50", -50, 0),
+            new MonoCard.MoveMoney("Pay your insurance premium £50", -50, 0),
+            new MonoCard.MoveMoney("Bank error in your favour. Collect £200", 200, 0),
+            new MonoCard.MoveMoney("Annuity matures. Collect £100", 100, 0),
+            new MonoCard.MoveMoney("You inherit £100", 100, 0),
+            new MonoCard.MoveMoney("From sale of stock you get £50", 50, 0),
+            new MonoCard.MoveMoney("Receive interest on 7% preference shares: £25", 25, 0),
+            new MonoCard.MoveMoney("Income tax refund. Collect £20", 20, 0),
+            new MonoCard.MoveMoney("You have won second prize in a beauty contest. Collect £10", 10, 0),
+            new MonoCard.GetOutOfJailFree()
     };
 
     public MonoCardPile(MonoCard... cards) {

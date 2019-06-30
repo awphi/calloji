@@ -114,11 +114,9 @@ public class MonoPlayer {
                 case CHANCE:
                     game.getChancePile().draw().handle(this);
                     break;
-                    /*TODO uncomment once comm chest is implemented
                 case COMMUNITY_CHEST:
                     game.getCommunityChestPile().draw().handle(this);
                     break;
-                    */
                 case GO_TO_JAIL:
                     setJailed(3);
                     break;
