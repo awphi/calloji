@@ -13,6 +13,8 @@ import ph.adamw.calloji.packet.data.plot.PlotType;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 import ph.adamw.calloji.packet.data.plot.StreetPlot;
 
+import javax.annotation.Nullable;
+
 @Slf4j
 public class PlotUI extends BorderPane {
     private final BoardUI board;
@@ -21,13 +23,14 @@ public class PlotUI extends BorderPane {
 
     private final HBox centreBox = new HBox();
 
-    public PlotUI(BoardUI board) {
+    public PlotUI(@Nullable BoardUI board) {
         this.board = board;
 
         centreBox.getStyleClass().add("centred");
         bottomBox.getStyleClass().add("centred");
         setBottom(bottomBox);
         setCenter(centreBox);
+        setMinHeight(120);
     }
 
     private static final ImmutableMap<PlotType, Color> colorMap = new ImmutableMap.Builder<PlotType, Color>()
@@ -45,7 +48,14 @@ public class PlotUI extends BorderPane {
         final Text mid = new Text(x);
         mid.getStyleClass().addAll(classes);
         mid.setTextAlignment(TextAlignment.CENTER);
-        mid.wrappingWidthProperty().setValue(board.getColumnConstraints().get(0).getPrefWidth());
+
+        double width = BoardUI.WIDTH;
+
+        if(board != null) {
+            width = board.getColumnConstraints().get(0).getPrefWidth();
+        }
+
+        mid.wrappingWidthProperty().setValue(width);
         setAlignment(mid, Pos.CENTER);
 
         return mid;

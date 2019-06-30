@@ -12,8 +12,11 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import lombok.Getter;
+import ph.adamw.calloji.client.gui.BuyGuiController;
 import ph.adamw.calloji.client.gui.GuiController;
 import ph.adamw.calloji.client.gui.MessageType;
+import ph.adamw.calloji.packet.data.plot.Plot;
+import ph.adamw.calloji.packet.data.plot.PlotType;
 import ph.adamw.calloji.util.LoggerUtils;
 
 import java.io.IOException;
@@ -109,6 +112,7 @@ public class Client extends Application {
 
 		stage.setTitle("Calloji Client [awphi]");
 		stage.setScene(scene);
+		//TESTING: stage.setOnShown(event -> BuyGuiController.open((Window) event.getSource(), new Plot("Whitechapel Road", PlotType.BROWN)));
 		stage.setOnShown(event -> openSplash((Window) event.getSource()));
 		stage.show();
 	}

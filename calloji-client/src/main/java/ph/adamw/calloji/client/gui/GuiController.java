@@ -57,8 +57,6 @@ public class GuiController {
 
 	private int turnTime = 0;
 
-	private long currentTurnCache = -1;
-
 	public void addMessageToList(Text txt) {
 		Platform.runLater(() -> chatListView.getItems().add(txt));
 	}

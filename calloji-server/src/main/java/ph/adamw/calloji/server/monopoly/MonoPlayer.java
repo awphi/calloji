@@ -60,7 +60,11 @@ public class MonoPlayer {
             final PropertyPlot p = (PropertyPlot) plot;
 
             if(p.getOwner() == null) {
-                //TODO Offer to buy (if they have the money) or auction it
+                if(p.getValue() > player.getBalance()) {
+                    //TODO auction it packets
+                } else {
+                    //TODO Offer to buy packets
+                }
             } else if(p.getOwner() != player && !p.isMortgaged()){
                 int rem = 0;
 

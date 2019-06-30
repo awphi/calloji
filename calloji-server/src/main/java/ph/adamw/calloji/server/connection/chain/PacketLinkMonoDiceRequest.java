@@ -17,6 +17,5 @@ public class PacketLinkMonoDiceRequest extends PacketLinkMono {
         if(ServerRouter.getGame().getCurrentTurnPlayer().getConnectionId() == connection.getId()) {
             ServerRouter.getGame().rollDice(connection);
         }
-        //TODO handle a dice roll being requested w a response of the roll (for gui display) and moving the player etc.
     }
 }
