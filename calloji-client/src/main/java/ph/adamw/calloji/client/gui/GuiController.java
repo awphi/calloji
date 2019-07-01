@@ -20,6 +20,7 @@ import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.packet.data.*;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 
 @Slf4j
 public class GuiController {
@@ -187,7 +188,8 @@ public class GuiController {
 	}
 
     public void setTurn(TurnUpdate update) {
-		Client.printMessage(MessageType.SYSTEM, "It is now the turn of PID " + update.getPid() + ".");
+		final PlayerUpdate p = playerListView.getItems().filtered(genericPlayerUI -> genericPlayerUI.getPid() == update.getPid()).get(0).getLastUpdate();
+		Client.printMessage(MessageType.SYSTEM, "It is now the turn of " + p.getNick() + ".");
 		turnTime = update.getTurnTime();
 
 		if(update.getPid() == Client.getRouter().getPid()) {

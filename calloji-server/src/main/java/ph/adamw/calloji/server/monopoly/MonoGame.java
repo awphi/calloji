@@ -40,7 +40,7 @@ public class MonoGame extends ClientPoolListener {
 
 
     public void start() {
-        while(null == null) {
+        while(getWinner() == null) {
             playTurn();
         }
 
@@ -97,6 +97,11 @@ public class MonoGame extends ClientPoolListener {
     }
 
     private MonoPlayer getWinner() {
+        // To allow for 1-person games (for debugging)
+        if(playerList.size() == 1) {
+            return playerList.get(0).getPlayer().isBankrupt() ? playerList.get(0) : null;
+        }
+
         int c = 0;
         MonoPlayer x = null;
 
