@@ -5,7 +5,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
-public class StreetPlot extends PropertyPlot implements Serializable {
+public class StreetPlot extends PropertyPlot {
     private static final int[] HOUSE_MULTIPLIERS = new int[] {1, 5, 15, 35, 42, 50};
 
     @Getter

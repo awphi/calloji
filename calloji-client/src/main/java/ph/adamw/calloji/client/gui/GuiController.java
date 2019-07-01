@@ -3,12 +3,14 @@ package ph.adamw.calloji.client.gui;
 import com.google.gson.JsonPrimitive;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
+import javafx.stage.WindowEvent;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.client.Client;
@@ -79,18 +81,12 @@ public class GuiController {
 		playersBorderPane.setCenter(playerListView);
 		mainBorderPane.setCenter(boardUI);
 
-		// Timer decrementing thread
-		new Thread(() -> {
-			while(true) {
-				Platform.runLater(this::decrementTurnTimer);
-
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}).start();
+		final Thread timer = GuiUtils.startRunner(this::decrementTurnTimer, 1000);
+		Client.getStage().setOnCloseRequest(event -> {
+			timer.interrupt();
+			Platform.exit();
+			System.exit(0);
+		});
 	}
 
 	private void decrementTurnTimer() {
@@ -135,7 +131,7 @@ public class GuiController {
 		dialog.setHeaderText("Enter a new nickname");
 		dialog.setContentText("Please enter your desired nick:");
 
-		Optional<String> result = dialog.showAndWait();
+		final Optional<String> result = dialog.showAndWait();
 
 		result.ifPresent(name -> {
 			if(!name.isEmpty()) {
@@ -149,6 +145,12 @@ public class GuiController {
 	}
 
     public void loadPlayer(PlayerUpdate update) {
+		if(update.getId() == Client.getRouter().getPid()) {
+			balanceLabel.setText("Balance: £" + update.getPlayer().getBalance());
+			getOutOfJailsLabel.setText("Get Out of Jail Cards: " + update.getPlayer().getGetOutOfJails());
+			jailedLabel.setText("Jailed: " + update.getPlayer().getJailed());
+		}
+
 		for(GenericPlayerUI i : playerListView.getItems()) {
 			if(i.getPid() == update.getId()) {
 				i.reload(update);
@@ -162,12 +164,6 @@ public class GuiController {
 			playerListView.getItems().add(0, gen);
 		} else {
 			playerListView.getItems().add(gen);
-		}
-
-		if(update.getId() == Client.getRouter().getPid()) {
-			balanceLabel.setText("Balance: £" + update.getPlayer().getBalance());
-			getOutOfJailsLabel.setText("Get Out of Jail Cards: " + update.getPlayer().getGetOutOfJails());
-			jailedLabel.setText("Jailed: " + update.getPlayer().getJailed());
 		}
     }
 

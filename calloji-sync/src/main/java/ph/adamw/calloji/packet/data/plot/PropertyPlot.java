@@ -7,7 +7,7 @@ import ph.adamw.calloji.packet.data.Player;
 import java.io.Serializable;
 
 @Getter
-public class PropertyPlot extends Plot implements Serializable {
+public class PropertyPlot extends Plot {
     @Setter
     private Player owner = null;
 

@@ -33,7 +33,7 @@ public class BuyGuiController {
 
     @FXML
     private void initialize() {
-        title.setText("You have been offered the deed to: " + plot.getName());
+        title.setText("You have been offered the deed to:\n" + plot.getName());
         final PlotUI plotUI = new PlotUI(null);
         plotUI.load(plot);
         vbox.getChildren().add(plotUI);
@@ -41,17 +41,12 @@ public class BuyGuiController {
     }
 
     public static void open(Window window, PropertyPlot plot) {
-        final FXMLLoader fxmlLoader = new FXMLLoader(Client.class.getResource("/fxml/buy.fxml"));
         BuyGuiController.plot = plot;
 
         try {
             stage = new Stage();
             stage.setTitle("Purchase Deed [awphi]");
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(window);
-            stage.setScene(new Scene(fxmlLoader.load()));
-            stage.setResizable(false);
-            stage.show();
+            GuiUtils.openOwnedWindow(window, "/fxml/buy.fxml", stage);
         } catch (IOException e) {
             e.printStackTrace();
         }

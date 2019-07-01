@@ -9,12 +9,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" prefHeight="310.0" prefWidth="502.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.adamw.calloji.client.gui.BuyGuiController">
+<BorderPane fx:id="borderPane" prefHeight="310.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.adamw.calloji.client.gui.BuyGuiController">
     <stylesheets>
         <URL value="@style.css" />
     </stylesheets>
    <top>
-      <Label fx:id="title" prefHeight="77.0" prefWidth="371.0" text="You have been offered the deed to: Whitechapel Road" textAlignment="CENTER" textOverrun="CLIP" wrapText="true" BorderPane.alignment="CENTER">
+      <Label fx:id="title" alignment="CENTER" prefHeight="0.0" prefWidth="460.0" text="You have been offered the deed to:&#13; Whitechapel Road" textAlignment="CENTER" textOverrun="CLIP" BorderPane.alignment="CENTER">
          <font>
             <Font size="23.0" />
          </font>
@@ -38,12 +38,12 @@
             </Label>
             <HBox prefHeight="0.0" prefWidth="200.0" style="-fx-alignment: center;">
                <children>
-                  <Button onAction="#onPurchasePressed" mnemonicParsing="false" text="Yes">
+                  <Button mnemonicParsing="false" onAction="#onPurchasePressed" text="Yes">
                      <HBox.margin>
                         <Insets right="20.0" />
                      </HBox.margin>
                   </Button>
-                  <Button onAction="#onAuctionPressed" mnemonicParsing="false" text="No, send to public auction" />
+                  <Button mnemonicParsing="false" onAction="#onAuctionPressed" text="No, send to public auction" />
                </children>
             </HBox>
          </children>

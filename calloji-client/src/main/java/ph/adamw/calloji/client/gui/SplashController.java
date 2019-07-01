@@ -2,12 +2,9 @@ package ph.adamw.calloji.client.gui;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import ph.adamw.calloji.client.Client;
@@ -21,27 +18,22 @@ public class SplashController {
 
     private static Stage splashStage;
 
-    public static void openSplash(Window window) {
+    public static void open(Window window) {
         if(splashStage != null) {
             return;
         }
 
-        final FXMLLoader fxmlLoader = new FXMLLoader(Client.class.getResource("/fxml/splash.fxml"));
         try {
             splashStage = new Stage();
             splashStage.setTitle("New Calloji connection [awphi]");
-            splashStage.initModality(Modality.WINDOW_MODAL);
-            splashStage.initOwner(window);
-            splashStage.setScene(new Scene(fxmlLoader.load()));
-            splashStage.setResizable(false);
-            splashStage.show();
+            GuiUtils.openOwnedWindow(window, "/fxml/splash.fxml", splashStage);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
 
-    public static void closeSplash() {
+    public static void close() {
         splashStage.close();
         splashStage = null;
     }
@@ -55,7 +47,7 @@ public class SplashController {
             final ShakeTransition shake = new ShakeTransition(ipField, null);
             shake.playFromStart();
         } else {
-            SplashController.closeSplash();
+            SplashController.close();
         }
     }
 

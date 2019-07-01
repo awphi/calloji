@@ -50,7 +50,7 @@ public class MonoGame extends ClientPoolListener {
 
     void extendCurrentTurn(int secs) {
         currentTurnTime += secs;
-        updateAllPlayersOnAllClients();
+        sendToAll(PacketType.TURN_UPDATE, new TurnUpdate(currentTurnPlayer.getConnectionId(), currentTurnTime));
     }
 
     private void playTurn() {
