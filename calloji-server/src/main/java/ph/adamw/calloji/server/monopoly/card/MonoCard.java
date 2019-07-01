@@ -64,7 +64,7 @@ public abstract class MonoCard {
                     final MonoStreetPlot sp = (MonoStreetPlot) i;
 
                     if(sp.getPlot().getOwner().equals(player.getPlayer())) {
-                        sum +=  (sp.getPlot().getHouses() % 4) * house + (sp.getPlot().getHouses() / 4) * hotel;
+                        sum += (sp.getPlot().getHouses() % 4) * house + (sp.getPlot().getHouses() / 4) * hotel;
                     }
                 }
             }

@@ -30,15 +30,25 @@ public class Player implements Serializable {
     public int getOwnedType(PlotType type, Board board) {
         int c = 0;
 
-        for(Plot i : board.getPlots()) {
-            if(i instanceof PropertyPlot) {
-                if (i.getType() == type  && ((PropertyPlot) i).getOwner().equals(this)) {
-                    c++;
-                }
-            }
+        for(PropertyPlot i : getOwnedPlots(board)) {
+            if (i.getType() == type) {
+                c++;
+        }
         }
 
         return c;
+    }
+
+    public List<PropertyPlot> getOwnedPlots(Board board) {
+        final List<PropertyPlot> result = new ArrayList<>();
+
+        for(Plot i : board.getPlots()) {
+            if(i instanceof PropertyPlot && ((PropertyPlot) i).getOwner().equals(this)) {
+                result.add((PropertyPlot) i);
+            }
+        }
+
+        return result;
     }
 
     /*

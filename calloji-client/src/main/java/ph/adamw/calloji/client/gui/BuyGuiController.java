@@ -36,7 +36,6 @@ public class BuyGuiController {
         title.setText("You have been offered the deed to: " + plot.getName());
         final PlotUI plotUI = new PlotUI(null);
         plotUI.load(plot);
-        plotUI.setMinHeight(BoardUI.HEIGHT);
         vbox.getChildren().add(plotUI);
         stage.setOnCloseRequest(event -> onAuctionPressed(null));
     }

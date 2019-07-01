@@ -20,7 +20,7 @@
                   <Insets bottom="8.0" />
                </VBox.margin>
             </Label>
-            <TextField onAction="#onIpFieldEnter" fx:id="ipField" maxWidth="-Infinity" prefHeight="27.0" prefWidth="238.0">
+            <TextField onKeyReleased="#onIpKeyUp" fx:id="ipField" maxWidth="-Infinity" prefHeight="27.0" prefWidth="238.0">
                <VBox.margin>
                   <Insets bottom="8.0" />
                </VBox.margin>

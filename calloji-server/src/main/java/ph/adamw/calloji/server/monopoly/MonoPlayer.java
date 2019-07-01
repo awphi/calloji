@@ -47,6 +47,7 @@ public class MonoPlayer {
 
     public void addAsset(MonoPropertyPlot plot) {
         plot.getPlot().setOwner(player);
+        tryRemoveMoney(plot.getPlot().getValue());
         game.updatePlayerOnAllClients(this);
         game.updateBoardOnAllClients();
     }
@@ -129,11 +130,9 @@ public class MonoPlayer {
 
     public int getAssetsSellValue() {
         int v = 0;
-        for(Plot i : game.getMonoBoard().getBoard().getPlots()) {
-            if(i instanceof PropertyPlot && ((PropertyPlot) i).getOwner().equals(player)) {
-                final PropertyPlot p = (PropertyPlot) i;
-                v += p.getValue() / 2;
-            }
+
+        for(PropertyPlot i : getPlayer().getOwnedPlots(game.getMonoBoard().getBoard())) {
+            v += i.getValue() / 2;
         }
 
         return v;
@@ -141,8 +140,8 @@ public class MonoPlayer {
 
     public int getBuildingsSellValue() {
         int v = 0;
-        for(Plot i : game.getMonoBoard().getBoard().getPlots()) {
-            if(i instanceof StreetPlot && ((PropertyPlot) i).getOwner().equals(player)) {
+        for(PropertyPlot i : getPlayer().getOwnedPlots(game.getMonoBoard().getBoard())) {
+            if(i instanceof StreetPlot) {
                 final StreetPlot y = (StreetPlot) i;
                 v += y.getHouses() * (y.getBuildCost() / 2);
             }
@@ -169,10 +168,8 @@ public class MonoPlayer {
 
     void setBankrupt(boolean b) {
         if(b) {
-            for(Plot i : game.getMonoBoard().getBoard().getPlots()) {
-                if(i instanceof PropertyPlot  && ((PropertyPlot) i).getOwner().equals(player)) {
-                    removeAsset(game.getMonoBoard().getMonoPlot((PropertyPlot) i), false);
-                }
+            for(PropertyPlot i : getPlayer().getOwnedPlots(game.getMonoBoard().getBoard())) {
+                removeAsset(game.getMonoBoard().getMonoPlot(i), false);
             }
         }
 

@@ -57,6 +57,15 @@ public class GuiController {
 
 	private int turnTime = 0;
 
+	@FXML
+	private Label jailedLabel;
+
+	@FXML
+	private Label getOutOfJailsLabel;
+
+	@FXML
+	private Label balanceLabel;
+
 	public void addMessageToList(Text txt) {
 		Platform.runLater(() -> chatListView.getItems().add(txt));
 	}
@@ -87,10 +96,6 @@ public class GuiController {
 		if(turnTime > 0) {
 			turnTime --;
 			turnTimer.setText(StringUtil.formatSecondMinutes(turnTime));
-
-			if(turnTime == 10) {
-				Client.printMessage(MessageType.SYSTEM, "10 seconds left!");
-			}
 
 			if(turnTime == 0 && !rollDiceButton.isDisabled()) {
 				Client.printMessage(MessageType.SYSTEM, "Time's up!");
@@ -159,7 +164,9 @@ public class GuiController {
 		}
 
 		if(update.getId() == Client.getRouter().getPid()) {
-			//TODO load info of us to OUR gui (assets, cash, jail)
+			balanceLabel.setText("Balance: £" + update.getPlayer().getBalance());
+			getOutOfJailsLabel.setText("Get Out of Jail Cards: " + update.getPlayer().getGetOutOfJails());
+			jailedLabel.setText("Jailed: " + update.getPlayer().getJailed());
 		}
     }
 
