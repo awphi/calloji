@@ -1,6 +1,7 @@
 package ph.adamw.calloji.packet.data;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.data.plot.Plot;
 import ph.adamw.calloji.packet.data.plot.PlotType;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Slf4j
 public class Player implements Serializable {
     public int balance = 1500;
 
@@ -43,7 +45,7 @@ public class Player implements Serializable {
         final List<PropertyPlot> result = new ArrayList<>();
 
         for(Plot i : board.getPlots()) {
-            if(i instanceof PropertyPlot && ((PropertyPlot) i).getOwner().equals(this)) {
+            if(i instanceof PropertyPlot && this.equals(((PropertyPlot) i).getOwner())) {
                 result.add((PropertyPlot) i);
             }
         }
@@ -51,7 +53,6 @@ public class Player implements Serializable {
         return result;
     }
 
-    /*
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof Player) {
@@ -60,5 +61,4 @@ public class Player implements Serializable {
 
         return super.equals(obj);
     }
-    */
 }

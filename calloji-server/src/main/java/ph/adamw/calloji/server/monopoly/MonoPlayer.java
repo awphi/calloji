@@ -48,16 +48,16 @@ public class MonoPlayer {
     public void addAsset(MonoPropertyPlot plot) {
         plot.getPlot().setOwner(player);
         tryRemoveMoney(plot.getPlot().getValue());
-        game.updatePlayerOnAllClients(this);
         game.updateBoardOnAllClients();
+        game.updatePlayerOnAllClients(this);
     }
 
     public void removeAsset(MonoPropertyPlot plot, boolean update) {
         plot.getPlot().setOwner(null);
 
         if(update) {
-            game.updatePlayerOnAllClients(this);
             game.updateBoardOnAllClients();
+            game.updatePlayerOnAllClients(this);
         }
     }
 

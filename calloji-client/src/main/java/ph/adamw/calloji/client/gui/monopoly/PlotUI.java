@@ -7,6 +7,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.data.plot.Plot;
 import ph.adamw.calloji.packet.data.plot.PlotType;
@@ -32,7 +33,7 @@ public class PlotUI extends BorderPane {
         setCenter(centreBox);
     }
 
-    private static final ImmutableMap<PlotType, Color> colorMap = new ImmutableMap.Builder<PlotType, Color>()
+    static final ImmutableMap<PlotType, Color> COLOR_MAP = new ImmutableMap.Builder<PlotType, Color>()
             .put(PlotType.RED, Color.RED)
             .put(PlotType.BROWN, Color.BROWN)
             .put(PlotType.LIGHT_BLUE, Color.LIGHTBLUE)
@@ -68,10 +69,10 @@ public class PlotUI extends BorderPane {
         bottomBox.getChildren().add(generatePlotText(plot.getName()));
 
         // Header
-        if(colorMap.containsKey(plot.getType())) {
+        if(COLOR_MAP.containsKey(plot.getType())) {
             final HBox top = new HBox();
             top.getStyleClass().addAll("border", "border-out", "plot-header");
-            top.setStyle("-fx-background-color: #" + Integer.toHexString(colorMap.get(plot.getType()).hashCode()) + ";");
+            top.setStyle("-fx-background-color: #" + Integer.toHexString(COLOR_MAP.get(plot.getType()).hashCode()) + ";");
 
             setTop(top);
         } else {

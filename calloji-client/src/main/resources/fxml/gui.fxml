@@ -15,9 +15,8 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="mainBorderPane" minHeight="760" minWidth="1280" prefHeight="760" prefWidth="1280" styleClass="window" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.adamw.calloji.client.gui.GuiController">
+<BorderPane fx:id="mainBorderPane" minHeight="760" minWidth="1280" prefHeight="760" prefWidth="1280" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.adamw.calloji.client.gui.GuiController">
     <stylesheets>
         <URL value="@style.css" />
     </stylesheets>
@@ -85,7 +84,7 @@
                   <right>
                           <VBox prefHeight="52.0" prefWidth="182.0" BorderPane.alignment="CENTER">
                               <children>
-                                  <Text fx:id="turnTimer" strokeType="OUTSIDE" strokeWidth="0.0" text="00:00" textAlignment="CENTER" wrappingWidth="65.13671875" />
+                                  <Label fx:id="turnTimer" text="00:00" textAlignment="CENTER" />
                               </children>
                               <styleClass>
                                   <String fx:value="centred" />

@@ -18,8 +18,11 @@ import ph.adamw.calloji.client.ClientRouter;
 import ph.adamw.calloji.client.StringUtil;
 import ph.adamw.calloji.client.gui.monopoly.BoardUI;
 import ph.adamw.calloji.client.gui.monopoly.GenericPlayerUI;
+import ph.adamw.calloji.client.gui.monopoly.ThinPlotUI;
 import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.packet.data.*;
+import ph.adamw.calloji.packet.data.plot.PlotType;
+import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -30,7 +33,7 @@ public class GuiController {
 	private TextField chatTextField;
 
 	@FXML
-	private ListView<Text> chatListView;
+	private ListView<Label> chatListView;
 
 	@FXML
 	@Getter
@@ -56,7 +59,7 @@ public class GuiController {
 	private Button rollDiceButton;
 
 	@FXML
-	private Text turnTimer;
+	private Label turnTimer;
 
 	private int turnTime = 0;
 
@@ -69,14 +72,16 @@ public class GuiController {
 	@FXML
 	private Label balanceLabel;
 
-	public void addMessageToList(Text txt) {
+	@Getter
+	private Board boardCache;
+
+	public void addMessageToList(Label txt) {
 		Platform.runLater(() -> chatListView.getItems().add(txt));
 	}
 
 	@FXML
 	public void initialize() {
 		Client.printMessage(MessageType.SYSTEM, "Welcome to Calloji!");
-		playerListView.setFixedCellSize(GenericPlayerUI.GAME_PIECE_SIZE);
 
 		playersBorderPane.setCenter(playerListView);
 		mainBorderPane.setCenter(boardUI);
@@ -141,6 +146,7 @@ public class GuiController {
 	}
 
 	public void loadBoard(Board board) {
+		boardCache = board;
 		boardUI.loadBoard(board);
 	}
 
@@ -170,7 +176,6 @@ public class GuiController {
 	public void focusGenericPlayer(GenericPlayerUI owner) {
 		rightTabPane.getSelectionModel().select(playersTab);
 		playerListView.scrollTo(owner);
-		playerListView.getSelectionModel().select(owner);
 	}
 
 	public void removeOtherPlayer(long id) {
@@ -184,8 +189,7 @@ public class GuiController {
 	}
 
     public void setTurn(TurnUpdate update) {
-		final PlayerUpdate p = playerListView.getItems().filtered(genericPlayerUI -> genericPlayerUI.getPid() == update.getPid()).get(0).getLastUpdate();
-		Client.printMessage(MessageType.SYSTEM, "It is now the turn of " + p.getNick() + ".");
+		Client.printMessage(MessageType.SYSTEM, "It is now the turn of " + update.getNick() + ".");
 		turnTime = update.getTurnTime();
 
 		if(update.getPid() == Client.getRouter().getPid()) {

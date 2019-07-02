@@ -26,7 +26,6 @@ public class PacketLinkMonoPlotPurchased extends PacketLinkMono {
         final PropertyPlot stoodOn = (PropertyPlot) game.getMonoBoard().getIndexedPlot(game.getCurrentTurnPlayer().getPlayer().boardPosition);
 
         if(game.getCurrentTurnPlayer().equals(game.getMonoPlayer(connection.getId())) && stoodOn.equals(plot)) {
-            log.debug("Good to go!");
             game.getCurrentTurnPlayer().addAsset(game.getMonoBoard().getMonoPlot(stoodOn));
         }
     }

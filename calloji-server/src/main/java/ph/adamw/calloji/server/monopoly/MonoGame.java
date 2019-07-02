@@ -50,7 +50,7 @@ public class MonoGame extends ClientPoolListener {
 
     void extendCurrentTurn(int secs) {
         currentTurnTime += secs;
-        sendToAll(PacketType.TURN_UPDATE, new TurnUpdate(currentTurnPlayer.getConnectionId(), currentTurnTime));
+        sendToAll(PacketType.TURN_UPDATE, new TurnUpdate(currentTurnPlayer.getConnectionId(), currentTurnTime, currentTurnPlayer.getConnectionNick()));
     }
 
     private void playTurn() {
@@ -69,7 +69,7 @@ public class MonoGame extends ClientPoolListener {
             currentTurnPlayer.decJailed();
         }
 
-        sendToAll(PacketType.TURN_UPDATE, new TurnUpdate(currentTurnPlayer.getConnectionId(), currentTurnTime));
+        sendToAll(PacketType.TURN_UPDATE, new TurnUpdate(currentTurnPlayer.getConnectionId(), currentTurnTime, currentTurnPlayer.getConnectionNick()));
 
         // Allows turns to be extended from a separate thread
         do {
