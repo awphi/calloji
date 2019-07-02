@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.client.Client;
 import ph.adamw.calloji.client.gui.GuiUtils;
+import ph.adamw.calloji.client.gui.NullSelectionModel;
 import ph.adamw.calloji.packet.data.Player;
 import ph.adamw.calloji.packet.data.PlayerUpdate;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
@@ -75,6 +76,7 @@ public class GenericPlayerUI extends VBox {
         getChildren().add(plots);
 
         ownedPlots = new ListView<>();
+        ownedPlots.setSelectionModel(new NullSelectionModel<>());
         ownedPlots.setMinHeight(60);
         ownedPlots.setMaxHeight(60);
         getChildren().add(ownedPlots);

@@ -83,6 +83,8 @@ public class GuiController {
 	public void initialize() {
 		Client.printMessage(MessageType.SYSTEM, "Welcome to Calloji!");
 
+		playerListView.setSelectionModel(new NullSelectionModel<>());
+		chatListView.setSelectionModel(new NullSelectionModel<>());
 		playersBorderPane.setCenter(playerListView);
 		mainBorderPane.setCenter(boardUI);
 
