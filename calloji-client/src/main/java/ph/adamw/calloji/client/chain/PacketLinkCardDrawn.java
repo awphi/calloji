@@ -1,6 +1,8 @@
 package ph.adamw.calloji.client.chain;
 
 import com.google.gson.JsonElement;
+import ph.adamw.calloji.client.Client;
+import ph.adamw.calloji.client.gui.CardGuiController;
 import ph.adamw.calloji.packet.PacketLinkBase;
 import ph.adamw.calloji.packet.PacketLinkType;
 import ph.adamw.calloji.packet.PacketType;
@@ -12,6 +14,6 @@ public class PacketLinkCardDrawn extends PacketLinkBase {
     @Override
     public void handle(PacketType type, JsonElement content) {
         final CardUpdate update = JsonUtils.getObject(content, CardUpdate.class);
-        //TODO card gui
+        CardGuiController.open(Client.getStage().getOwner(), update);
     }
 }
