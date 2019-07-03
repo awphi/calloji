@@ -2,6 +2,7 @@ package ph.adamw.calloji.server.monopoly.card;
 
 import lombok.Getter;
 import ph.adamw.calloji.packet.data.plot.PlotType;
+import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 import ph.adamw.calloji.packet.data.plot.StreetPlot;
 import ph.adamw.calloji.server.monopoly.MonoPlayer;
 import ph.adamw.calloji.server.monopoly.MonoPropertyPlot;
@@ -59,13 +60,10 @@ public abstract class MonoCard {
         public void handle(MonoPlayer player) {
             int sum = 0;
 
-            for(MonoPropertyPlot i : player.getGame().getMonoBoard().getMonoPlots()) {
-                if(i instanceof MonoStreetPlot) {
-                    final MonoStreetPlot sp = (MonoStreetPlot) i;
-
-                    if(sp.getPlot().getOwner().equals(player.getPlayer())) {
-                        sum += (sp.getPlot().getHouses() % 4) * house + (sp.getPlot().getHouses() / 4) * hotel;
-                    }
+            for(PropertyPlot i : player.getPlayer().getOwnedPlots(player.getGame().getMonoBoard().getBoard())) {
+                if(i instanceof StreetPlot) {
+                    final MonoStreetPlot sp = (MonoStreetPlot) player.getGame().getMonoBoard().getMonoPlot(i);
+                    sum += (sp.getPlot().getHouses() % 4) * house + (sp.getPlot().getHouses() / 4) * hotel;
                 }
             }
 

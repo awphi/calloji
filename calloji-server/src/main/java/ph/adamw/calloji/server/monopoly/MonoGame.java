@@ -19,10 +19,10 @@ import java.util.concurrent.ThreadLocalRandom;
 @Slf4j
 public class MonoGame extends ClientPoolListener {
     @Getter
-    private final MonoCardPile communityChestPile = new MonoCardPile(MonoCardPile.COMM_CHEST);
+    private final MonoCardPile communityChestPile = new MonoCardPile("Community Chest", MonoCardPile.COMM_CHEST);
 
     @Getter
-    private final MonoCardPile chancePile = new MonoCardPile(MonoCardPile.CHANCE);
+    private final MonoCardPile chancePile = new MonoCardPile("Chance", MonoCardPile.CHANCE);
 
     private final List<MonoPlayer> playerList = new ArrayList<>();
 
@@ -40,12 +40,12 @@ public class MonoGame extends ClientPoolListener {
 
 
     public void start() {
-        while(getWinner() == null) {
+        while(getWinner() == null && !playerList.isEmpty()) {
             playTurn();
         }
 
         log.debug("Game over! Winner: " + getWinner());
-        // TODO Declare winner packet, end game and discard
+        // TODO Declare winner packet + shut down server (or restart??)
     }
 
     void extendCurrentTurn(int secs) {
@@ -54,12 +54,11 @@ public class MonoGame extends ClientPoolListener {
     }
 
     private void playTurn() {
-        log.debug("Turn");
         while(currentTurnPlayer == null || currentTurnPlayer.getPlayer().isBankrupt()) {
             currentTurnPlayer = playerList.get(nextTurnPlayerIndex);
             nextTurnPlayerIndex = (nextTurnPlayerIndex + 1) % playerList.size();
         }
-        log.debug("Player: " + currentTurnPlayer);
+        log.debug("Turn of player: " + currentTurnPlayer);
 
         hasRolled = false;
         currentTurnTime = 30;
@@ -117,7 +116,7 @@ public class MonoGame extends ClientPoolListener {
 
     @Override
     public void onClientConnect(ClientConnectedEvent e) {
-        final MonoPlayer n = new MonoPlayer(e.getPool().get(e.getId()), this, new Player(GamePiece.next()));
+        final MonoPlayer n = new MonoPlayer(e.getPool().get(e.getId()), this, new Player(GamePiece.next(), e.getId()));
         playerList.add(n);
 
         log.debug("Created new MonoPlayer for: " + e.getId());
@@ -177,20 +176,9 @@ public class MonoGame extends ClientPoolListener {
     }
 
     @Nullable
-    MonoPlayer getMonoPlayer(Player owner) {
+    public MonoPlayer getMonoPlayer(Long id) {
         for(MonoPlayer i : playerList) {
-            if(i.getPlayer().equals(owner)) {
-                return i;
-            }
-        }
-
-        return null;
-    }
-
-    @Nullable
-    public MonoPlayer getMonoPlayer(long id) {
-        for(MonoPlayer i : playerList) {
-            if(i.getConnectionId() == id) {
+            if(id.equals(i.getConnectionId())) {
                 return i;
             }
         }

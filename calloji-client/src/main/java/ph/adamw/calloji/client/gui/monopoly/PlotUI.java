@@ -75,10 +75,6 @@ public class PlotUI extends BorderPane {
             top.setStyle("-fx-background-color: #" + Integer.toHexString(COLOR_MAP.get(plot.getType()).hashCode()) + ";");
 
             setTop(top);
-        } else {
-            switch (plot.getType()) {
-                case COMMUNITY_CHEST: break;
-            }
         }
 
         if(plot instanceof PropertyPlot) {

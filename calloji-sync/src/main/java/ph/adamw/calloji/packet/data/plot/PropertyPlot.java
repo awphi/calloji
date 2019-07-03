@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Getter
 public class PropertyPlot extends Plot {
     @Setter
-    private Player owner = null;
+    private Long owner;
 
     @Setter
     private boolean isMortgaged = false;

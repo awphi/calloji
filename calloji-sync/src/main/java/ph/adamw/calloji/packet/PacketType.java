@@ -12,7 +12,11 @@ public enum PacketType {
     ROLL_DICE_REQ,
     DICE_ROLL_RESPONSE,
     PLOT_LANDED_ON,
-    PLOT_PURCHASED;
+    PLOT_PURCHASED,
+    CARD_DRAWN,
+    AUCTION_REQUEST, //TODO
+    AUCTION_START,  //TODO
+    AUCTION_BID; //TODO
 
     private static PacketType[] VALUES = values();
 

@@ -27,8 +27,8 @@
            </Menu>
          <Menu mnemonicParsing="false" text="Connection">
            <items>
-             <MenuItem mnemonicParsing="false" text="Disconnect" />
-               <MenuItem mnemonicParsing="false" text="Open New Connection" />
+                <MenuItem mnemonicParsing="false" onAction="#onOpenNewConnectionPressed" text="Open New Connection" />
+                <MenuItem fx:id="disconnectButton" disable="true" mnemonicParsing="false" onAction="#onDisconnectPressed" text="Disconnect" />
            </items>
          </Menu>
        </MenuBar>

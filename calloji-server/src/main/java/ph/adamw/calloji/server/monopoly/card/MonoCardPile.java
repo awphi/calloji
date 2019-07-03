@@ -1,5 +1,6 @@
 package ph.adamw.calloji.server.monopoly.card;
 
+import lombok.Getter;
 import ph.adamw.calloji.server.monopoly.MonoPlayer;
 
 import java.util.ArrayList;
@@ -53,8 +54,12 @@ public class MonoCardPile extends ArrayList<MonoCard> {
             new MonoCard.GetOutOfJailFree()
     };
 
-    public MonoCardPile(MonoCard... cards) {
+    @Getter
+    private final String name;
+
+    public MonoCardPile(String name, MonoCard... cards) {
         super(Arrays.asList(cards));
+        this.name = name;
         shuffle();
     }
 

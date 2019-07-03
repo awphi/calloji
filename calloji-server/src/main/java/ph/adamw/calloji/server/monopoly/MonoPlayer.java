@@ -3,6 +3,7 @@ package ph.adamw.calloji.server.monopoly;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import ph.adamw.calloji.packet.data.CardUpdate;
 import ph.adamw.calloji.packet.data.Player;
 import ph.adamw.calloji.packet.data.plot.Plot;
 import ph.adamw.calloji.packet.data.plot.PlotType;
@@ -10,6 +11,8 @@ import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 import ph.adamw.calloji.packet.data.plot.StreetPlot;
 import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.server.connection.ClientConnection;
+import ph.adamw.calloji.server.monopoly.card.MonoCard;
+import ph.adamw.calloji.server.monopoly.card.MonoCardPile;
 
 @Slf4j
 @AllArgsConstructor
@@ -46,7 +49,7 @@ public class MonoPlayer {
     }
 
     public void addAsset(MonoPropertyPlot plot) {
-        plot.getPlot().setOwner(player);
+        plot.getPlot().setOwner(getConnectionId());
         tryRemoveMoney(plot.getPlot().getValue());
         game.updateBoardOnAllClients();
         game.updatePlayerOnAllClients(this);
@@ -81,18 +84,19 @@ public class MonoPlayer {
                 } else {
                     send(PacketType.PLOT_LANDED_ON, p);
                 }
-            } else if(p.getOwner() != player && !p.isMortgaged()){
+            } else if(!p.getOwner().equals(getConnectionId()) && !p.isMortgaged()){
                 int rem = 0;
 
                 if(p instanceof StreetPlot) {
                     final StreetPlot st = (StreetPlot) p;
                      rem = tryRemoveMoney(st.getRent());
                 } else {
+                    final Player pl = game.getMonoPlayer(p.getOwner()).getPlayer();
                     if(p.getType() == PlotType.UTILITY) {
-                        final int owned = p.getOwner().getOwnedType(PlotType.UTILITY, game.getMonoBoard().getBoard());
+                        final int owned = pl.getOwnedType(PlotType.UTILITY, game.getMonoBoard().getBoard());
                         rem = tryRemoveMoney(owned * 5 + (owned - 2) * x);
                     } else if(p.getType() == PlotType.STATION) {
-                        final int owned = p.getOwner().getOwnedType(PlotType.STATION, game.getMonoBoard().getBoard());
+                        final int owned = pl.getOwnedType(PlotType.STATION, game.getMonoBoard().getBoard());
                         rem = tryRemoveMoney(25 * (int) Math.pow(2, owned - 1));
                     }
                 }
@@ -112,15 +116,22 @@ public class MonoPlayer {
                 case SUPER_TAX:
                     tryRemoveMoney(200);
                     break;
-                case CHANCE:
-                    game.getChancePile().draw().handle(this);
-                    break;
-                case COMMUNITY_CHEST:
-                    game.getCommunityChestPile().draw().handle(this);
-                    break;
                 case GO_TO_JAIL:
                     setJailed(3);
                     break;
+                case CHANCE:
+                case COMMUNITY_CHEST: {
+                    final MonoCardPile pile;
+                    if (plot.getType().equals(PlotType.CHANCE)) {
+                        pile = game.getChancePile();
+                    } else {
+                        pile = game.getCommunityChestPile();
+                    }
+
+                    final MonoCard card = pile.draw();
+                    card.handle(this);
+                    send(PacketType.CARD_DRAWN, new CardUpdate(pile.getName(), card.getText()));
+                } break;
             }
         }
 

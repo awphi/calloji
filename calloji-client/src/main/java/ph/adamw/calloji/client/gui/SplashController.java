@@ -1,12 +1,14 @@
 package ph.adamw.calloji.client.gui;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.stage.WindowEvent;
 import ph.adamw.calloji.client.Client;
 import ph.adamw.calloji.client.gui.anim.ShakeTransition;
 
@@ -26,16 +28,11 @@ public class SplashController {
         try {
             splashStage = new Stage();
             splashStage.setTitle("New Calloji connection [awphi]");
+            splashStage.setOnCloseRequest(event -> splashStage = null);
             GuiUtils.openOwnedWindow(window, "/fxml/splash.fxml", splashStage);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-
-    public static void close() {
-        splashStage.close();
-        splashStage = null;
     }
 
 
@@ -47,7 +44,7 @@ public class SplashController {
             final ShakeTransition shake = new ShakeTransition(ipField, null);
             shake.playFromStart();
         } else {
-            SplashController.close();
+            splashStage.close();
         }
     }
 

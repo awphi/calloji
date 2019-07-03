@@ -75,6 +75,10 @@ public class GuiController {
 	@Getter
 	private Board boardCache;
 
+	@FXML
+	@Getter
+	private MenuItem disconnectButton;
+
 	public void addMessageToList(Label txt) {
 		Platform.runLater(() -> chatListView.getItems().add(txt));
 	}
@@ -202,5 +206,15 @@ public class GuiController {
 	@FXML
 	private void onRollDicePressed(ActionEvent actionEvent) {
 		Client.getRouter().send(PacketType.ROLL_DICE_REQ, true);
+	}
+
+	@FXML
+	private void onOpenNewConnectionPressed(ActionEvent actionEvent) {
+		SplashController.open(Client.getStage().getOwner());
+	}
+
+	@FXML
+	private void onDisconnectPressed(ActionEvent actionEvent) {
+		Client.getRouter().disconnectAndAlertServer();
 	}
 }

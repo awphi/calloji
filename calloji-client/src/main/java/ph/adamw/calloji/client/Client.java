@@ -1,6 +1,7 @@
 package ph.adamw.calloji.client;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -63,6 +64,7 @@ public class Client extends Application {
 			return false;
 		}
 
+		Platform.runLater(() -> Client.getGui().getDisconnectButton().setDisable(false));
 		return true;
 	}
 
@@ -91,7 +93,7 @@ public class Client extends Application {
 	@Override
 	public void stop(){
 		if(router.isConnected()) {
-			router.requestDisconnect();
+			router.disconnectAndAlertServer();
 		}
 
 		int timer = 0;
@@ -108,7 +110,7 @@ public class Client extends Application {
 			}
 
 			if(timer == 5) {
-				router.forceDisconnect();
+				router.disconnect();
 				break;
 			}
 		}

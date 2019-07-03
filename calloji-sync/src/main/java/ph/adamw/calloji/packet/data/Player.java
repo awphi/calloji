@@ -21,12 +21,15 @@ public class Player implements Serializable {
 
     public int getOutOfJails = 0;
 
+    public final long id;
+
     public boolean isBankrupt = false;
 
     private final GamePiece gamePiece;
 
-    public Player(GamePiece piece) {
+    public Player(GamePiece piece, long id) {
         this.gamePiece = piece;
+        this.id = id;
     }
 
     public int getOwnedType(PlotType type, Board board) {
@@ -45,7 +48,7 @@ public class Player implements Serializable {
         final List<PropertyPlot> result = new ArrayList<>();
 
         for(Plot i : board.getPlots()) {
-            if(i instanceof PropertyPlot && this.equals(((PropertyPlot) i).getOwner())) {
+            if(i instanceof PropertyPlot && ((PropertyPlot) i).getOwner() != null && ((PropertyPlot) i).getOwner().equals(id)) {
                 result.add((PropertyPlot) i);
             }
         }
@@ -56,7 +59,7 @@ public class Player implements Serializable {
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof Player) {
-            return gamePiece == ((Player) obj).getGamePiece();
+            return id == ((Player) obj).getId();
         }
 
         return super.equals(obj);
