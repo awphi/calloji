@@ -16,7 +16,7 @@ import java.io.Serializable;
 public class Plot implements Serializable {
     public final transient static JsonSerializer<Plot> SERIALIZER = (plot, type, jsonSerializationContext) -> {
         final JsonObject object = new JsonObject();
-        object.addProperty("class", plot.getClass().getSimpleName());
+        object.addProperty("class", plot.getClass().getName());
         final JsonElement payload = JsonUtils.getDefaultJsonElement(plot);
         object.add("plot", payload);
         return object;
@@ -25,10 +25,11 @@ public class Plot implements Serializable {
     public final transient static JsonDeserializer<Plot> DESERIALIZER = (jsonElement, type, jsonDeserializationContext) -> {
         final JsonObject object = (JsonObject) jsonElement;
 
-        switch(object.get("class").getAsString()) {
-            case "Plot": return JsonUtils.getDefaultObject(object.get("plot"), Plot.class);
-            case "PropertyPlot": return JsonUtils.getDefaultObject(object.get("plot"), PropertyPlot.class);
-            case "StreetPlot": return JsonUtils.getDefaultObject(object.get("plot"), StreetPlot.class);
+        try {
+            final Class<?> clazz = Class.forName(object.get("class").getAsString());
+            return (Plot) JsonUtils.getDefaultObject(object.get("plot"), clazz);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
 
         return null;

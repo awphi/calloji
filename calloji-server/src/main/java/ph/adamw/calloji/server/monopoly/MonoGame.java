@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.data.*;
 import ph.adamw.calloji.packet.PacketType;
+import ph.adamw.calloji.server.ServerRouter;
 import ph.adamw.calloji.server.connection.ClientConnection;
 import ph.adamw.calloji.server.connection.event.ClientConnectedEvent;
 import ph.adamw.calloji.server.connection.event.ClientDisconnectedEvent;
@@ -17,7 +18,11 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
-public class MonoGame extends ClientPoolListener {
+public class MonoGame implements ClientPoolListener {
+    public MonoGame() {
+        ServerRouter.getEventBus().register(this);
+    }
+
     @Getter
     private final MonoCardPile communityChestPile = new MonoCardPile("Community Chest", MonoCardPile.COMM_CHEST);
 

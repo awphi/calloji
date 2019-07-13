@@ -33,7 +33,7 @@ public class ServerRouter {
 		LoggerUtils.setProperty("defaultLogLevel", "info");
 		LoggerUtils.establishLevels(args);
 
-		clientPool = new ClientPool(1);
+		clientPool = new ClientPool(2);
 
 		// Bound to the client pool (well technically all client pools) on instantiation via the eventbus
 		game = new MonoGame();

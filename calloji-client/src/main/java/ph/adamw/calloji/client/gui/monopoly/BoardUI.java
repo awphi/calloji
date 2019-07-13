@@ -27,7 +27,6 @@ public class BoardUI extends GridPane {
         getColumnConstraints().clear();
 
 
-
         for(int i = 0; i < SIZE; i ++) {
             ColumnConstraints n = new ColumnConstraints();
 
