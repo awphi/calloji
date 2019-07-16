@@ -12,6 +12,6 @@ public class PacketLinkDiceRolled extends PacketLinkBase {
     @Override
     public void handle(PacketType type, JsonElement content) {
         final int roll = content.getAsInt();
-        Client.printMessage(MessageType.SYSTEM, "You rolled a " + roll + "!");
+        Client.getGui().displayChatMessage(MessageType.SYSTEM, "You rolled a " + roll + "!");
     }
 }

@@ -24,6 +24,8 @@ import ph.adamw.calloji.packet.data.*;
 import ph.adamw.calloji.packet.data.plot.PlotType;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -79,20 +81,26 @@ public class GuiController {
 	@Getter
 	private MenuItem disconnectButton;
 
-	public void addMessageToList(Label txt) {
-		Platform.runLater(() -> chatListView.getItems().add(txt));
+	private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("K:mm");
+
+	public void displayChatMessage(MessageType type, String txt) {
+		final Label text = new Label("[" + DATE_FORMAT.format(new Date()) + "] " + txt);
+		text.setTextFill(type.getColor());
+		Platform.runLater(() -> chatListView.getItems().add(text));
 	}
 
 	@FXML
 	public void initialize() {
-		Client.printMessage(MessageType.SYSTEM, "Welcome to Calloji!");
-
 		playerListView.setSelectionModel(new NullSelectionModel<>());
 		chatListView.setSelectionModel(new NullSelectionModel<>());
 		playersBorderPane.setCenter(playerListView);
 		mainBorderPane.setCenter(boardUI);
 
+		chatListView.setPlaceholder(new Label("Not connected to a game!"));
+		playerListView.setPlaceholder(new Label("Not connected to a game!"));
+
 		final Thread timer = GuiUtils.startRunner(this::decrementTurnTimer, 1000);
+
 		Client.getStage().setOnCloseRequest(event -> {
 			timer.interrupt();
 			Platform.exit();
@@ -106,7 +114,7 @@ public class GuiController {
 			turnTimer.setText(StringUtil.formatSecondMinutes(turnTime));
 
 			if(turnTime == 0 && !rollDiceButton.isDisabled()) {
-				Client.printMessage(MessageType.SYSTEM, "Time's up!");
+				displayChatMessage(MessageType.SYSTEM, "Time's up!");
 				setActionsDisabled(true);
 			}
 		}
@@ -195,7 +203,7 @@ public class GuiController {
 	}
 
     public void setTurn(TurnUpdate update) {
-		Client.printMessage(MessageType.SYSTEM, "It is now the turn of " + update.getNick() + ".");
+		Client.getGui().displayChatMessage(MessageType.SYSTEM, "It is now the turn of " + update.getNick() + ".");
 		turnTime = update.getTurnTime();
 
 		if(update.getPid() == Client.getRouter().getPid()) {

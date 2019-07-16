@@ -21,7 +21,7 @@ public class PacketLinkConnect extends PacketLinkBase {
             Platform.runLater(() -> Client.getGui().removeOtherPlayer(conn.getId()));
         } else {
             Client.getRouter().setPid(conn.getId());
-            Client.printMessage(MessageType.SYSTEM, "Connected to server!");
+            Client.getGui().displayChatMessage(MessageType.SYSTEM, "Connected to server!");
 
             new Thread(() -> {
                 while(Client.getRouter().isConnected()) {

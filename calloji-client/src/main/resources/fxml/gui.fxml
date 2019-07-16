@@ -46,13 +46,13 @@
                      <String fx:value="button-look" />
                   </styleClass>
                   <left>
-                     <Label fx:id="balanceLabel" text="Balance: £1500" BorderPane.alignment="CENTER" />
+                     <Label fx:id="balanceLabel" text="Balance: -" BorderPane.alignment="CENTER" />
                   </left>
                   <center>
-                     <Label fx:id="getOutOfJailsLabel" text="Get Out of Jail Cards: 0" BorderPane.alignment="CENTER" />
+                     <Label fx:id="getOutOfJailsLabel" text="Get Out of Jail Cards: -" BorderPane.alignment="CENTER" />
                   </center>
                   <right>
-                     <Label fx:id="jailedLabel" text="Jailed: 0" BorderPane.alignment="CENTER" />
+                     <Label fx:id="jailedLabel" text="Jailed: -" BorderPane.alignment="CENTER" />
                   </right>
                   <padding>
                      <Insets left="20.0" right="20.0" />

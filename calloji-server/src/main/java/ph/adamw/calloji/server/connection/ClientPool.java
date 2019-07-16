@@ -12,6 +12,7 @@ import ph.adamw.calloji.server.connection.event.ClientDisconnectedEvent;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.TreeMap;
+import java.util.UUID;
 
 @Slf4j
 public class ClientPool {
@@ -34,13 +35,17 @@ public class ClientPool {
 	}
 
 	private long getNextClientId() {
-		for(long i = 0; i < capacity; i ++) {
-			if(!map.containsKey(i)) {
-				return i;
-			}
+		if(map.keySet().size() >= capacity) {
+			return -1L;
 		}
 
-		return -1;
+		long id;
+
+		do {
+			id = UUID.randomUUID().getLeastSignificantBits();
+		} while(map.keySet().contains(id));
+
+		return id;
 	}
 
 	public ImmutableSet<ClientConnection> getImmutableConnections() {

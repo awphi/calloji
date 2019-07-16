@@ -28,14 +28,10 @@ public class ServerRouter {
 	}
 
 	public static void main(String[] args) {
-		// Establish logger defaults then instantiate everything that uses a logger
-		LoggerUtils.setFormatting();
-		LoggerUtils.setProperty("defaultLogLevel", "info");
-		LoggerUtils.establishLevels(args);
+		// Must init the logger before instantiating objects that use it
+		LoggerUtils.init(args);
 
 		clientPool = new ClientPool(2);
-
-		// Bound to the client pool (well technically all client pools) on instantiation via the eventbus
 		game = new MonoGame();
 
 		new Thread(ServerRouter::waitForNextConnection).start();

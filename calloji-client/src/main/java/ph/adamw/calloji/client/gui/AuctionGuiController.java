@@ -51,7 +51,7 @@ public class AuctionGuiController {
             auctionTimer.setText(StringUtil.formatSecondMinutes(time));
 
             if(time == 0) {
-                Client.printMessage(MessageType.SYSTEM, "Time's up!");
+                Client.getGui().displayChatMessage(MessageType.SYSTEM, "Time's up!");
                 stage.close();
             }
         }

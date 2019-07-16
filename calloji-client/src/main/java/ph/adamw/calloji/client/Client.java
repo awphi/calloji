@@ -16,9 +16,7 @@ import ph.adamw.calloji.util.LoggerUtils;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class Client extends Application {
 	@Getter
@@ -30,31 +28,13 @@ public class Client extends Application {
 	@Getter
 	private static Stage stage;
 
-	private final static SimpleDateFormat dateFormat = new SimpleDateFormat("K:mm");
-
-	private final static List<Label> messageQueue = new ArrayList<>();
-
 	public static void main(String[] args) {
-		// Establish logger defaults then instantiate everything that uses a logger
-		LoggerUtils.setFormatting();
-		LoggerUtils.setProperty("defaultLogLevel", "warn");
-		LoggerUtils.establishLevels(args);
+		// Must init the logger before instantiating objects that use it
+		LoggerUtils.init(args);
 
 		router = new ClientRouter();
 		Application.launch(args);
 	}
-
-	public static void printMessage(MessageType type, String txt) {
-		final Label text = new Label("[" + dateFormat.format(new Date()) + "] " + txt);
-		text.setTextFill(type.getColor());
-
-		if (gui != null) {
-			gui.addMessageToList(text);
-		} else {
-			messageQueue.add(text);
-		}
-	}
-
 
 	public static boolean attemptConnect(String host, int port) {
 		try {
@@ -75,12 +55,6 @@ public class Client extends Application {
 		Parent root = fxmlLoader.load();
 
 		gui = fxmlLoader.getController();
-
-		for(Label i : messageQueue) {
-			gui.addMessageToList(i);
-		}
-
-		messageQueue.clear();
 
 		final Scene scene = new Scene(root);
 

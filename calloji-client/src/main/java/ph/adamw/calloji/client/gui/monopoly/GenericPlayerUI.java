@@ -79,6 +79,7 @@ public class GenericPlayerUI extends VBox {
         ownedPlots.setSelectionModel(new NullSelectionModel<>());
         ownedPlots.setMinHeight(60);
         ownedPlots.setMaxHeight(60);
+        ownedPlots.setPlaceholder(new Label("No owned properties."));
         getChildren().add(ownedPlots);
 
         reload(update);

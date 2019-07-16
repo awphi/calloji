@@ -8,7 +8,7 @@ public enum GamePiece {
     SCOTTY_DOG("scotty_dog"),
     IRON("iron"),
     RACECAR("racecar"),
-    BOOT("boot"),
+    BOOT("init"),
     WHEELBARROW("wheelbarrow");
 
     @Getter

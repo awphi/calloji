@@ -14,6 +14,6 @@ public class PacketLinkChat extends PacketLinkBase {
     @Override
     public void handle(PacketType type, JsonElement content) {
         final ChatMessage message = JsonUtils.getObject(content, ChatMessage.class);
-        Client.printMessage(MessageType.CHAT, message.getSender() + ": " + message.getMessage());
+        Client.getGui().displayChatMessage(MessageType.CHAT, message.getSender() + ": " + message.getMessage());
     }
 }
