@@ -2,32 +2,32 @@ package ph.adamw.calloji.client.gui;
 
 import com.google.gson.JsonPrimitive;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.client.Client;
+import ph.adamw.calloji.client.ClientRouter;
 import ph.adamw.calloji.client.StringUtil;
 import ph.adamw.calloji.client.gui.monopoly.BoardUI;
 import ph.adamw.calloji.client.gui.monopoly.GenericPlayerUI;
+import ph.adamw.calloji.client.gui.monopoly.ThinPlotUI;
 import ph.adamw.calloji.packet.PacketType;
-import ph.adamw.calloji.packet.data.Board;
-import ph.adamw.calloji.packet.data.ChatMessage;
-import ph.adamw.calloji.packet.data.PlayerUpdate;
-import ph.adamw.calloji.packet.data.TurnUpdate;
+import ph.adamw.calloji.packet.data.*;
+import ph.adamw.calloji.packet.data.plot.PlotType;
+import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 
-import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 @Slf4j
 public class GuiController {
@@ -35,7 +35,7 @@ public class GuiController {
 	private TextField chatTextField;
 
 	@FXML
-	private ListView<Text> chatListView;
+	private ListView<Label> chatListView;
 
 	@FXML
 	@Getter
@@ -61,49 +61,68 @@ public class GuiController {
 	private Button rollDiceButton;
 
 	@FXML
-	private Text turnTimer;
+	private Label turnTimer;
 
 	private int turnTime = 0;
 
-	public void addMessageToList(Text txt) {
-		Platform.runLater(() -> chatListView.getItems().add(txt));
+	@FXML
+	private Label jailedLabel;
+
+	@FXML
+	private Label getOutOfJailsLabel;
+
+	@FXML
+	private Label balanceLabel;
+
+	@Getter
+	private Board boardCache;
+
+	@FXML
+	@Getter
+	private MenuItem disconnectButton;
+
+	private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("K:mm");
+
+	public void displayChatMessage(MessageType type, String txt) {
+		final Label text = new Label("[" + DATE_FORMAT.format(new Date()) + "] " + txt);
+		text.setTextFill(type.getColor());
+		Platform.runLater(() -> chatListView.getItems().add(text));
 	}
 
 	@FXML
 	public void initialize() {
-		Client.printMessage(MessageType.SYSTEM, "Welcome to Calloji!");
-		playerListView.setFixedCellSize(GenericPlayerUI.GAME_PIECE_SIZE);
-
+		playerListView.setSelectionModel(new NullSelectionModel<>());
+		chatListView.setSelectionModel(new NullSelectionModel<>());
 		playersBorderPane.setCenter(playerListView);
 		mainBorderPane.setCenter(boardUI);
 
-		//TODO -- DEBUG ZONE --
-		/*
-		boardUI.loadBoard(new Board());
+		chatListView.setPlaceholder(new Label("Not connected to a game!"));
+		playerListView.setPlaceholder(new Label("Not connected to a game!"));
 
-		Player p = new Player(GamePiece.next());
+		final Thread timer = GuiUtils.startRunner(this::decrementTurnTimer, 1000);
 
-		Player p2 = new Player(GamePiece.next());
-		p2.setCachedPid(21);
-		*/
-
-		new Thread(() -> {
-			while(true) {
-				decrementTurnTimer();
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}).start();
+		Client.getStage().setOnCloseRequest(event -> {
+			timer.interrupt();
+			Platform.exit();
+			System.exit(0);
+		});
 	}
 
 	private void decrementTurnTimer() {
 		if(turnTime > 0) {
 			turnTime --;
 			turnTimer.setText(StringUtil.formatSecondMinutes(turnTime));
+
+			if(turnTime == 0 && !rollDiceButton.isDisabled()) {
+				displayChatMessage(MessageType.SYSTEM, "Time's up!");
+				setActionsDisabled(true);
+			}
 		}
+	}
+
+	private void setActionsDisabled(boolean b) {
+		//TODO complete this list w/ asset management buttons etc. once they're implemented
+		rollDiceButton.setDisable(b);
 	}
 
 	@FXML
@@ -131,7 +150,7 @@ public class GuiController {
 		dialog.setHeaderText("Enter a new nickname");
 		dialog.setContentText("Please enter your desired nick:");
 
-		Optional<String> result = dialog.showAndWait();
+		final Optional<String> result = dialog.showAndWait();
 
 		result.ifPresent(name -> {
 			if(!name.isEmpty()) {
@@ -141,10 +160,17 @@ public class GuiController {
 	}
 
 	public void loadBoard(Board board) {
+		boardCache = board;
 		boardUI.loadBoard(board);
 	}
 
     public void loadPlayer(PlayerUpdate update) {
+		if(update.getId() == Client.getRouter().getPid()) {
+			balanceLabel.setText("Balance: £" + update.getPlayer().getBalance());
+			getOutOfJailsLabel.setText("Get Out of Jail Cards: " + update.getPlayer().getGetOutOfJails());
+			jailedLabel.setText("Jailed: " + update.getPlayer().getJailed());
+		}
+
 		for(GenericPlayerUI i : playerListView.getItems()) {
 			if(i.getPid() == update.getId()) {
 				i.reload(update);
@@ -159,16 +185,11 @@ public class GuiController {
 		} else {
 			playerListView.getItems().add(gen);
 		}
-
-		if(update.getId() == Client.getRouter().getPid()) {
-			//TODO load info of us to OUR gui (assets, cash, jail)
-		}
     }
 
 	public void focusGenericPlayer(GenericPlayerUI owner) {
 		rightTabPane.getSelectionModel().select(playersTab);
 		playerListView.scrollTo(owner);
-		playerListView.getSelectionModel().select(owner);
 	}
 
 	public void removeOtherPlayer(long id) {
@@ -182,7 +203,26 @@ public class GuiController {
 	}
 
     public void setTurn(TurnUpdate update) {
+		Client.getGui().displayChatMessage(MessageType.SYSTEM, "It is now the turn of " + update.getNick() + ".");
 		turnTime = update.getTurnTime();
-		//TODO enable/disable roll dice buttons, property mortgage etc. based on update pid (is it ours or not?)
+
+		if(update.getPid() == Client.getRouter().getPid()) {
+			setActionsDisabled(false);
+		}
     }
+
+	@FXML
+	private void onRollDicePressed(ActionEvent actionEvent) {
+		Client.getRouter().send(PacketType.ROLL_DICE_REQ, true);
+	}
+
+	@FXML
+	private void onOpenNewConnectionPressed(ActionEvent actionEvent) {
+		SplashController.open(Client.getStage().getOwner());
+	}
+
+	@FXML
+	private void onDisconnectPressed(ActionEvent actionEvent) {
+		Client.getRouter().disconnectAndAlertServer();
+	}
 }

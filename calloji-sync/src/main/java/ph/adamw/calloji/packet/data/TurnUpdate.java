@@ -8,4 +8,5 @@ import lombok.Getter;
 public class TurnUpdate {
     private final long pid;
     private final int turnTime;
+    private final String nick;
 }

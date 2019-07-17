@@ -13,6 +13,8 @@ import java.util.List;
 @Slf4j
 public class BoardUI extends GridPane {
     private static final int SIZE = 11;
+    public static final int WIDTH = 75;
+    public static final int HEIGHT = 120;
 
     private final List<PlotUI> renderedPlots = new ArrayList<>();
 
@@ -25,11 +27,10 @@ public class BoardUI extends GridPane {
         getColumnConstraints().clear();
 
 
-
         for(int i = 0; i < SIZE; i ++) {
             ColumnConstraints n = new ColumnConstraints();
 
-            n.setPrefWidth(75);
+            n.setPrefWidth(WIDTH);
             n.setHgrow(Priority.ALWAYS);
 
             getColumnConstraints().add(n);
@@ -38,7 +39,7 @@ public class BoardUI extends GridPane {
         for(int i = 0; i < SIZE; i ++) {
             RowConstraints n = new RowConstraints();
 
-            n.setPrefHeight(120);
+            n.setPrefHeight(HEIGHT);
             n.setVgrow(Priority.ALWAYS);
 
             getRowConstraints().add(n);

@@ -5,11 +5,10 @@ import lombok.Getter;
 public enum GamePiece {
     BATTLESHIP("battleship"),
     TOP_HAT("top_hat"),
-    THIMBLE("thimble"),
+    SCOTTY_DOG("scotty_dog"),
     IRON("iron"),
     RACECAR("racecar"),
-    BOOT("boot"),
-    SCOTTY_DOG("scotty_dog"),
+    BOOT("init"),
     WHEELBARROW("wheelbarrow");
 
     @Getter

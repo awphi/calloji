@@ -1,6 +1,7 @@
 package ph.adamw.calloji.client;
 
 import com.google.gson.JsonElement;
+import javafx.application.Platform;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,10 +37,17 @@ public class ClientRouter extends PacketDispatcher {
 				.setSuccessor(new PacketLinkNickChange())
 				.setSuccessor(new PacketLinkPlayerUpdate())
 				.setSuccessor(new PacketLinkBoardUpdate())
-				.setSuccessor(new PacketLinkTurnUpdate());
+				.setSuccessor(new PacketLinkTurnUpdate())
+				.setSuccessor(new PacketLinkDiceRolled())
+				.setSuccessor(new PacketLinkPlotLandedOn())
+				.setSuccessor(new PacketLinkCardDrawn());
 	}
 
 	public void connect(String hostname, int port) throws IOException {
+		if(isConnected()) {
+			disconnectAndAlertServer();
+		}
+
 		socket.connect(new InetSocketAddress(hostname, port), 5000);
 
 		outputStream = socket.getOutputStream();
@@ -50,16 +58,20 @@ public class ClientRouter extends PacketDispatcher {
 		startReceiving();
 	}
 
-	void requestDisconnect() {
+	public void disconnectAndAlertServer() {
 		send(PacketType.CLIENT_CONNECTION_UPDATE, new ConnectionUpdate(true, getPid()));
+		disconnect();
+		//TODO unload board and stuff
 	}
 
-	public void forceDisconnect() {
+	public void disconnect() {
 		try {
 			socket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		Platform.runLater(() -> Client.getGui().getDisconnectButton().setDisable(true));
 	}
 
 	@Override

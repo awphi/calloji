@@ -1,26 +1,22 @@
 package ph.adamw.calloji.client;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import javafx.stage.WindowEvent;
 import lombok.Getter;
 import ph.adamw.calloji.client.gui.GuiController;
 import ph.adamw.calloji.client.gui.MessageType;
+import ph.adamw.calloji.client.gui.SplashController;
 import ph.adamw.calloji.util.LoggerUtils;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class Client extends Application {
 	@Getter
@@ -29,56 +25,15 @@ public class Client extends Application {
 	@Getter
 	private static GuiController gui;
 
-	private final static SimpleDateFormat dateFormat = new SimpleDateFormat("K:mm");
-
-	private final static List<Text> messageQueue = new ArrayList<>();
-
-	private static Stage splashStage;
+	@Getter
+	private static Stage stage;
 
 	public static void main(String[] args) {
-		// Establish logger defaults then instantiate everything that uses a logger
-		LoggerUtils.setFormatting();
-		LoggerUtils.setProperty("defaultLogLevel", "warn");
-		LoggerUtils.establishLevels(args);
+		// Must init the logger before instantiating objects that use it
+		LoggerUtils.init(args);
 
 		router = new ClientRouter();
-		//attemptConnect("0.0.0.0", 8080);
 		Application.launch(args);
-	}
-
-	public static void printMessage(MessageType type, String txt) {
-		final Text text = new Text("[" + dateFormat.format(new Date()) + "] " + txt);
-		text.setFill(type.getColor());
-
-		if(gui != null) {
-			gui.addMessageToList(text);
-		} else {
-			messageQueue.add(text);
-		}
-	}
-
-	public static void openSplash(Window window) {
-		if(splashStage != null) {
-			return;
-		}
-
-		final FXMLLoader fxmlLoader = new FXMLLoader(Client.class.getResource("/fxml/splash.fxml"));
-		try {
-			splashStage = new Stage();
-			splashStage.setTitle("New Calloji connection [awphi]");
-			splashStage.initModality(Modality.WINDOW_MODAL);
-			splashStage.initOwner(window);
-			splashStage.setScene(new Scene(fxmlLoader.load()));
-			splashStage.setResizable(false);
-			splashStage.show();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static void closeSplash() {
-		splashStage.close();
-		splashStage = null;
 	}
 
 	public static boolean attemptConnect(String host, int port) {
@@ -89,34 +44,30 @@ public class Client extends Application {
 			return false;
 		}
 
+		Platform.runLater(() -> Client.getGui().getDisconnectButton().setDisable(false));
 		return true;
 	}
 
 	@Override
 	public void start(Stage stage) throws Exception {
+		Client.stage = stage;
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/gui.fxml"));
 		Parent root = fxmlLoader.load();
 
 		gui = fxmlLoader.getController();
 
-		for(Text i : messageQueue) {
-			gui.addMessageToList(i);
-		}
-
-		messageQueue.clear();
-
 		final Scene scene = new Scene(root);
 
 		stage.setTitle("Calloji Client [awphi]");
 		stage.setScene(scene);
-		stage.setOnShown(event -> openSplash((Window) event.getSource()));
+		stage.setOnShown(event -> SplashController.open((Window) event.getSource()));
 		stage.show();
 	}
 
 	@Override
 	public void stop(){
 		if(router.isConnected()) {
-			router.requestDisconnect();
+			router.disconnectAndAlertServer();
 		}
 
 		int timer = 0;
@@ -133,7 +84,7 @@ public class Client extends Application {
 			}
 
 			if(timer == 5) {
-				router.forceDisconnect();
+				router.disconnect();
 				break;
 			}
 		}

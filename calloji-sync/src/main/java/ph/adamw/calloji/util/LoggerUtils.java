@@ -10,6 +10,12 @@ public class LoggerUtils {
 		setProperty("levelInBrackets", "true");
 	}
 
+	public static void init(String[] args) {
+		setFormatting();
+		setProperty("defaultLogLevel", "info");
+		establishLevels(args);
+	}
+
 	public static void establishLevels(String[] args) {
 		final List<String> list = Arrays.asList(args);
 		if(list.contains("--debug")) {

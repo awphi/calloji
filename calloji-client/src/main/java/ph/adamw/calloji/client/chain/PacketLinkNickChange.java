@@ -14,7 +14,7 @@ public class PacketLinkNickChange extends PacketLinkBase {
     public void handle(PacketType type, JsonElement content) {
         final String nick = content.getAsString();
 
-        Client.printMessage(MessageType.SYSTEM, "Nickname successfully changed to " + nick + ".");
+        Client.getGui().displayChatMessage(MessageType.SYSTEM, "Nickname successfully changed to " + nick + ".");
 
         Platform.runLater(() -> {
             Client.getGui().getNicknameMenu().setText(nick);

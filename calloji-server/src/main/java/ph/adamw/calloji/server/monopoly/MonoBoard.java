@@ -8,21 +8,21 @@ import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 import ph.adamw.calloji.packet.data.plot.StreetPlot;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class MonoBoard {
     @Getter
     private final Board board = new Board();
 
-    private final List<MonoPropertyPlot> plots = new ArrayList<>();
+    @Getter
+    private final List<MonoPropertyPlot> monoPlots = new ArrayList<>();
 
     MonoBoard(MonoGame game) {
         for(Plot i : board.getPlots()) {
             if(i instanceof StreetPlot) {
-                plots.add(new MonoStreetPlot(game, (StreetPlot) i));
+                monoPlots.add(new MonoStreetPlot(game, (StreetPlot) i));
             } else if(i instanceof PropertyPlot) {
-                plots.add(new MonoPropertyPlot(game, (PropertyPlot) i));
+                monoPlots.add(new MonoPropertyPlot(game, (PropertyPlot) i));
             }
         }
     }
@@ -38,12 +38,16 @@ public class MonoBoard {
     }
 
     public MonoPropertyPlot getMonoPlot(PropertyPlot plot) {
-        for(MonoPropertyPlot i : plots) {
-            if(i.getPlot() == plot) {
+        for(MonoPropertyPlot i : monoPlots) {
+            if(i.getPlot().equals(plot)) {
                 return i;
             }
         }
 
         return null;
+    }
+
+    public Plot getIndexedPlot(int index) {
+        return board.getPlots().get(index);
     }
 }

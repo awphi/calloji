@@ -5,6 +5,7 @@ import ph.adamw.calloji.packet.data.plot.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.data.*;
 import ph.adamw.calloji.packet.PacketType;
+import ph.adamw.calloji.server.ServerRouter;
+import ph.adamw.calloji.server.connection.ClientConnection;
 import ph.adamw.calloji.server.connection.event.ClientConnectedEvent;
 import ph.adamw.calloji.server.connection.event.ClientDisconnectedEvent;
 import ph.adamw.calloji.server.connection.event.ClientNickChangeEvent;
@@ -13,14 +15,19 @@ import ph.adamw.calloji.server.monopoly.card.MonoCardPile;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
-public class MonoGame extends ClientPoolListener {
-    @Getter
-    private final MonoCardPile communityChestPile = new MonoCardPile(MonoCardPile.COMM_CHEST);
+public class MonoGame implements ClientPoolListener {
+    public MonoGame() {
+        ServerRouter.getEventBus().register(this);
+    }
 
     @Getter
-    private final MonoCardPile chancePile = new MonoCardPile(MonoCardPile.CHANCE);
+    private final MonoCardPile communityChestPile = new MonoCardPile("Community Chest", MonoCardPile.COMM_CHEST);
+
+    @Getter
+    private final MonoCardPile chancePile = new MonoCardPile("Chance", MonoCardPile.CHANCE);
 
     private final List<MonoPlayer> playerList = new ArrayList<>();
 
@@ -34,32 +41,31 @@ public class MonoGame extends ClientPoolListener {
 
     private int nextTurnPlayerIndex = 0;
 
-    @Getter
-    private boolean inProgress = false;
+    private boolean hasRolled = false;
+
 
     public void start() {
-        if(inProgress) return;
-        inProgress = true;
-
-        while(getWinner() == null) {
+        while(getWinner() == null && !playerList.isEmpty()) {
             playTurn();
         }
 
-        // TODO Declare winner packet, end game and discard
+        log.debug("Game over! Winner: " + getWinner());
+        // TODO Declare winner packet + shut down server (or restart??)
     }
 
     void extendCurrentTurn(int secs) {
         currentTurnTime += secs;
-        updateAllPlayersOnAllClients();
+        sendToAll(PacketType.TURN_UPDATE, new TurnUpdate(currentTurnPlayer.getConnectionId(), currentTurnTime, currentTurnPlayer.getConnectionNick()));
     }
 
     private void playTurn() {
-        while(currentTurnPlayer == null || !currentTurnPlayer.getPlayer().isBankrupt()) {
+        while(currentTurnPlayer == null || currentTurnPlayer.getPlayer().isBankrupt()) {
             currentTurnPlayer = playerList.get(nextTurnPlayerIndex);
             nextTurnPlayerIndex = (nextTurnPlayerIndex + 1) % playerList.size();
         }
+        log.debug("Turn of player: " + currentTurnPlayer);
 
-        sendToAll(PacketType.TURN_UPDATE, new TurnUpdate(currentTurnPlayer.getConnectionId(), currentTurnTime));
+        hasRolled = false;
         currentTurnTime = 30;
 
         if(currentTurnPlayer.getPlayer().getJailed() > 0) {
@@ -67,22 +73,39 @@ public class MonoGame extends ClientPoolListener {
             currentTurnPlayer.decJailed();
         }
 
-        // Allows turns to be extended from a separate thread
-        while(currentTurnTime > 0) {
-            currentTurnTime = 0;
+        sendToAll(PacketType.TURN_UPDATE, new TurnUpdate(currentTurnPlayer.getConnectionId(), currentTurnTime, currentTurnPlayer.getConnectionNick()));
 
+        // Allows turns to be extended from a separate thread
+        do {
+            int cache = currentTurnTime;
             try {
                 // Allow 30 seconds for the user to send the server packets (handled in a separate thread)
                 Thread.sleep(currentTurnTime * 1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+            currentTurnTime -= cache;
+        } while(currentTurnTime > 0);
+    }
+
+    public void rollDice(ClientConnection connection) {
+        if(hasRolled) {
+            return;
         }
 
-        currentTurnPlayer.send(PacketType.TURN_UPDATE, new JsonPrimitive(false));
+        final int roll = ThreadLocalRandom.current().nextInt(1, 13);
+        connection.send(PacketType.DICE_ROLL_RESPONSE, new JsonPrimitive(roll));
+        getMonoPlayer(connection.getId()).moveSpaces(roll);
+        hasRolled = true;
     }
 
     private MonoPlayer getWinner() {
+        // To allow for 1-person games (for debugging)
+        if(playerList.size() == 1) {
+            return playerList.get(0).getPlayer().isBankrupt() ? playerList.get(0) : null;
+        }
+
         int c = 0;
         MonoPlayer x = null;
 
@@ -98,7 +121,7 @@ public class MonoGame extends ClientPoolListener {
 
     @Override
     public void onClientConnect(ClientConnectedEvent e) {
-        final MonoPlayer n = new MonoPlayer(e.getPool().get(e.getId()), this, new Player(GamePiece.next()));
+        final MonoPlayer n = new MonoPlayer(e.getPool().get(e.getId()), this, new Player(GamePiece.next(), e.getId()));
         playerList.add(n);
 
         log.debug("Created new MonoPlayer for: " + e.getId());
@@ -158,20 +181,9 @@ public class MonoGame extends ClientPoolListener {
     }
 
     @Nullable
-    MonoPlayer getMonoPlayer(Player owner) {
+    public MonoPlayer getMonoPlayer(Long id) {
         for(MonoPlayer i : playerList) {
-            if(i.getPlayer() == owner) {
-                return i;
-            }
-        }
-
-        return null;
-    }
-
-    @Nullable
-    private MonoPlayer getMonoPlayer(long id) {
-        for(MonoPlayer i : playerList) {
-            if(i.getConnectionId() == id) {
+            if(id.equals(i.getConnectionId())) {
                 return i;
             }
         }

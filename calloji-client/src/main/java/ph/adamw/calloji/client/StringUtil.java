@@ -1,18 +1,11 @@
 package ph.adamw.calloji.client;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
-
 public class StringUtil {
-    final static SimpleDateFormat minuteSecondsFormat = new SimpleDateFormat("mm:ss");
-
-    static {
-        minuteSecondsFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-    }
-
     public static String formatSecondMinutes(int seconds) {
-        return minuteSecondsFormat.format(new Date(seconds));
+        return (Integer.toString(seconds / 60).length() == 1 ? "0" : "")
+                + seconds / 60 + ":"
+                + (Integer.toString(seconds % 60).length() == 1 ? "0" : "")
+                + seconds % 60;
     }
 }
 
