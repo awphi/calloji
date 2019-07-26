@@ -2,6 +2,7 @@ package ph.adamw.calloji.client.gui;
 
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
@@ -28,13 +29,17 @@ public class GuiUtils {
         return GuiUtils.class.getResourceAsStream("/monopoly/" + piece.getImageRef() + ".png");
     }
 
-    public static void openOwnedWindow(Window window, String res, Stage stage) throws IOException {
+    public static <T> T openOwnedWindow(Window window, String res, Stage stage) throws IOException {
         final FXMLLoader fxmlLoader = new FXMLLoader(Client.class.getResource(res));
+        final Parent p = fxmlLoader.load();
+        final T cache = fxmlLoader.getController();
+
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(window);
-        stage.setScene(new Scene(fxmlLoader.load()));
+        stage.setScene(new Scene(p));
         stage.setResizable(false);
         stage.show();
+        return cache;
     }
 
     public static Thread startRunner(Runnable runnable, long millis) {

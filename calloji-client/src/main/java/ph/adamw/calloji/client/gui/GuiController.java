@@ -63,7 +63,7 @@ public class GuiController {
 	@FXML
 	private Label turnTimer;
 
-	private int turnTime = 0;
+	private Integer turnTime = 0;
 
 	@FXML
 	private Label jailedLabel;
@@ -203,11 +203,15 @@ public class GuiController {
 	}
 
     public void setTurn(TurnUpdate update) {
-		Client.getGui().displayChatMessage(MessageType.SYSTEM, "It is now the turn of " + update.getNick() + ".");
-		turnTime = update.getTurnTime();
+		if(!update.isExtension()) {
+			Client.getGui().displayChatMessage(MessageType.SYSTEM, "It is now the turn of " + update.getNick() + ".");
+			turnTime = update.getTurnTime();
 
-		if(update.getPid() == Client.getRouter().getPid()) {
-			setActionsDisabled(false);
+			if(update.getPid() == Client.getRouter().getPid()) {
+				setActionsDisabled(false);
+			}
+		} else {
+			turnTime += update.getTurnTime();
 		}
     }
 

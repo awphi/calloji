@@ -25,7 +25,7 @@
          </children></VBox>
    </center>
    <top>
-      <Label fx:id="deckLabel" prefHeight="36.0" prefWidth="205.0" style="-fx-alignment: center;" text="Chance Card" textAlignment="CENTER" BorderPane.alignment="CENTER">
+      <Label fx:id="deckLabel" prefHeight="36.0" prefWidth="521.0" style="-fx-alignment: center;" text="Chance Card" textAlignment="CENTER" BorderPane.alignment="CENTER">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>

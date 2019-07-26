@@ -16,7 +16,7 @@
       <URL value="@style.css" />
    </stylesheets>
    <top>
-      <Label fx:id="title" alignment="CENTER" prefHeight="68.0" prefWidth="418.0" text="Auction For: &#13; Old Kent Road" textAlignment="CENTER" BorderPane.alignment="CENTER">
+      <Label fx:id="title" alignment="CENTER" contentDisplay="CENTER" prefHeight="68.0" prefWidth="418.0" text="Auction For: &#13; Old Kent Road" textAlignment="CENTER" BorderPane.alignment="CENTER">
          <font>
             <Font size="23.0" />
          </font>
@@ -31,7 +31,7 @@
    <bottom>
       <VBox prefHeight="0.0" prefWidth="460.0" style="-fx-alignment: center;" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="CENTER" prefHeight="32.0" prefWidth="158.0" text="Top Bidder: None">
+            <Label fx:id="topBidderLabel" alignment="CENTER" prefHeight="21.0" prefWidth="371.0" text="Top Bidder: None - £0.00">
                <font>
                   <Font size="15.0" />
                </font>
@@ -43,7 +43,7 @@
                <children>
                   <VBox fillWidth="false" prefHeight="25.0" prefWidth="103.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Label fx:id="auctionTimer" text="00:30" textAlignment="CENTER" />
+                        <Label fx:id="auctionTimer" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="61.0" text="00:00" textAlignment="CENTER" />
                      </children>
                      <styleClass>
                         <String fx:value="centred" />
@@ -53,7 +53,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </VBox>
-                  <TextField fx:id="bidTextField" promptText="Enter Bid...">
+                  <TextField fx:id="bidTextField" promptText="Enter Bid..." onKeyReleased="#onBidFieldKeyUp">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>

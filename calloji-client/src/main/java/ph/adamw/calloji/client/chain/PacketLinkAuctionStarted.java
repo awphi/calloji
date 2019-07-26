@@ -1,6 +1,7 @@
 package ph.adamw.calloji.client.chain;
 
 import com.google.gson.JsonElement;
+import javafx.application.Platform;
 import ph.adamw.calloji.client.Client;
 import ph.adamw.calloji.client.gui.AuctionGuiController;
 import ph.adamw.calloji.packet.PacketLinkBase;
@@ -14,6 +15,6 @@ public class PacketLinkAuctionStarted extends PacketLinkBase {
     @Override
     public void handle(PacketType type, JsonElement content) {
         final PropertyPlot plot = JsonUtils.getObject(content, PropertyPlot.class);
-        AuctionGuiController.open(Client.getStage(), plot);
+        Platform.runLater(() -> AuctionGuiController.open(Client.getStage(), plot));
     }
 }

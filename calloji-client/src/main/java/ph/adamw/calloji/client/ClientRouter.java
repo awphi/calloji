@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.client.chain.*;
 import ph.adamw.calloji.packet.*;
 import ph.adamw.calloji.packet.data.ConnectionUpdate;
+import ph.adamw.calloji.util.GameConstants;
 import ph.adamw.calloji.util.PacketLinkUtils;
 
 import java.io.*;
@@ -41,7 +42,7 @@ public class ClientRouter extends PacketDispatcher {
 			disconnectAndAlertServer();
 		}
 
-		socket.connect(new InetSocketAddress(hostname, port), 5000);
+		socket.connect(new InetSocketAddress(hostname, port), GameConstants.TIMEOUT_TIME * 1000);
 
 		outputStream = socket.getOutputStream();
 		outputStream.flush();

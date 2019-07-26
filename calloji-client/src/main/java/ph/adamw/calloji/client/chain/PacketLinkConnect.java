@@ -9,6 +9,7 @@ import ph.adamw.calloji.packet.PacketLinkBase;
 import ph.adamw.calloji.packet.data.ConnectionUpdate;
 import ph.adamw.calloji.packet.PacketLinkType;
 import ph.adamw.calloji.packet.PacketType;
+import ph.adamw.calloji.util.GameConstants;
 import ph.adamw.calloji.util.JsonUtils;
 
 @PacketLinkType(PacketType.CLIENT_CONNECTION_UPDATE)
@@ -28,7 +29,7 @@ public class PacketLinkConnect extends PacketLinkBase {
                     Client.getRouter().send(PacketType.HEARTBEAT, new JsonObject());
 
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(GameConstants.HEARTBEAT_PULSE * 1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

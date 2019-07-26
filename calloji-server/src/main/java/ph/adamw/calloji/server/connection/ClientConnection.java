@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.PacketDispatcher;
 import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.server.connection.chain.*;
+import ph.adamw.calloji.util.GameConstants;
 import ph.adamw.calloji.util.PacketLinkUtils;
 
 import java.io.*;
@@ -61,7 +62,7 @@ public class ClientConnection extends PacketDispatcher {
         // We need to receive a heart beat every x milliseconds to keep the heart beating, if it's not
         killThread = new Thread(() -> {
             try {
-                Thread.sleep(10000);
+                Thread.sleep(GameConstants.TIMEOUT_TIME * 1000);
             } catch (InterruptedException ignored) {
                 return;
             }

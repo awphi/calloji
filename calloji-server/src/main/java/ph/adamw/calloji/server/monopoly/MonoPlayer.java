@@ -50,7 +50,6 @@ public class MonoPlayer {
 
     public void addAsset(MonoPropertyPlot plot) {
         plot.getPlot().setOwner(getConnectionId());
-        tryRemoveMoney(plot.getPlot().getValue());
         game.updateBoardOnAllClients();
         game.updatePlayerOnAllClients(this);
     }

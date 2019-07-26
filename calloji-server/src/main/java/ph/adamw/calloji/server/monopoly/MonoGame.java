@@ -13,6 +13,7 @@ import ph.adamw.calloji.server.connection.event.ClientDisconnectedEvent;
 import ph.adamw.calloji.server.connection.event.ClientNickChangeEvent;
 import ph.adamw.calloji.server.connection.event.ClientPoolListener;
 import ph.adamw.calloji.server.monopoly.card.MonoCardPile;
+import ph.adamw.calloji.util.GameConstants;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -32,7 +33,7 @@ public class MonoGame implements ClientPoolListener {
 
     private final List<MonoPlayer> playerList = new ArrayList<>();
 
-    private int currentTurnTime = 30;
+    private int currentTurnTime = GameConstants.TURN_TIME;
 
     @Getter
     private MonoPlayer currentTurnPlayer = null;
@@ -44,6 +45,8 @@ public class MonoGame implements ClientPoolListener {
 
     private boolean hasRolled = false;
 
+    @Getter
+    private MonoAuction activeAuction;
 
     public void start() {
         while(getWinner() == null && !playerList.isEmpty()) {
@@ -56,7 +59,7 @@ public class MonoGame implements ClientPoolListener {
 
     void extendCurrentTurn(int secs) {
         currentTurnTime += secs;
-        sendToAll(PacketType.TURN_UPDATE, new TurnUpdate(currentTurnPlayer.getConnectionId(), currentTurnTime, currentTurnPlayer.getConnectionNick()));
+        sendToAll(PacketType.TURN_UPDATE, new TurnUpdate(currentTurnPlayer.getConnectionId(), secs, currentTurnPlayer.getConnectionNick(), true));
     }
 
     private void playTurn() {
@@ -67,26 +70,26 @@ public class MonoGame implements ClientPoolListener {
         log.debug("Turn of player: " + currentTurnPlayer);
 
         hasRolled = false;
-        currentTurnTime = 30;
+        currentTurnTime = GameConstants.TURN_TIME;
 
         if(currentTurnPlayer.getPlayer().getJailed() > 0) {
             currentTurnTime = 0;
             currentTurnPlayer.decJailed();
         }
 
-        sendToAll(PacketType.TURN_UPDATE, new TurnUpdate(currentTurnPlayer.getConnectionId(), currentTurnTime, currentTurnPlayer.getConnectionNick()));
+        sendToAll(PacketType.TURN_UPDATE, new TurnUpdate(currentTurnPlayer.getConnectionId(), currentTurnTime, currentTurnPlayer.getConnectionNick(), false));
 
         // Allows turns to be extended from a separate thread
         do {
             int cache = currentTurnTime;
+            currentTurnTime = 0;
+
             try {
-                // Allow 30 seconds for the user to send the server packets (handled in a separate thread)
-                Thread.sleep(currentTurnTime * 1000);
+                Thread.sleep(cache * 1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            currentTurnTime -= cache;
         } while(currentTurnTime > 0);
     }
 
@@ -95,14 +98,32 @@ public class MonoGame implements ClientPoolListener {
             return;
         }
 
-        final int roll = ThreadLocalRandom.current().nextInt(1, 13);
+        final int roll = ThreadLocalRandom.current().nextInt(1, GameConstants.DICE_AMOUNT * GameConstants.DICE_SIDES + 1);
         connection.send(PacketType.DICE_ROLL_RESPONSE, new JsonPrimitive(roll));
         getMonoPlayer(connection.getId()).moveSpaces(roll);
         hasRolled = true;
     }
 
     public void auction(PropertyPlot property) {
+        extendCurrentTurn(GameConstants.AUCTION_TIME);
         sendToAll(PacketType.AUCTION_START, property);
+        activeAuction = new MonoAuction(property);
+
+        // Will discard of auction and deal w/ winner
+        new Thread(() -> {
+            try {
+                Thread.sleep(GameConstants.AUCTION_TIME * 1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if(activeAuction.getWinner() != null) {
+                activeAuction.getWinner().tryRemoveMoney(activeAuction.getWinnerBid());
+                activeAuction.getWinner().addAsset(monoBoard.getMonoPlot(activeAuction.getProperty()));
+            }
+
+            activeAuction = null;
+        }).start();
     }
 
     private MonoPlayer getWinner() {
