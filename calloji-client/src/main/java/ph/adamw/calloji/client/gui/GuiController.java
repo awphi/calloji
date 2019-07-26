@@ -2,13 +2,17 @@ package ph.adamw.calloji.client.gui;
 
 import com.google.gson.JsonPrimitive;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.WindowEvent;
 import lombok.Getter;
@@ -18,6 +22,7 @@ import ph.adamw.calloji.client.ClientRouter;
 import ph.adamw.calloji.client.StringUtil;
 import ph.adamw.calloji.client.gui.monopoly.BoardUI;
 import ph.adamw.calloji.client.gui.monopoly.GenericPlayerUI;
+import ph.adamw.calloji.client.gui.monopoly.ManagedAssetUI;
 import ph.adamw.calloji.client.gui.monopoly.ThinPlotUI;
 import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.packet.data.*;
@@ -83,6 +88,9 @@ public class GuiController {
 
 	private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("K:mm");
 
+	@FXML
+	private ListView<ManagedAssetUI> assetManagementListView;
+
 	public void displayChatMessage(MessageType type, String txt) {
 		final Label text = new Label("[" + DATE_FORMAT.format(new Date()) + "] " + txt);
 		text.setTextFill(type.getColor());
@@ -98,6 +106,7 @@ public class GuiController {
 
 		chatListView.setPlaceholder(new Label("Not connected to a game!"));
 		playerListView.setPlaceholder(new Label("Not connected to a game!"));
+		assetManagementListView.setPlaceholder(new Label("No assets owned!"));
 
 		final Thread timer = GuiUtils.startRunner(this::decrementTurnTimer, 1000);
 
@@ -164,6 +173,33 @@ public class GuiController {
 		boardUI.loadBoard(board);
 	}
 
+	private boolean isPlayerUpdateFresh(PlayerUpdate update) {
+		for(GenericPlayerUI i : playerListView.getItems()) {
+			if(i.getPid() == update.getId()) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private void reloadPlayer(PlayerUpdate update) {
+		for(GenericPlayerUI i : playerListView.getItems()) {
+			if(i.getPid() == update.getId()) {
+				i.reload(update);
+				break;
+			}
+		}
+
+		if(update.getId() == Client.getRouter().getPid()) {
+			assetManagementListView.getItems().clear();
+
+			for (PropertyPlot j : update.getPlayer().getOwnedPlots(Client.getGui().getBoardCache())) {
+				assetManagementListView.getItems().add(new ManagedAssetUI(j));
+			}
+		}
+	}
+
     public void loadPlayer(PlayerUpdate update) {
 		if(update.getId() == Client.getRouter().getPid()) {
 			balanceLabel.setText("Balance: £" + update.getPlayer().getBalance());
@@ -171,20 +207,20 @@ public class GuiController {
 			jailedLabel.setText("Jailed: " + update.getPlayer().getJailed());
 		}
 
-		for(GenericPlayerUI i : playerListView.getItems()) {
-			if(i.getPid() == update.getId()) {
-				i.reload(update);
-				return;
+		// If there's no player to reload then this is a new player and we must create props for it
+		if(isPlayerUpdateFresh(update)) {
+			final GenericPlayerUI gen = new GenericPlayerUI(update, boardUI);
+
+			log.debug(update.getId() + " " + Client.getRouter().getPid() + " " + (Client.getRouter().getPid() == update.getId()));
+
+			if(update.getId() == Client.getRouter().getPid()) {
+				playerListView.getItems().add(0, gen);
+			} else {
+				playerListView.getItems().add(gen);
 			}
 		}
 
-		final GenericPlayerUI gen = new GenericPlayerUI(update, boardUI);
-
-		if(update.getId() == Client.getRouter().getPid()) {
-			playerListView.getItems().add(0, gen);
-		} else {
-			playerListView.getItems().add(gen);
-		}
+		reloadPlayer(update);
     }
 
 	public void focusGenericPlayer(GenericPlayerUI owner) {

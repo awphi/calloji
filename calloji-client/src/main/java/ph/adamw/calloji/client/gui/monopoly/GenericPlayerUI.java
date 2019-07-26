@@ -81,8 +81,6 @@ public class GenericPlayerUI extends VBox {
         ownedPlots.setMaxHeight(60);
         ownedPlots.setPlaceholder(new Label("No owned properties."));
         getChildren().add(ownedPlots);
-
-        reload(update);
     }
 
     public void deleteGamePiece() {

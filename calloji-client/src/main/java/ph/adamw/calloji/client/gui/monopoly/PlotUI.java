@@ -25,6 +25,9 @@ public class PlotUI extends BorderPane {
     private final HBox centreBox = new HBox();
 
     public PlotUI(@Nullable BoardUI board) {
+        setMaxHeight(BoardUI.HEIGHT);
+        setMaxWidth(BoardUI.WIDTH);
+
         this.board = board;
 
         centreBox.getStyleClass().add("centred");
