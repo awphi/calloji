@@ -80,7 +80,7 @@ public class MonoPlayer {
 
             if(p.getOwner() == null) {
                 if(p.getValue() > player.getBalance()) {
-                    //TODO auction it packets
+                    game.auction(p);
                 } else {
                     send(PacketType.PLOT_LANDED_ON, p);
                 }

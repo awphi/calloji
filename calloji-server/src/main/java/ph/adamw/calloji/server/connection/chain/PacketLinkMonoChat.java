@@ -9,10 +9,6 @@ import ph.adamw.calloji.util.JsonUtils;
 
 @PacketLinkType(PacketType.CHAT)
 public class PacketLinkMonoChat extends PacketLinkMono {
-    public PacketLinkMonoChat(ClientConnection connection) {
-        super(connection);
-    }
-
     @Override
     public void handle(PacketType type, JsonElement content, ClientConnection connection) {
         final ChatMessage chatMessage = JsonUtils.getObject(content, ChatMessage.class);

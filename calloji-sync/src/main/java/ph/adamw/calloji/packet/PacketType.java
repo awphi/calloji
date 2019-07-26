@@ -15,7 +15,7 @@ public enum PacketType {
     PLOT_PURCHASED,
     CARD_DRAWN,
     AUCTION_REQUEST,
-    AUCTION_START,  //TODO
+    AUCTION_START,
     AUCTION_BID; //TODO
 
     private static PacketType[] VALUES = values();

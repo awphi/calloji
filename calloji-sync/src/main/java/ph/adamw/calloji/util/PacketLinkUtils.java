@@ -11,10 +11,6 @@ import java.lang.reflect.InvocationTargetException;
 @Slf4j
 public class PacketLinkUtils {
     public static PacketLinkBase buildChain() throws IOException {
-        return buildChain(null);
-    }
-
-    public static PacketLinkBase buildChain(Object inst) throws IOException {
         PacketLinkBase linkChain = null;
         PacketLinkBase top = null;
         final ClassLoader loader = Thread.currentThread().getContextClassLoader();
@@ -29,13 +25,7 @@ public class PacketLinkUtils {
                 }
 
                 try {
-                    final PacketLinkBase plink;
-
-                    if(inst == null) {
-                         plink = (PacketLinkBase) clazz.newInstance();
-                    } else {
-                        plink = (PacketLinkBase) clazz.getConstructors()[0].newInstance(inst);
-                    }
+                    final PacketLinkBase plink = (PacketLinkBase) clazz.newInstance();
 
                     if(linkChain == null) {
                         log.debug("Chain start: " + clazz.getSimpleName());
@@ -45,7 +35,7 @@ public class PacketLinkUtils {
                     }
 
                     log.info("Loaded "  + clazz.getSimpleName() + " into the packet link chain.");
-                } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                } catch (InstantiationException | IllegalAccessException e) {
                     log.info("Unable to load " + clazz.getSimpleName() + " into the packet link chain.");
                     e.printStackTrace();
                 }

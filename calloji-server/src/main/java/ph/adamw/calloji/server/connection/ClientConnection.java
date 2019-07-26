@@ -38,7 +38,7 @@ public class ClientConnection extends PacketDispatcher {
     @Getter
     private String nick = "Calloji User";
 
-    private final PacketLinkMono linkChain = (PacketLinkMono) PacketLinkUtils.buildChain(this);
+    private final PacketLinkMono linkChain = ((PacketLinkMono) PacketLinkUtils.buildChain()).setChainConnection(this);
 
     ClientConnection(long id, ClientPool pool, Socket socket) throws IOException {
         this.socket = socket;

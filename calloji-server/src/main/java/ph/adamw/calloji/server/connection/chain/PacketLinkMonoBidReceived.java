@@ -1,16 +1,12 @@
 package ph.adamw.calloji.server.connection.chain;
 
 import com.google.gson.JsonElement;
-import lombok.extern.slf4j.Slf4j;
-import ph.adamw.calloji.packet.PacketLinkType;
 import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.server.connection.ClientConnection;
 
-@PacketLinkType(PacketType.HEARTBEAT)
-@Slf4j
-public class PacketLinkMonoHeartbeat extends PacketLinkMono {
+public class PacketLinkMonoBidReceived extends PacketLinkMono {
     @Override
     public void handle(PacketType type, JsonElement content, ClientConnection connection) {
-        connection.restartKillThread();
+        //TODO on bid received check if amount is high enough, if user can afford, if auction over etc. etc.
     }
 }

@@ -8,10 +8,6 @@ import ph.adamw.calloji.server.connection.ClientConnection;
 
 @PacketLinkType(PacketType.ROLL_DICE_REQ)
 public class PacketLinkMonoDiceRequest extends PacketLinkMono {
-    public PacketLinkMonoDiceRequest(ClientConnection connection) {
-        super(connection);
-    }
-
     @Override
     public void handle(PacketType type, JsonElement content, ClientConnection connection) {
         if(ServerRouter.getGame().getCurrentTurnPlayer().getConnectionId() == connection.getId()) {

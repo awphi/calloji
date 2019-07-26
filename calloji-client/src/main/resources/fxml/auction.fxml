@@ -43,7 +43,7 @@
                <children>
                   <VBox fillWidth="false" prefHeight="25.0" prefWidth="103.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Text fx:id="auctionTimer" strokeType="OUTSIDE" strokeWidth="0.0" text="00:30" textAlignment="CENTER" wrappingWidth="65.13671875" />
+                        <Label fx:id="auctionTimer" text="00:30" textAlignment="CENTER" />
                      </children>
                      <styleClass>
                         <String fx:value="centred" />
@@ -53,7 +53,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </VBox>
-                  <TextField promptText="Enter Bid...">
+                  <TextField fx:id="bidTextField" promptText="Enter Bid...">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>

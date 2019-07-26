@@ -11,10 +11,6 @@ import ph.adamw.calloji.util.JsonUtils;
 @PacketLinkType(PacketType.CLIENT_CONNECTION_UPDATE)
 @Slf4j
 public class PacketLinkMonoConnect extends PacketLinkMono {
-    public PacketLinkMonoConnect(ClientConnection connection) {
-        super(connection);
-    }
-
     @Override
     public void handle(PacketType type, JsonElement content, ClientConnection connection) {
         final ConnectionUpdate connUpdate = JsonUtils.getObject(content, ConnectionUpdate.class);

@@ -10,10 +10,6 @@ import ph.adamw.calloji.server.connection.event.ClientNickChangeEvent;
 
 @PacketLinkType(PacketType.NICK_EDIT)
 public class PacketLinkMonoNickEdit extends PacketLinkMono {
-    public PacketLinkMonoNickEdit(ClientConnection connection) {
-        super(connection);
-    }
-
     @Override
     public void handle(PacketType type, JsonElement content, ClientConnection connection) {
         for(ClientConnection i : connection.getPool().getImmutableConnections()) {
