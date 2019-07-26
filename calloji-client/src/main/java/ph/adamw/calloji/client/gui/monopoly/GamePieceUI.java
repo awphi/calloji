@@ -12,14 +12,12 @@ import ph.adamw.calloji.packet.data.GamePiece;
 public class GamePieceUI extends ImageView {
     private final BoardUI boardUI;
     private int boardPosition = -1;
-    private final GenericPlayerUI owner;
 
     private static final ColorAdjust colorAdjust = new ColorAdjust();
 
     public GamePieceUI(GamePiece piece, int boardPosition, BoardUI boardUI, GenericPlayerUI owner) {
         super(GuiUtils.getGamePieceImage(piece));
         this.boardUI = boardUI;
-        this.owner = owner;
 
         colorAdjust.setBrightness(0.2);
 

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.data.*;
 import ph.adamw.calloji.packet.PacketType;
+import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 import ph.adamw.calloji.server.ServerRouter;
 import ph.adamw.calloji.server.connection.ClientConnection;
 import ph.adamw.calloji.server.connection.event.ClientConnectedEvent;
@@ -98,6 +99,10 @@ public class MonoGame implements ClientPoolListener {
         connection.send(PacketType.DICE_ROLL_RESPONSE, new JsonPrimitive(roll));
         getMonoPlayer(connection.getId()).moveSpaces(roll);
         hasRolled = true;
+    }
+
+    public void auction(PropertyPlot property) {
+        sendToAll(PacketType.AUCTION_START, property);
     }
 
     private MonoPlayer getWinner() {

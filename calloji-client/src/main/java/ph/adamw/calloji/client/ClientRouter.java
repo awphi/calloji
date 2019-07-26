@@ -1,5 +1,6 @@
 package ph.adamw.calloji.client;
 
+import com.google.common.reflect.ClassPath;
 import com.google.gson.JsonElement;
 import javafx.application.Platform;
 import lombok.AccessLevel;
@@ -7,10 +8,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.client.chain.*;
-import ph.adamw.calloji.packet.PacketDispatcher;
-import ph.adamw.calloji.packet.PacketLinkBase;
-import ph.adamw.calloji.packet.PacketType;
+import ph.adamw.calloji.packet.*;
 import ph.adamw.calloji.packet.data.ConnectionUpdate;
+import ph.adamw.calloji.util.PacketLinkUtils;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -18,7 +18,7 @@ import java.net.Socket;
 
 @Slf4j
 public class ClientRouter extends PacketDispatcher {
-	private final PacketLinkBase linkChain = new PacketLinkConnect();
+	private PacketLinkBase linkChain;
 
 	private final Socket socket = new Socket();
 
@@ -32,15 +32,8 @@ public class ClientRouter extends PacketDispatcher {
 	@Getter(AccessLevel.PROTECTED)
 	private OutputStream outputStream;
 
-	public ClientRouter() {
-		linkChain.setSuccessor(new PacketLinkChat())
-				.setSuccessor(new PacketLinkNickChange())
-				.setSuccessor(new PacketLinkPlayerUpdate())
-				.setSuccessor(new PacketLinkBoardUpdate())
-				.setSuccessor(new PacketLinkTurnUpdate())
-				.setSuccessor(new PacketLinkDiceRolled())
-				.setSuccessor(new PacketLinkPlotLandedOn())
-				.setSuccessor(new PacketLinkCardDrawn());
+	public ClientRouter() throws IOException {
+		linkChain = PacketLinkUtils.buildChain();
 	}
 
 	public void connect(String hostname, int port) throws IOException {

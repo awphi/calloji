@@ -14,7 +14,7 @@ public enum PacketType {
     PLOT_LANDED_ON,
     PLOT_PURCHASED,
     CARD_DRAWN,
-    AUCTION_REQUEST, //TODO
+    AUCTION_REQUEST,
     AUCTION_START,  //TODO
     AUCTION_BID; //TODO
 

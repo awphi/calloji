@@ -28,7 +28,7 @@ public class Client extends Application {
 	@Getter
 	private static Stage stage;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		// Must init the logger before instantiating objects that use it
 		LoggerUtils.init(args);
 

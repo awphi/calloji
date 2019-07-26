@@ -54,7 +54,7 @@ public class BuyGuiController {
 
     @FXML
     private void onAuctionPressed(ActionEvent actionEvent) {
-        //TODO auction packets
+        Client.getRouter().send(PacketType.AUCTION_REQUEST, plot);
         stage.close();
     }
 

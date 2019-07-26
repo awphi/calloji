@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.PacketDispatcher;
 import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.server.connection.chain.*;
+import ph.adamw.calloji.util.PacketLinkUtils;
 
 import java.io.*;
 import java.net.Socket;
@@ -37,18 +38,12 @@ public class ClientConnection extends PacketDispatcher {
     @Getter
     private String nick = "Calloji User";
 
-    private final PacketLinkMono linkChain = new PacketLinkMonoConnect(this);
+    private final PacketLinkMono linkChain = (PacketLinkMono) PacketLinkUtils.buildChain(this);
 
     ClientConnection(long id, ClientPool pool, Socket socket) throws IOException {
         this.socket = socket;
         this.pool = pool;
         this.id = id;
-
-        linkChain.setSuccessor(new PacketLinkMonoChat(this))
-                .setSuccessor(new PacketLinkMonoHeartbeat(this))
-                .setSuccessor(new PacketLinkMonoNickEdit(this))
-                .setSuccessor(new PacketLinkMonoDiceRequest(this))
-                .setSuccessor(new PacketLinkMonoPlotPurchased(this));
 
         outputStream = socket.getOutputStream();
         outputStream.flush();
