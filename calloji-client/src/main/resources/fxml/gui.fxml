@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="mainBorderPane" minHeight="760" minWidth="1280" prefHeight="760" prefWidth="1280" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.adamw.calloji.client.gui.GuiController">
+<BorderPane fx:id="mainBorderPane" minHeight="940" minWidth="1340" prefHeight="940" prefWidth="1340" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.adamw.calloji.client.gui.GuiController">
     <stylesheets>
         <URL value="@style.css" />
     </stylesheets>
@@ -36,64 +36,8 @@
    </top>
    <right>
       <BorderPane prefHeight="761.0" prefWidth="400.0" style="-fx-border-width: 0px 0px 0px 1px; -fx-border-color: #C8C8C8;" BorderPane.alignment="CENTER">
-         <top>
-             <TabPane fx:id="rightTabPane" nodeOrientation="LEFT_TO_RIGHT" prefHeight="602.0" prefWidth="400.0" stylesheets="@style.css" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="250.0" tabMaxWidth="400.0" tabMinHeight="25.0" tabMinWidth="100.0" BorderPane.alignment="CENTER">
-                 <Tab text="Chat">
-                     <VBox prefHeight="604.0" prefWidth="400.0" style="-fx-alignment: center;">
-                         <padding>
-                             <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
-                         </padding>
-                         <ListView fx:id="chatListView" prefHeight="400.0" prefWidth="360.0" VBox.vgrow="ALWAYS">
-                             <VBox.margin>
-                                 <Insets bottom="10.0" />
-                             </VBox.margin>
-                         </ListView>
-                         <HBox prefHeight="0.0" prefWidth="331.0" styleClass="centred">
-                             <TextField fx:id="chatTextField" onKeyReleased="#onChatKeyUp" promptText="Enter your message..." HBox.hgrow="ALWAYS">
-                                 <HBox.margin>
-                                     <Insets right="10.0" />
-                                 </HBox.margin>
-                             </TextField>
-                             <Button mnemonicParsing="false" onAction="#onChatSubmitted" text="🡆" HBox.hgrow="ALWAYS" />
-                        <VBox.margin>
-                           <Insets bottom="10.0" />
-                        </VBox.margin>
-                         </HBox>
-                     </VBox>
-                 </Tab>
-                 <Tab fx:id="playersTab" text="Players">
-                     <BorderPane fx:id="playersBorderPane" prefHeight="200.0" prefWidth="200.0">
-                         <padding>
-                             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                         </padding>
-                     </BorderPane>
-                 </Tab>
-               <Tab text="Assets">
-                  <content>
-                     <BorderPane prefHeight="200.0" prefWidth="200.0">
-                        <center>
-                           <ListView fx:id="assetManagementListView" prefHeight="735.0" prefWidth="228.0" BorderPane.alignment="CENTER" />
-                        </center>
-                        <padding>
-                           <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                        </padding>
-                        <top>
-                           <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="283.0" text="Asset Management" BorderPane.alignment="CENTER">
-                              <BorderPane.margin>
-                                 <Insets bottom="10.0" />
-                              </BorderPane.margin>
-                              <font>
-                                 <Font size="24.0" />
-                              </font>
-                           </Label>
-                        </top>
-                     </BorderPane>
-                  </content>
-               </Tab>
-             </TabPane>
-         </top>
-         <center>
-            <VBox alignment="CENTER" prefHeight="10.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+         <bottom>
+            <VBox alignment="CENTER" prefHeight="137.0" prefWidth="399.0" BorderPane.alignment="CENTER">
                <children>
                   <BorderPane prefHeight="51.0" prefWidth="360.0">
                      <styleClass>
@@ -143,6 +87,62 @@
                   <Insets />
                </BorderPane.margin>
             </VBox>
+         </bottom>
+         <center>
+             <TabPane fx:id="rightTabPane" nodeOrientation="LEFT_TO_RIGHT" prefHeight="602.0" prefWidth="400.0" stylesheets="@style.css" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="250.0" tabMaxWidth="400.0" tabMinHeight="25.0" tabMinWidth="100.0" BorderPane.alignment="CENTER">
+                 <Tab text="Chat">
+                     <VBox prefHeight="729.0" prefWidth="399.0" style="-fx-alignment: center;">
+                         <padding>
+                             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                         </padding>
+                         <ListView fx:id="chatListView" prefHeight="538.0" prefWidth="359.0" VBox.vgrow="ALWAYS">
+                             <VBox.margin>
+                                 <Insets bottom="10.0" />
+                             </VBox.margin>
+                         </ListView>
+                         <HBox prefHeight="0.0" prefWidth="331.0" styleClass="centred">
+                             <TextField fx:id="chatTextField" onKeyReleased="#onChatKeyUp" promptText="Enter your message..." HBox.hgrow="ALWAYS">
+                                 <HBox.margin>
+                                     <Insets right="10.0" />
+                                 </HBox.margin>
+                             </TextField>
+                             <Button mnemonicParsing="false" onAction="#onChatSubmitted" text="🡆" HBox.hgrow="ALWAYS" />
+                        <VBox.margin>
+                           <Insets />
+                        </VBox.margin>
+                         </HBox>
+                     </VBox>
+                 </Tab>
+                 <Tab fx:id="playersTab" text="Players">
+                     <BorderPane fx:id="playersBorderPane" prefHeight="200.0" prefWidth="200.0">
+                         <padding>
+                             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                         </padding>
+                     </BorderPane>
+                 </Tab>
+               <Tab text="Assets">
+                  <content>
+                     <BorderPane prefHeight="200.0" prefWidth="200.0">
+                        <center>
+                           <ListView fx:id="assetManagementListView" prefHeight="735.0" prefWidth="228.0" BorderPane.alignment="CENTER" />
+                        </center>
+                        <padding>
+                           <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                        </padding>
+                        <top>
+                           <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="283.0" text="Asset Management" BorderPane.alignment="CENTER">
+                              <BorderPane.margin>
+                                 <Insets bottom="10.0" />
+                              </BorderPane.margin>
+                              <font>
+                                 <Font size="24.0" />
+                              </font>
+                           </Label>
+                        </top>
+                     </BorderPane>
+                  </content>
+               </Tab>
+             </TabPane>
          </center>
       </BorderPane>
    </right>

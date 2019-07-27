@@ -34,7 +34,7 @@ public class BuyGuiController {
     @FXML
     private void initialize() {
         title.setText("You have been offered the deed to:\n" + plot.getName());
-        final PlotUI plotUI = new PlotUI(null);
+        final PlotUI plotUI = new PlotUI(null, false);
         plotUI.load(plot);
         vbox.getChildren().add(plotUI);
         stage.setOnCloseRequest(event -> onAuctionPressed(null));

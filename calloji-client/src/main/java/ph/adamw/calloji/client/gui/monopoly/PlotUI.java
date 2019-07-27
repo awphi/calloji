@@ -1,6 +1,7 @@
 package ph.adamw.calloji.client.gui.monopoly;
 
 import com.google.common.collect.ImmutableMap;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.*;
@@ -17,23 +18,22 @@ import ph.adamw.calloji.packet.data.plot.StreetPlot;
 import javax.annotation.Nullable;
 
 @Slf4j
-public class PlotUI extends BorderPane {
+public class PlotUI extends StackPane {
     private final BoardUI board;
-
-    private final VBox bottomBox = new VBox();
-
-    private final HBox centreBox = new HBox();
+    private Text valueText;
+    private Text nameText;
 
     public PlotUI(@Nullable BoardUI board) {
-        setMaxHeight(BoardUI.HEIGHT);
-        setMaxWidth(BoardUI.WIDTH);
+        this(board, true);
+    }
 
+    public PlotUI(@Nullable BoardUI board, boolean dynamic) {
         this.board = board;
 
-        centreBox.getStyleClass().add("centred");
-        bottomBox.getStyleClass().add("centred");
-        setBottom(bottomBox);
-        setCenter(centreBox);
+        if(!dynamic) {
+            setMinWidth(BoardUI.WIDTH);
+            setMinHeight(BoardUI.WIDTH);
+        }
     }
 
     static final ImmutableMap<PlotType, Color> COLOR_MAP = new ImmutableMap.Builder<PlotType, Color>()
@@ -48,9 +48,9 @@ public class PlotUI extends BorderPane {
             .build();
 
     private Text generatePlotText(String x, String... classes) {
-        final Text mid = new Text(x);
-        mid.getStyleClass().addAll(classes);
-        mid.setTextAlignment(TextAlignment.CENTER);
+        final Text text = new Text(x);
+        text.getStyleClass().addAll(classes);
+        text.setTextAlignment(TextAlignment.CENTER);
 
         double width = BoardUI.WIDTH;
 
@@ -58,52 +58,65 @@ public class PlotUI extends BorderPane {
             width = board.getColumnConstraints().get(0).getPrefWidth();
         }
 
-        mid.wrappingWidthProperty().setValue(width);
-        setAlignment(mid, Pos.CENTER);
-
-        return mid;
+        text.wrappingWidthProperty().setValue(width);
+        return text;
     }
 
     public void load(Plot plot) {
         getStyleClass().addAll("border", "border-in", "plot");
 
-        bottomBox.getChildren().clear();
-
-        bottomBox.getChildren().add(generatePlotText(plot.getName()));
+        if(nameText == null) {
+            final Text t = generatePlotText(plot.getName());
+            add(t);
+            StackPane.setAlignment(t, Pos.CENTER);
+        } else {
+            nameText.setText(plot.getName());
+        }
 
         // Header
         if(COLOR_MAP.containsKey(plot.getType())) {
             final HBox top = new HBox();
             top.getStyleClass().addAll("border", "border-out", "plot-header");
             top.setStyle("-fx-background-color: #" + Integer.toHexString(COLOR_MAP.get(plot.getType()).hashCode()) + ";");
+            top.setMaxHeight(10);
+            StackPane.setAlignment(top, Pos.TOP_CENTER);
 
-            setTop(top);
+            getChildren().add(0, top);
         }
 
         if(plot instanceof PropertyPlot) {
             final PropertyPlot x = ((PropertyPlot) plot);
             final String c = x.getOwner() == null ? "" : "strikethrough";
-            bottomBox.getChildren().add(generatePlotText("£" + x.getValue(), "bold", c));
+
+            if(valueText == null) {
+                final Text t = generatePlotText("£" + x.getValue() + ".00", "bold", c);
+                add(t);
+                StackPane.setAlignment(t, Pos.BOTTOM_CENTER);
+            } else {
+                valueText.setText("£" + x.getValue() + ".00");
+            }
         }
 
         if(plot instanceof StreetPlot) {
             final StreetPlot s = (StreetPlot) plot;
+            final HBox top = ((HBox) getChildren().get(0));
 
-            ((HBox) getTop()).getChildren().clear();
+            top.getChildren().clear();
 
             for(int i = 0; i < s.getHouses(); i ++) {
+                //TODO merge every 4 houses into a hotel
                 final Pane pane = new Pane();
                 pane.getStyleClass().addAll("border", "house");
-                ((HBox) getTop()).getChildren().add(pane);
+                top.getChildren().add(pane);
             }
         }
     }
 
-    public void addCentre(Node i) {
-        centreBox.getChildren().add(i);
+    public void add(Node i) {
+        getChildren().add(i);
     }
 
-    public void removeCentre(Node i) {
-        centreBox.getChildren().remove(i);
+    public void remove(Node i) {
+        getChildren().remove(i);
     }
 }

@@ -39,14 +39,14 @@ public class GamePieceUI extends ImageView {
 
     public void moveTo(int pos) {
         if(boardPosition != -1) {
-            boardUI.getRenderedPlot(boardPosition).removeCentre(this);
+            boardUI.getRenderedPlot(boardPosition).remove(this);
         }
 
-        boardUI.getRenderedPlot(pos).addCentre(this);
+        boardUI.getRenderedPlot(pos).add(this);
         boardPosition = pos;
     }
 
     public void delete() {
-        boardUI.getRenderedPlot(boardPosition).removeCentre(this);
+        boardUI.getRenderedPlot(boardPosition).remove(this);
     }
 }

@@ -130,7 +130,10 @@ public class GuiController {
 	}
 
 	private void setActionsDisabled(boolean b) {
-		//TODO complete this list w/ asset management buttons etc. once they're implemented
+		for(ManagedAssetUI i : assetManagementListView.getItems()) {
+			i.setButtonsDisable(b);
+		}
+
 		rollDiceButton.setDisable(b);
 	}
 

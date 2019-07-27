@@ -7,11 +7,13 @@ import javafx.scene.layout.HBox;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 
 public class ManagedAssetUI extends HBox {
-    private final static Insets MARGIN_10 = new Insets(0, 10, 0, 10);
+    private final static Insets MARGIN_10 = new Insets(0, 10, 0, 0);
+    private final Button mortgageButton;
+    private final Button auctionButton;
 
     public ManagedAssetUI(PropertyPlot i) {
-        final Button mortgageButton = new Button("Mortgage - £" + i.getValue() / 2 + ".00");
-        final Button auctionButton = new Button("Auction");
+        mortgageButton = new Button("Mortgage - £" + i.getValue() / 2 + ".00");
+        auctionButton = new Button("Auction");
 
         setAlignment(Pos.CENTER);
 
@@ -28,5 +30,10 @@ public class ManagedAssetUI extends HBox {
         getChildren().add(auctionButton);
 
         HBox.setMargin(mortgageButton, MARGIN_10);
+    }
+
+    public void setButtonsDisable(boolean b) {
+        mortgageButton.setDisable(b);
+        auctionButton.setDisable(b);
     }
 }
