@@ -75,6 +75,7 @@ public class PlotUI extends StackPane {
         if(COLOR_MAP.containsKey(plot.getType())) {
             final HBox top = new HBox();
             top.getStyleClass().addAll("border", "border-out", "plot-header");
+            top.setAlignment(Pos.CENTER);
             top.setStyle("-fx-background-color: #" + Integer.toHexString(COLOR_MAP.get(plot.getType()).hashCode()) + ";");
             top.setMaxHeight(10);
             StackPane.setAlignment(top, Pos.TOP_CENTER);
@@ -101,10 +102,19 @@ public class PlotUI extends StackPane {
 
             top.getChildren().clear();
 
-            for(int i = 0; i < s.getHouses(); i ++) {
-                //TODO merge every 4 houses into a hotel
+            int houses = s.getHouses() % 4;
+            int hotels = s.getHouses() / 4;
+
+            for(int i = 0; i < houses + hotels; i ++) {
                 final Pane pane = new Pane();
-                pane.getStyleClass().addAll("border", "house");
+                String type = "house";
+
+                if(hotels > 0) {
+                    type = "hotel";
+                    hotels --;
+                }
+
+                pane.getStyleClass().addAll("border", type);
                 top.getChildren().add(pane);
             }
         }

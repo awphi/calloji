@@ -56,6 +56,10 @@ ListView {
     -fx-background-color: green;
 }
 
+.hotel {
+    -fx-background-color: red;
+}
+
 .plot-header {
     -fx-padding: 10px 5px 10px 5px;
 }

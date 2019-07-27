@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.PacketLinkType;
 import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
+import ph.adamw.calloji.packet.data.plot.StreetPlot;
 import ph.adamw.calloji.server.ServerRouter;
 import ph.adamw.calloji.server.connection.ClientConnection;
 import ph.adamw.calloji.server.monopoly.MonoGame;
@@ -19,8 +20,19 @@ public class PacketLinkMonoPlotAuctioned extends PacketLinkMono {
         final PropertyPlot plot = JsonUtils.getObject(content, PropertyPlot.class);
         final PropertyPlot stoodOn = (PropertyPlot) game.getMonoBoard().getIndexedPlot(game.getCurrentTurnPlayer().getPlayer().boardPosition);
 
-        if(game.getCurrentTurnPlayer().equals(game.getMonoPlayer(connection.getId())) && stoodOn.equals(plot)) {
-            game.auction(stoodOn);
+        final boolean plotOwned = game.getCurrentTurnPlayer().getPlayer().getOwnedPlots(game.getMonoBoard().getBoard()).contains(stoodOn);
+        final boolean plotLandedOn = game.getCurrentTurnPlayer().equals(game.getMonoPlayer(connection.getId())) && stoodOn.equals(plot) && stoodOn.getOwner() == null;
+
+        boolean builtOn = false;
+
+        if(stoodOn instanceof StreetPlot) {
+            builtOn = ((StreetPlot) stoodOn).getHouses() > 0;
+        }
+
+        if(plotLandedOn) {
+            game.auction(stoodOn, null);
+        } else if(plotOwned && !plot.isMortgaged() && !builtOn) {
+            game.auction(stoodOn, game.getMonoPlayer(connection.getId()));
         }
     }
 }

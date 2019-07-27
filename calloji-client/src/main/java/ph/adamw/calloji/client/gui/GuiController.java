@@ -109,11 +109,9 @@ public class GuiController {
 
 		final Thread timer = GuiUtils.startRunner("Turn Timer Decrementer", this::decrementTurnTimer, 1000);
 
-		//TODO work out why app doesn't close
 		Client.getStage().setOnCloseRequest(event -> {
 			timer.interrupt();
 			Platform.exit();
-			//System.exit(0);
 		});
 	}
 

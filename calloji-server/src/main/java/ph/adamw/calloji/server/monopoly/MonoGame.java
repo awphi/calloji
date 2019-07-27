@@ -104,7 +104,7 @@ public class MonoGame implements ClientPoolListener {
         hasRolled = true;
     }
 
-    public void auction(PropertyPlot property) {
+    public void auction(PropertyPlot property, MonoPlayer payee) {
         extendCurrentTurn(GameConstants.AUCTION_TIME);
         sendToAll(PacketType.AUCTION_START, property);
         activeAuction = new MonoAuction(property);
@@ -120,6 +120,10 @@ public class MonoGame implements ClientPoolListener {
             if(activeAuction.getWinner() != null) {
                 activeAuction.getWinner().tryRemoveMoney(activeAuction.getWinnerBid());
                 activeAuction.getWinner().addAsset(monoBoard.getMonoPlot(activeAuction.getProperty()));
+
+                if(payee != null) {
+                    payee.addMoney(activeAuction.getWinnerBid());
+                }
             }
 
             activeAuction = null;
