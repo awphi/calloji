@@ -108,4 +108,13 @@ public class BoardUI extends GridPane {
     public int getCols() {
         return getColumnConstraints().size();
     }
+
+    public void unload() {
+        for(Node i : getManagedChildren()) {
+            if(i instanceof PlotUI) {
+                final PlotUI x = (PlotUI) i;
+                x.unload();
+            }
+        }
+    }
 }

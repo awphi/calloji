@@ -45,6 +45,7 @@ public class SplashController {
             shake.playFromStart();
         } else {
             splashStage.close();
+            splashStage = null;
         }
     }
 

@@ -19,12 +19,13 @@ public class PacketLinkConnect extends PacketLinkBase {
         final ConnectionUpdate conn = JsonUtils.getObject(content, ConnectionUpdate.class);
 
         if(conn.isDisconnect()) {
+            Client.getGui().displayChatMessage(MessageType.SYSTEM, Client.getCache().getCachedPlayer(conn.getId()).getNick() + " has disconnected.");
             Platform.runLater(() -> Client.getGui().removeOtherPlayer(conn.getId()));
         } else {
             Client.getRouter().setPid(conn.getId());
             Client.getGui().displayChatMessage(MessageType.SYSTEM, "Connected to server!");
 
-            new Thread(() -> {
+            final Thread heartbeat = new Thread(() -> {
                 while(Client.getRouter().isConnected()) {
                     Client.getRouter().send(PacketType.HEARTBEAT, new JsonObject());
 
@@ -34,7 +35,10 @@ public class PacketLinkConnect extends PacketLinkBase {
                         e.printStackTrace();
                     }
                 }
-            }).start();
+            });
+
+            heartbeat.setName("Heartbeat Thread");
+            heartbeat.start();
         }
     }
 }

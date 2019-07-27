@@ -112,7 +112,7 @@ public class GenericPlayerUI extends VBox {
         gamePieceImage.setImage(GuiUtils.getGamePieceImage(player.getGamePiece()));
 
         ownedPlots.getItems().clear();
-        for(PropertyPlot i : update.getPlayer().getOwnedPlots(Client.getGui().getBoardCache())) {
+        for(PropertyPlot i : Client.getCache().getOwnedPlots(update.getPlayer())) {
             ownedPlots.getItems().add(new ThinPlotUI(i));
         }
 

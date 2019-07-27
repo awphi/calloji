@@ -16,6 +16,8 @@ import ph.adamw.calloji.util.JsonUtils;
 public class PacketLinkBoardUpdate extends PacketLinkBase {
     @Override
     public void handle(PacketType type, JsonElement content) {
-        Platform.runLater(() -> Client.getGui().loadBoard(JsonUtils.getObject(content, Board.class)));
+        final Board board = JsonUtils.getObject(content, Board.class);
+        Client.getCache().cacheBoard(board);
+        Platform.runLater(() -> Client.getGui().loadBoard(board));
     }
 }

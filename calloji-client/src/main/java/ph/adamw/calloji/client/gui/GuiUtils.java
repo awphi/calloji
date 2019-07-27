@@ -42,7 +42,7 @@ public class GuiUtils {
         return cache;
     }
 
-    public static Thread startRunner(Runnable runnable, long millis) {
+    public static Thread startRunner(String name, Runnable runnable, long millis) {
         final Thread t = new Thread(() -> {
             while(true) {
                 Platform.runLater(runnable);
@@ -53,6 +53,7 @@ public class GuiUtils {
             }
         });
 
+        t.setName(name);
         t.start();
         return t;
     }

@@ -31,6 +31,8 @@ import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -79,9 +81,6 @@ public class GuiController {
 	@FXML
 	private Label balanceLabel;
 
-	@Getter
-	private Board boardCache;
-
 	@FXML
 	@Getter
 	private MenuItem disconnectButton;
@@ -108,12 +107,13 @@ public class GuiController {
 		playerListView.setPlaceholder(new Label("Not connected to a game!"));
 		assetManagementListView.setPlaceholder(new Label("No assets owned!"));
 
-		final Thread timer = GuiUtils.startRunner(this::decrementTurnTimer, 1000);
+		final Thread timer = GuiUtils.startRunner("Turn Timer Decrementer", this::decrementTurnTimer, 1000);
 
+		//TODO work out why app doesn't close
 		Client.getStage().setOnCloseRequest(event -> {
 			timer.interrupt();
 			Platform.exit();
-			System.exit(0);
+			//System.exit(0);
 		});
 	}
 
@@ -172,8 +172,11 @@ public class GuiController {
 	}
 
 	public void loadBoard(Board board) {
-		boardCache = board;
 		boardUI.loadBoard(board);
+	}
+
+	public void unloadBoard() {
+		boardUI.unload();
 	}
 
 	private boolean isPlayerUpdateFresh(PlayerUpdate update) {
@@ -187,6 +190,7 @@ public class GuiController {
 	}
 
 	private void reloadPlayer(PlayerUpdate update) {
+
 		for(GenericPlayerUI i : playerListView.getItems()) {
 			if(i.getPid() == update.getId()) {
 				i.reload(update);
@@ -197,7 +201,7 @@ public class GuiController {
 		if(update.getId() == Client.getRouter().getPid()) {
 			assetManagementListView.getItems().clear();
 
-			for (PropertyPlot j : update.getPlayer().getOwnedPlots(Client.getGui().getBoardCache())) {
+			for (PropertyPlot j : Client.getCache().getOwnedPlots(update.getPlayer())) {
 				assetManagementListView.getItems().add(new ManagedAssetUI(j));
 			}
 		}

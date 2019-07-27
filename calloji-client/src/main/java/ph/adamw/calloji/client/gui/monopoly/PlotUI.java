@@ -1,14 +1,12 @@
 package ph.adamw.calloji.client.gui.monopoly;
 
 import com.google.common.collect.ImmutableMap;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.data.plot.Plot;
 import ph.adamw.calloji.packet.data.plot.PlotType;
@@ -66,9 +64,9 @@ public class PlotUI extends StackPane {
         getStyleClass().addAll("border", "border-in", "plot");
 
         if(nameText == null) {
-            final Text t = generatePlotText(plot.getName());
-            add(t);
-            StackPane.setAlignment(t, Pos.CENTER);
+            nameText = generatePlotText(plot.getName());
+            addChild(nameText);
+            StackPane.setAlignment(nameText, Pos.CENTER);
         } else {
             nameText.setText(plot.getName());
         }
@@ -89,9 +87,9 @@ public class PlotUI extends StackPane {
             final String c = x.getOwner() == null ? "" : "strikethrough";
 
             if(valueText == null) {
-                final Text t = generatePlotText("£" + x.getValue() + ".00", "bold", c);
-                add(t);
-                StackPane.setAlignment(t, Pos.BOTTOM_CENTER);
+                valueText = generatePlotText("£" + x.getValue() + ".00", "bold", c);
+                addChild(valueText);
+                StackPane.setAlignment(valueText, Pos.BOTTOM_CENTER);
             } else {
                 valueText.setText("£" + x.getValue() + ".00");
             }
@@ -112,11 +110,16 @@ public class PlotUI extends StackPane {
         }
     }
 
-    public void add(Node i) {
+    public void addChild(Node i) {
         getChildren().add(i);
     }
 
-    public void remove(Node i) {
+    public void removeChild(Node i) {
         getChildren().remove(i);
+    }
+
+    public void unload() {
+        getStyleClass().clear();
+        getChildren().clear();
     }
 }

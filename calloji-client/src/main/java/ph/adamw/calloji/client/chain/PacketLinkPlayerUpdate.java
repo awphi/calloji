@@ -16,7 +16,7 @@ public class PacketLinkPlayerUpdate extends PacketLinkBase {
     @Override
     public void handle(PacketType type, JsonElement content) {
         final PlayerUpdate update = JsonUtils.getObject(content, PlayerUpdate.class);
-
+        Client.getCache().cachePlayer(update);
         Platform.runLater(() ->  Client.getGui().loadPlayer(update));
     }
 }

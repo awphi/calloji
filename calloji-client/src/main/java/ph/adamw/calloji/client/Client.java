@@ -28,11 +28,15 @@ public class Client extends Application {
 	@Getter
 	private static Stage stage;
 
+	@Getter
+	private static ClientCache cache;
+
 	public static void main(String[] args) throws IOException {
 		// Must init the logger before instantiating objects that use it
 		LoggerUtils.init(args);
 
 		router = new ClientRouter();
+		cache = new ClientCache();
 		Application.launch(args);
 	}
 
@@ -88,5 +92,6 @@ public class Client extends Application {
 				break;
 			}
 		}
+		System.exit(0);
 	}
 }
