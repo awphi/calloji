@@ -18,6 +18,7 @@ public class SplashController {
     @FXML
     private TextField ipField;
 
+    //TODO add option to splash screen to choose a nick on connection
     private static Stage splashStage;
 
     public static void open(Window window) {

@@ -21,6 +21,7 @@ public class PlotUI extends StackPane {
     private Text valueText;
     private Text nameText;
 
+    //TODO show the owner of a plot on hover or right click or smth like that
     public PlotUI(@Nullable BoardUI board) {
         this(board, true);
     }

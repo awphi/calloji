@@ -62,6 +62,7 @@ public class MonoGame implements ClientPoolListener {
         sendToAll(PacketType.TURN_UPDATE, new TurnUpdate(currentTurnPlayer.getConnectionId(), secs, currentTurnPlayer.getConnectionNick(), true));
     }
 
+    //TODO introduce trading to the game inside the players tab where u can trade assets + cash.
     private void playTurn() {
         while(currentTurnPlayer == null || currentTurnPlayer.getPlayer().isBankrupt()) {
             currentTurnPlayer = playerList.get(nextTurnPlayerIndex);

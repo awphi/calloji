@@ -38,6 +38,7 @@ public class ManagedAssetUI extends HBox {
             }
         });
 
+        //TODO work out why the padding/margin on the left of the thin plotUI is very large sometimes
         getChildren().add(new ThinPlotUI(i));
         getChildren().add(mortgageButton);
         getChildren().add(auctionButton);

@@ -63,6 +63,9 @@ public class MonoPlayer {
         }
     }
 
+    //TODO introduce a new generic system message packet to send to clients with a server message to display in chat
+    // i.e. when a player pulls a chance/comm chest, when a player pays rent, if their turn is skipped due to jail,
+    // auctions etc. etc.
     public void moveSpaces(int x) {
         // Passed GO
         if(player.boardPosition + x >= 40) {
