@@ -21,4 +21,20 @@ public class PropertyPlot extends Plot {
 
         this.value = value;
     }
+
+    public boolean isBuiltOnOrMortgaged() {
+        return isMortgaged() || isBuiltOn();
+    }
+
+    public boolean isBuiltOn() {
+        if(this instanceof StreetPlot) {
+            return ((StreetPlot) this).getHouses() > 0;
+        }
+
+        return false;
+    }
+
+    public int getUnmortgageCost() {
+        return (int) ((getValue() / 2) + (getValue() * 0.1));
+    }
 }

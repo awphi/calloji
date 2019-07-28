@@ -1,8 +1,11 @@
 package ph.adamw.calloji.server.monopoly;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 
+@Slf4j
 public class MonoPropertyPlot {
     @Getter
     private final PropertyPlot plot;
@@ -16,16 +19,19 @@ public class MonoPropertyPlot {
 
 
     public void mortgage() {
-        if(plot.getOwner() != null) {
+        if(plot.getOwner() != null && !plot.isMortgaged()) {
             plot.setMortgaged(true);
+            game.updateBoardOnAllClients();
             game.getMonoPlayer(plot.getOwner()).addMoney(plot.getValue() / 2);
         }
     }
 
     public void unmortgage() {
-        if(plot.getOwner() != null) {
+        log.debug(plot.isMortgaged() + "");
+        if(plot.getOwner() != null && plot.isMortgaged()) {
             plot.setMortgaged(false);
-            game.getMonoPlayer(plot.getOwner()).tryRemoveMoney((int) ((plot.getValue() / 2) + (plot.getValue() * 0.1)));
+            game.updateBoardOnAllClients();
+            game.getMonoPlayer(plot.getOwner()).tryRemoveMoney(plot.getUnmortgageCost());
         }
     }
 }

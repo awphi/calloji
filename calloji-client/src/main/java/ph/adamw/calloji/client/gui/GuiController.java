@@ -127,6 +127,29 @@ public class GuiController {
 		}
 	}
 
+	private ManagedAssetUI getManagedAsset(PropertyPlot plot) {
+		for(ManagedAssetUI i : assetManagementListView.getItems()) {
+			if(i.getPlot().equals(plot)) {
+				return i;
+			}
+		}
+
+		return null;
+	}
+
+	public void updateManagedAssets(Board board) {
+		for(PropertyPlot i : Client.getCache().getCachedPlayer(Client.getRouter().getPid()).getPlayer().getOwnedPlots(board)) {
+			ManagedAssetUI ui = getManagedAsset(i);
+
+			if(ui == null) {
+				ui = new ManagedAssetUI(i);
+				assetManagementListView.getItems().add(ui);
+			}
+
+			ui.load(i);
+		}
+	}
+
 	private void setActionsDisabled(boolean b) {
 		for(ManagedAssetUI i : assetManagementListView.getItems()) {
 			i.setButtonsDisable(b);
@@ -188,19 +211,10 @@ public class GuiController {
 	}
 
 	private void reloadPlayer(PlayerUpdate update) {
-
 		for(GenericPlayerUI i : playerListView.getItems()) {
 			if(i.getPid() == update.getId()) {
 				i.reload(update);
 				break;
-			}
-		}
-
-		if(update.getId() == Client.getRouter().getPid()) {
-			assetManagementListView.getItems().clear();
-
-			for (PropertyPlot j : Client.getCache().getOwnedPlots(update.getPlayer())) {
-				assetManagementListView.getItems().add(new ManagedAssetUI(j));
 			}
 		}
 	}

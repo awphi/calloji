@@ -8,6 +8,7 @@ import ph.adamw.calloji.packet.PacketLinkBase;
 import ph.adamw.calloji.packet.data.Board;
 import ph.adamw.calloji.packet.PacketLinkType;
 import ph.adamw.calloji.packet.PacketType;
+import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 import ph.adamw.calloji.packet.data.plot.StreetPlot;
 import ph.adamw.calloji.util.JsonUtils;
 
@@ -18,6 +19,9 @@ public class PacketLinkBoardUpdate extends PacketLinkBase {
     public void handle(PacketType type, JsonElement content) {
         final Board board = JsonUtils.getObject(content, Board.class);
         Client.getCache().cacheBoard(board);
-        Platform.runLater(() -> Client.getGui().loadBoard(board));
+        Platform.runLater(() -> {
+            Client.getGui().loadBoard(board);
+            Client.getGui().updateManagedAssets(board);
+        });
     }
 }

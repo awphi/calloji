@@ -85,14 +85,26 @@ public class PlotUI extends StackPane {
 
         if(plot instanceof PropertyPlot) {
             final PropertyPlot x = ((PropertyPlot) plot);
-            final String c = x.getOwner() == null ? "" : "strikethrough";
 
             if(valueText == null) {
-                valueText = generatePlotText("£" + x.getValue() + ".00", "bold", c);
+                valueText = generatePlotText("£" + x.getValue() + ".00", "bold");
                 addChild(valueText);
                 StackPane.setAlignment(valueText, Pos.BOTTOM_CENTER);
             } else {
                 valueText.setText("£" + x.getValue() + ".00");
+            }
+
+            valueText.setFill(Color.BLACK);
+
+            if(x.getOwner() != null) {
+                valueText.getStyleClass().add("strikethrough");
+            } else {
+                valueText.getStyleClass().remove("strikethrough");
+            }
+
+            if(x.isMortgaged()) {
+                valueText.setFill(Color.RED);
+                valueText.setText(valueText.getText() + " (M)");
             }
         }
 

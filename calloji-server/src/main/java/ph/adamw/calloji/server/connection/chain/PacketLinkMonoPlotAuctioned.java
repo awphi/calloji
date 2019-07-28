@@ -23,15 +23,9 @@ public class PacketLinkMonoPlotAuctioned extends PacketLinkMono {
         final boolean plotOwned = game.getCurrentTurnPlayer().getPlayer().getOwnedPlots(game.getMonoBoard().getBoard()).contains(stoodOn);
         final boolean plotLandedOn = game.getCurrentTurnPlayer().equals(game.getMonoPlayer(connection.getId())) && stoodOn.equals(plot) && stoodOn.getOwner() == null;
 
-        boolean builtOn = false;
-
-        if(stoodOn instanceof StreetPlot) {
-            builtOn = ((StreetPlot) stoodOn).getHouses() > 0;
-        }
-
         if(plotLandedOn) {
             game.auction(stoodOn, null);
-        } else if(plotOwned && !plot.isMortgaged() && !builtOn) {
+        } else if(plotOwned && !plot.isBuiltOnOrMortgaged()) {
             game.auction(stoodOn, game.getMonoPlayer(connection.getId()));
         }
     }
