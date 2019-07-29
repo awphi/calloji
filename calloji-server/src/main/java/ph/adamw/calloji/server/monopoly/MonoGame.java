@@ -31,7 +31,7 @@ public class MonoGame implements ClientPoolListener {
     @Getter
     private final MonoCardPile chancePile = new MonoCardPile("Chance", MonoCardPile.CHANCE);
 
-    private final List<MonoPlayer> playerList = new ArrayList<>();
+    private final Map<Long, MonoPlayer> playerMap = new HashMap<>();
 
     private int currentTurnTime = GameConstants.TURN_TIME;
 
@@ -49,7 +49,7 @@ public class MonoGame implements ClientPoolListener {
     private MonoAuction activeAuction;
 
     public void start() {
-        while(getWinner() == null && !playerList.isEmpty()) {
+        while(getWinner() == null && !playerMap.isEmpty()) {
             playTurn();
         }
 
@@ -64,10 +64,12 @@ public class MonoGame implements ClientPoolListener {
 
     //TODO introduce trading to the game inside the players tab where u can trade assets + cash.
     private void playTurn() {
+        final Iterator<Long> it = playerMap.keySet().iterator();
         while(currentTurnPlayer == null || currentTurnPlayer.getPlayer().isBankrupt()) {
-            currentTurnPlayer = playerList.get(nextTurnPlayerIndex);
-            nextTurnPlayerIndex = (nextTurnPlayerIndex + 1) % playerList.size();
+            currentTurnPlayer = getMonoPlayer(it.next());
+            nextTurnPlayerIndex = (nextTurnPlayerIndex + 1) % playerMap.size();
         }
+
         log.debug("Turn of player: " + currentTurnPlayer);
 
         hasRolled = false;
@@ -133,14 +135,15 @@ public class MonoGame implements ClientPoolListener {
 
     private MonoPlayer getWinner() {
         // To allow for 1-person games (for debugging)
-        if(playerList.size() == 1) {
-            return playerList.get(0).getPlayer().isBankrupt() ? playerList.get(0) : null;
+        if(playerMap.size() == 1) {
+            final MonoPlayer first = getMonoPlayer(playerMap.keySet().iterator().next());
+            return first.getPlayer().isBankrupt() ? first : null;
         }
 
         int c = 0;
         MonoPlayer x = null;
 
-        for(MonoPlayer i : playerList) {
+        for(MonoPlayer i : playerMap.values()) {
             if(!i.getPlayer().isBankrupt()) {
                 c ++;
                 x = i;
@@ -153,15 +156,15 @@ public class MonoGame implements ClientPoolListener {
     @Override
     public void onClientConnect(ClientConnectedEvent e) {
         final MonoPlayer n = new MonoPlayer(e.getPool().get(e.getId()), this, new Player(GamePiece.next(), e.getId()));
-        playerList.add(n);
+        playerMap.put(e.getId(), n);
 
         log.debug("Created new MonoPlayer for: " + e.getId());
 
         n.updateBoard();
         updateAllPlayersOnAllClients();
 
-        if(playerList.size() == e.getPool().getCapacity()) {
-            log.debug("Game has " + playerList.size() + " players - commencing game!");
+        if(playerMap.size() == e.getPool().getCapacity()) {
+            log.debug("Game has " + playerMap.size() + " players - commencing game!");
             start();
         }
     }
@@ -170,10 +173,10 @@ public class MonoGame implements ClientPoolListener {
     public void onClientDisconnect(ClientDisconnectedEvent e) {
         final MonoPlayer mp = getMonoPlayer(e.getId());
         if(mp != null) {
-            playerList.remove(mp);
+            playerMap.remove(mp.getConnectionId());
             log.info("Deleting player " + mp.getConnectionId() + " due to a disconnect.");
 
-            for(MonoPlayer i : playerList) {
+            for(MonoPlayer i : playerMap.values()) {
                 i.send(PacketType.CLIENT_CONNECTION_UPDATE, new ConnectionUpdate(true, mp.getConnectionId()));
             }
         }
@@ -188,37 +191,31 @@ public class MonoGame implements ClientPoolListener {
     }
 
     void updateBoardOnAllClients() {
-        for(MonoPlayer i : playerList) {
+        for(MonoPlayer i : playerMap.values()) {
             i.updateBoard();
         }
     }
 
     private void updateAllPlayersOnAllClients() {
-        for(MonoPlayer i : playerList) {
+        for(MonoPlayer i : playerMap.values()) {
             updatePlayerOnAllClients(i);
         }
     }
 
     void updatePlayerOnAllClients(MonoPlayer monoPlayer) {
-        for(MonoPlayer i : playerList) {
+        for(MonoPlayer i : playerMap.values()) {
             i.send(PacketType.PLAYER_UPDATE, new PlayerUpdate(monoPlayer.getPlayer(), monoPlayer.getConnectionId(), monoPlayer.getConnectionNick()));
         }
     }
 
     void sendToAll(PacketType type, Object element) {
-        for(MonoPlayer player : playerList) {
+        for(MonoPlayer player : playerMap.values()) {
             player.send(type, element);
         }
     }
 
     @Nullable
     public MonoPlayer getMonoPlayer(Long id) {
-        for(MonoPlayer i : playerList) {
-            if(id.equals(i.getConnectionId())) {
-                return i;
-            }
-        }
-
-        return null;
+        return playerMap.get(id);
     }
 }

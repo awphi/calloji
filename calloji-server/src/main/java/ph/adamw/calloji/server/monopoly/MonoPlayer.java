@@ -73,40 +73,12 @@ public class MonoPlayer {
         }
 
         player.boardPosition = (player.boardPosition + x) % 40;
-        final Plot plot = game.getMonoBoard().getBoard().plotAt(player.boardPosition);
+        final Plot plot = game.getMonoBoard().getIndexedPlot(player.boardPosition);
+        final MonoPropertyPlot mono = game.getMonoBoard().getMonoPlot(plot);
 
-        game.updatePlayerOnAllClients(this);
-
-        if(plot instanceof PropertyPlot) {
-            final PropertyPlot p = (PropertyPlot) plot;
-
-            if(p.getOwner() == null) {
-                if(p.getValue() > player.getBalance()) {
-                    game.auction(p, null);
-                } else {
-                    send(PacketType.PLOT_LANDED_ON, p);
-                }
-            } else if(!p.getOwner().equals(getConnectionId()) && !p.isMortgaged()){
-                int rem = 0;
-
-                if(p instanceof StreetPlot) {
-                    final StreetPlot st = (StreetPlot) p;
-                     rem = tryRemoveMoney(st.getRent());
-                } else {
-                    final Player pl = game.getMonoPlayer(p.getOwner()).getPlayer();
-                    if(p.getType() == PlotType.UTILITY) {
-                        final int owned = pl.getOwnedType(PlotType.UTILITY, game.getMonoBoard().getBoard());
-                        rem = tryRemoveMoney(owned * 5 + (owned - 2) * x);
-                    } else if(p.getType() == PlotType.STATION) {
-                        final int owned = pl.getOwnedType(PlotType.STATION, game.getMonoBoard().getBoard());
-                        rem = tryRemoveMoney(25 * (int) Math.pow(2, owned - 1));
-                    }
-                }
-
-                if(player.isBankrupt()) {
-                    game.getMonoPlayer(p.getOwner()).addMoney(rem);
-                }
-            }
+        // i.e. if it's a property or street
+        if(mono != null) {
+            mono.landedOnBy(this, x);
         } else {
             switch (plot.getType()) {
                 case GO:
@@ -124,6 +96,7 @@ public class MonoPlayer {
                 case CHANCE:
                 case COMMUNITY_CHEST: {
                     final MonoCardPile pile;
+
                     if (plot.getType().equals(PlotType.CHANCE)) {
                         pile = game.getChancePile();
                     } else {
@@ -133,7 +106,8 @@ public class MonoPlayer {
                     final MonoCard card = pile.draw();
                     card.handle(this);
                     send(PacketType.CARD_DRAWN, new CardUpdate(pile.getName(), card.getText()));
-                } break;
+                }
+                break;
             }
         }
 
@@ -170,8 +144,10 @@ public class MonoPlayer {
     }
 
     public void addMoney(int money) {
-        player.balance += money;
-        game.updatePlayerOnAllClients(this);
+        if(money > 0) {
+            player.balance += money;
+            game.updatePlayerOnAllClients(this);
+        }
     }
 
     void decJailed() {

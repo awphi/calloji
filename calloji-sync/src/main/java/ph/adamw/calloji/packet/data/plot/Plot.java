@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializer;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.util.JsonUtils;
@@ -12,6 +13,7 @@ import ph.adamw.calloji.util.JsonUtils;
 import java.io.Serializable;
 
 @Getter
+@EqualsAndHashCode
 @AllArgsConstructor
 public class Plot implements Serializable {
     public final transient static JsonSerializer<Plot> SERIALIZER = (plot, type, jsonSerializationContext) -> {
@@ -46,15 +48,5 @@ public class Plot implements Serializable {
         }
 
         return null;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if(obj instanceof Plot) {
-            final Plot p = (Plot) obj;
-            return p.name.equals(name) && p.type == type;
-        }
-
-        return super.equals(obj);
     }
 }
