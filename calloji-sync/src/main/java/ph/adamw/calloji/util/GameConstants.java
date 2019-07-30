@@ -8,4 +8,6 @@ public class GameConstants {
 
     public static final int DICE_SIDES = 6;
     public static final int DICE_AMOUNT = 2;
+    public static final int MAX_HOUSES = 16;
+    public static final int[] HOUSE_MULTIPLIERS = new int[] {1, 5, 15, 35, 42, 50};
 }

@@ -4,11 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 import ph.adamw.calloji.packet.data.Player;
 
+import javax.annotation.Nullable;
 import java.io.Serializable;
 
 @Getter
 public class PropertyPlot extends Plot {
     @Setter
+    @Nullable
     private Long owner;
 
     @Setter
@@ -22,15 +24,11 @@ public class PropertyPlot extends Plot {
         this.value = value;
     }
 
-    public boolean isBuiltOnOrMortgaged() {
+    public boolean isClean() {
         return isMortgaged() || isBuiltOn();
     }
 
     public boolean isBuiltOn() {
-        if(this instanceof StreetPlot) {
-            return ((StreetPlot) this).getHouses() > 0;
-        }
-
         return false;
     }
 

@@ -18,7 +18,8 @@ public enum PacketType {
     AUCTION_START,
     AUCTION_BID,
     TOP_BIDDER_UPDATE,
-    MORTGAGE_REQUEST;
+    MORTGAGE_REQUEST,
+    HOUSE_REQUEST;
 
     private static PacketType[] VALUES = values();
 

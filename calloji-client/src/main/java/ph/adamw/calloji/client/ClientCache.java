@@ -15,11 +15,17 @@ public class ClientCache {
     private Board board;
     private Map<Long, PlayerUpdate> players = new HashMap<>();
 
+    private PlayerUpdate player;
+
     public void cacheBoard(Board board) {
         this.board = board;
     }
 
     public void cachePlayer(PlayerUpdate update) {
+        if(update.getId() == Client.getRouter().getPid()) {
+            player = update;
+        }
+
         players.put(update.getId(), update);
     }
 

@@ -20,7 +20,7 @@ public abstract class PacketDispatcher {
     protected abstract boolean isConnected();
 
     protected void startReceiving() {
-        new Thread(this::receive).start();
+        new Thread(this::receive, "Packet Inbound Thread").start();
     }
 
     public void send(PacketType type, Object content) {

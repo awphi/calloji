@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.PacketLinkType;
 import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
-import ph.adamw.calloji.packet.data.plot.StreetPlot;
 import ph.adamw.calloji.server.ServerRouter;
 import ph.adamw.calloji.server.connection.ClientConnection;
 import ph.adamw.calloji.server.monopoly.MonoGame;
@@ -25,7 +24,7 @@ public class PacketLinkMonoPlotAuctioned extends PacketLinkMono {
 
         if(plotLandedOn) {
             game.auction(stoodOn, null);
-        } else if(plotOwned && !plot.isBuiltOnOrMortgaged()) {
+        } else if(plotOwned && !plot.isClean()) {
             game.auction(stoodOn, game.getMonoPlayer(connection.getId()));
         }
     }

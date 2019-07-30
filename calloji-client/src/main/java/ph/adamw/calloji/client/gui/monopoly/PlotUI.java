@@ -51,13 +51,7 @@ public class PlotUI extends StackPane {
         text.getStyleClass().addAll(classes);
         text.setTextAlignment(TextAlignment.CENTER);
 
-        double width = BoardUI.WIDTH;
-
-        if(board != null) {
-            width = board.getColumnConstraints().get(0).getPrefWidth();
-        }
-
-        text.wrappingWidthProperty().setValue(width);
+        text.wrappingWidthProperty().setValue(BoardUI.WIDTH);
         return text;
     }
 

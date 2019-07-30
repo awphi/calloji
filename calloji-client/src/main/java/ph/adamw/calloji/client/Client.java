@@ -78,7 +78,7 @@ public class Client extends Application {
 
 		// Loop will terminate if the onDisconnect req is fulfilled or will force quit after 5 seconds and let the server
 		// handle it as a lost connection.
-		while(router.isConnected()) {
+		while(router.isConnected() && timer < 5) {
 			timer ++;
 
 			try {
@@ -86,12 +86,9 @@ public class Client extends Application {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-
-			if(timer == 5) {
-				router.disconnect();
-				break;
-			}
 		}
+
+		router.disconnect();
 		System.exit(0);
 	}
 }

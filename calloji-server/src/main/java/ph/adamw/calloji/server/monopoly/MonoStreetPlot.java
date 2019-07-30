@@ -2,6 +2,7 @@ package ph.adamw.calloji.server.monopoly;
 
 import lombok.Getter;
 import ph.adamw.calloji.packet.data.plot.StreetPlot;
+import ph.adamw.calloji.util.GameConstants;
 
 public class MonoStreetPlot extends MonoPropertyPlot {
     @Getter
@@ -13,15 +14,21 @@ public class MonoStreetPlot extends MonoPropertyPlot {
         this.plot = plot;
     }
 
-    //TODO allow building & selling houses
     public void buildHouses(int i) {
-        plot.setHouses(plot.getHouses() + i);
+        if(plot.getHouses() + i <= GameConstants.MAX_HOUSES) {
+            plot.setHouses(plot.getHouses() + i);
+            game.updateBoardOnAllClients();
+            game.getMonoPlayer(plot.getOwner()).tryRemoveMoney(plot.getBuildCost() * i);
+        }
     }
 
     public void sellHouses(int amount) {
-        final int toRemove = Math.min(amount, plot.getHouses());
-        plot.setHouses(plot.getHouses() - toRemove);
-        game.getMonoPlayer(plot.getOwner()).addMoney(toRemove * (plot.getBuildCost() / 2));
+        if(plot.getHouses() - amount >= 0) {
+            final int toRemove = Math.min(amount, plot.getHouses());
+            plot.setHouses(plot.getHouses() - toRemove);
+            game.updateBoardOnAllClients();
+            game.getMonoPlayer(plot.getOwner()).addMoney(toRemove * (plot.getBuildCost() / 2));
+        }
     }
 
     @Override

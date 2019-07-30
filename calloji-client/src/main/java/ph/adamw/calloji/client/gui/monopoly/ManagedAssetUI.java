@@ -4,54 +4,86 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import lombok.Getter;
 import ph.adamw.calloji.client.Client;
 import ph.adamw.calloji.packet.PacketType;
+import ph.adamw.calloji.packet.data.HouseRequest;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
+import ph.adamw.calloji.packet.data.plot.StreetPlot;
 
-public class ManagedAssetUI extends HBox {
-    private final static Insets MARGIN_10 = new Insets(0, 10, 0, 0);
-    private final Button mortgageButton;
-    private final Button auctionButton;
+public class ManagedAssetUI extends VBox {
+    private final static Insets PADDING = new Insets(5, 5, 5, 5);
+    private final static Insets MARGIN_H10 = new Insets(0, 20, 0, 0);
+
+    private final Button mortgageButton = new Button("Mortgage - £0.00");
+    private final Button auctionButton = new Button("Auction");
+
+    private final Button buildHouseButton = new Button("Build House - £0.00");
+    private final Button sellHouseButton = new Button("Sell House - £0.00");
 
     @Getter
     private PropertyPlot plot;
 
     public ManagedAssetUI(PropertyPlot i) {
-        this.plot = i;
-        mortgageButton = new Button("Mortgage - £" + i.getValue() / 2 + ".00");
-        auctionButton = new Button("Auction");
-
         setAlignment(Pos.CENTER);
 
-        mortgageButton.setOnAction(event -> {
-            // Validate these client side AND server side
-            if(!i.isBuiltOn()) {
-                Client.getRouter().send(PacketType.MORTGAGE_REQUEST, i);
-            }
-        });
+        final HBox mortgageAuctionBox = new HBox();
+        HBox.setMargin(mortgageButton, MARGIN_H10);
 
-        auctionButton.setOnAction(event -> {
-            // Validate these client side AND server side
-            if(!i.isBuiltOnOrMortgaged()) {
-                Client.getRouter().send(PacketType.AUCTION_REQUEST, i);
-            }
-        });
+        mortgageButton.setOnAction(event ->
+                Client.getRouter().send(PacketType.MORTGAGE_REQUEST, i));
 
-        //TODO work out why the padding/margin on the left of the thin plotUI is very large sometimes
-        getChildren().add(new ThinPlotUI(i));
-        getChildren().add(mortgageButton);
-        getChildren().add(auctionButton);
+        auctionButton.setOnAction(event ->
+                Client.getRouter().send(PacketType.AUCTION_REQUEST, i));
 
-        HBox.setMargin(mortgageButton, MARGIN_10);
+        mortgageAuctionBox.getChildren().addAll(mortgageButton, auctionButton);
+        mortgageAuctionBox.setPadding(PADDING);
+
+
+        if(i instanceof StreetPlot) {
+            final HBox houseBox = new HBox();
+            final StreetPlot sp = (StreetPlot) i;
+
+            HBox.setMargin(buildHouseButton, MARGIN_H10);
+            HBox.setMargin(sellHouseButton, MARGIN_H10);
+            houseBox.getChildren().addAll(buildHouseButton, sellHouseButton);
+
+            buildHouseButton.setText("Build House - £" + sp.getBuildCost() + ".00");
+            sellHouseButton.setText("Sell House - £" + (sp.getBuildCost() / 2) + ".00");
+
+            buildHouseButton.setOnAction(event ->
+                    Client.getRouter().send(PacketType.HOUSE_REQUEST, new HouseRequest(sp, true)));
+
+            sellHouseButton.setOnAction(event ->
+                    Client.getRouter().send(PacketType.HOUSE_REQUEST, new HouseRequest(sp, false)));
+
+            houseBox.setPadding(PADDING);
+            getChildren().add(houseBox);
+        }
+
+        final ThinPlotUI plotUI = new ThinPlotUI(i);
+
+        getChildren().add(0, mortgageAuctionBox);
+        getChildren().add(0, plotUI);
+
         load(i);
     }
 
+    // Acts as the client-side validation (also validated server side of course)
     public void setButtonsDisable(boolean b) {
         mortgageButton.setDisable(b);
+        auctionButton.setDisable(b || plot.isMortgaged());
 
-        if(!plot.isMortgaged()) {
-            auctionButton.setDisable(b);
+        if(plot instanceof StreetPlot) {
+            final StreetPlot sp = (StreetPlot) plot;
+
+            final boolean hasMonopoly = Client.getCache().getPlayer().getPlayer().hasMonopolyOf(plot.getType(), Client.getCache().getBoard());
+            final boolean canAffordHouse = Client.getCache().getPlayer().getPlayer().getBalance() >= sp.getBuildCost();
+            final boolean isBuiltOn = plot.isBuiltOn();
+
+            sellHouseButton.setDisable(b || (!hasMonopoly || !isBuiltOn || !Client.getCache().getBoard().canConstructOn(sp, false)));
+            buildHouseButton.setDisable(b || (!hasMonopoly || !canAffordHouse || !Client.getCache().getBoard().canConstructOn(sp, true)));
         }
     }
 
@@ -60,10 +92,10 @@ public class ManagedAssetUI extends HBox {
 
         if(i.isMortgaged()) {
             mortgageButton.setText("Unmortgage - £" + i.getUnmortgageCost() + ".00");
-            auctionButton.setDisable(true);
         } else {
             mortgageButton.setText("Mortgage - £" + i.getValue() / 2 + ".00");
-            auctionButton.setDisable(false);
         }
+
+        setButtonsDisable(false);
     }
 }

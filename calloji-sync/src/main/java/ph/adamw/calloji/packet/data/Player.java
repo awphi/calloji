@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.data.plot.Plot;
 import ph.adamw.calloji.packet.data.plot.PlotType;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
+import ph.adamw.calloji.packet.data.plot.StreetPlot;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -48,12 +49,22 @@ public class Player implements Serializable {
         final List<PropertyPlot> result = new ArrayList<>();
 
         for(Plot i : board.getPlots()) {
-            if(i instanceof PropertyPlot && ((PropertyPlot) i).getOwner() != null && ((PropertyPlot) i).getOwner().equals(id)) {
+            if(i instanceof PropertyPlot && ((Long) id).equals(((PropertyPlot) i).getOwner())) {
                 result.add((PropertyPlot) i);
             }
         }
 
         return result;
+    }
+
+    public boolean hasMonopolyOf(PlotType type, Board board) {
+        for(Plot i : board.getAllPlotsOfType(type)) {
+            if(i instanceof PropertyPlot && ((Long) id).equals(((PropertyPlot) i).getOwner())) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override

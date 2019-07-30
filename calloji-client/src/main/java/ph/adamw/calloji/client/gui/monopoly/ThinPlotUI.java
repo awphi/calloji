@@ -11,13 +11,12 @@ import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 
 
 public class ThinPlotUI extends HBox {
-    private final static Insets PADDING = new Insets(0, 10, 0, 10);
+    private final static Insets PADDING = new Insets(5, 10, 5, 10);
     private final static Insets LABEL_MARGIN = new Insets(0, 0, 0, 10);
 
     public ThinPlotUI(Plot plot) {
         setAlignment(Pos.CENTER_LEFT);
         setPadding(PADDING);
-        setHeight(25);
         setMaxHeight(25);
 
         final Rectangle header = new Rectangle();

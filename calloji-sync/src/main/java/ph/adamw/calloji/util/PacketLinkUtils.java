@@ -28,7 +28,6 @@ public class PacketLinkUtils {
                     final PacketLinkBase plink = (PacketLinkBase) clazz.newInstance();
 
                     if(linkChain == null) {
-                        log.debug("Chain start: " + clazz.getSimpleName());
                         linkChain = top = plink;
                     } else {
                         linkChain = linkChain.setSuccessor(plink);

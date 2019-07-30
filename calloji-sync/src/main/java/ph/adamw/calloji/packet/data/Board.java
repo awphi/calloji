@@ -60,4 +60,43 @@ public class Board implements Serializable {
     public Plot plotAt(int i) {
         return getPlots().get(i);
     }
+
+    public List<Plot> getAllPlotsOfType(PlotType type) {
+        final List<Plot> result = new ArrayList<>();
+
+        for(Plot i : plots) {
+            if(i.getType().equals(type)) {
+                result.add(i);
+            }
+        }
+
+        return result;
+    }
+
+    public boolean canConstructOn(StreetPlot plot, boolean build) {
+        int change = build ? 1 : -1;
+        int high = 0;
+        int low = Integer.MAX_VALUE;
+
+        for(Plot i : getAllPlotsOfType(plot.getType())) {
+            if(i instanceof StreetPlot) {
+                final StreetPlot sp = (StreetPlot) i;
+                int houses = sp.getHouses();
+
+                if(i.equals(plot)) {
+                    houses += change;
+                }
+
+                if(houses > high) {
+                    high = houses;
+                }
+
+                if(houses < low) {
+                    low = houses;
+                }
+            }
+        }
+
+        return (high - low) > 1;
+    }
 }

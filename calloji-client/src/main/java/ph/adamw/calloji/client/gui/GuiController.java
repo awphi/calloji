@@ -93,13 +93,18 @@ public class GuiController {
 	public void displayChatMessage(MessageType type, String txt) {
 		final Label text = new Label("[" + DATE_FORMAT.format(new Date()) + "] " + txt);
 		text.setTextFill(type.getColor());
-		Platform.runLater(() -> chatListView.getItems().add(text));
+		Platform.runLater(() -> {
+			chatListView.getItems().add(text);
+			chatListView.scrollTo(chatListView.getItems().size() - 1);
+		});
 	}
 
 	@FXML
 	public void initialize() {
 		playerListView.setSelectionModel(new NullSelectionModel<>());
 		chatListView.setSelectionModel(new NullSelectionModel<>());
+		assetManagementListView.setSelectionModel(new NullSelectionModel<>());
+
 		playersBorderPane.setCenter(playerListView);
 		mainBorderPane.setCenter(boardUI);
 
@@ -229,8 +234,6 @@ public class GuiController {
 		// If there's no player to reload then this is a new player and we must create props for it
 		if(isPlayerUpdateFresh(update)) {
 			final GenericPlayerUI gen = new GenericPlayerUI(update, boardUI);
-
-			log.debug(update.getId() + " " + Client.getRouter().getPid() + " " + (Client.getRouter().getPid() == update.getId()));
 
 			if(update.getId() == Client.getRouter().getPid()) {
 				playerListView.getItems().add(0, gen);

@@ -2,12 +2,11 @@ package ph.adamw.calloji.packet.data.plot;
 
 import lombok.Getter;
 import lombok.Setter;
+import ph.adamw.calloji.util.GameConstants;
 
 import java.io.Serializable;
 
 public class StreetPlot extends PropertyPlot {
-    private static final int[] HOUSE_MULTIPLIERS = new int[] {1, 5, 15, 35, 42, 50};
-
     @Getter
     @Setter
     private int houses = 0;
@@ -21,8 +20,13 @@ public class StreetPlot extends PropertyPlot {
         this.buildCost = buildCost;
     }
 
+    @Override
+    public boolean isBuiltOn() {
+        return getHouses() > 0;
+    }
+
     public int getRent() {
         final int y = (getValue() / 10) - 4;
-        return y * HOUSE_MULTIPLIERS[houses];
+        return y * GameConstants.HOUSE_MULTIPLIERS[houses];
     }
 }
