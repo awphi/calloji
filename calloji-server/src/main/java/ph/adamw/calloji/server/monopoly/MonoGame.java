@@ -76,8 +76,13 @@ public class MonoGame implements ClientPoolListener {
         currentTurnTime = GameConstants.TURN_TIME;
 
         if(currentTurnPlayer.getPlayer().getJailed() > 0) {
-            currentTurnTime = 0;
-            currentTurnPlayer.decJailed();
+            if(currentTurnPlayer.getPlayer().getGetOutOfJails() > 0) {
+                currentTurnPlayer.getPlayer().getOutOfJails --;
+                currentTurnPlayer.decJailed(currentTurnPlayer.getPlayer().getJailed());
+            } else {
+                currentTurnTime = 0;
+                currentTurnPlayer.decJailed(1);
+            }
         }
 
         sendToAll(PacketType.TURN_UPDATE, new TurnUpdate(currentTurnPlayer.getConnectionId(), currentTurnTime, currentTurnPlayer.getConnectionNick(), false));

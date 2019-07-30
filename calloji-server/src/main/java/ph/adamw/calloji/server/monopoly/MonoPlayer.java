@@ -150,8 +150,8 @@ public class MonoPlayer {
         }
     }
 
-    void decJailed() {
-        player.jailed --;
+    void decJailed(int amount) {
+        player.jailed -= amount;
         game.updatePlayerOnAllClients(this);
     }
 
