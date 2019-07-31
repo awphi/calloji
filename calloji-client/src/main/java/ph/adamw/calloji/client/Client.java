@@ -5,18 +5,14 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import lombok.Getter;
 import ph.adamw.calloji.client.gui.GuiController;
-import ph.adamw.calloji.client.gui.MessageType;
 import ph.adamw.calloji.client.gui.SplashController;
 import ph.adamw.calloji.util.LoggerUtils;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class Client extends Application {
 	@Getter

@@ -14,7 +14,7 @@ import ph.adamw.calloji.util.JsonUtils;
 
 @PacketLinkType(PacketType.PLOT_PURCHASED)
 @Slf4j
-public class PacketLinkMonoPlotPurchased extends PacketLinkMono {
+public class PacketLinkMonoPurchaseRequest extends PacketLinkMono {
     @Override
     public void handle(PacketType type, JsonElement content, ClientConnection connection) {
         final MonoGame game = ServerRouter.getGame();

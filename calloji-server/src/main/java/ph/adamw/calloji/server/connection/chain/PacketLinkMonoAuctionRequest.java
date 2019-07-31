@@ -12,7 +12,7 @@ import ph.adamw.calloji.util.JsonUtils;
 
 @PacketLinkType(PacketType.AUCTION_REQUEST)
 @Slf4j
-public class PacketLinkMonoPlotAuctioned extends PacketLinkMono {
+public class PacketLinkMonoAuctionRequest extends PacketLinkMono {
     @Override
     public void handle(PacketType type, JsonElement content, ClientConnection connection) {
         final MonoGame game = ServerRouter.getGame();

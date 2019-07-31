@@ -3,11 +3,14 @@ package ph.adamw.calloji.client.gui.monopoly;
 import com.google.common.collect.ImmutableMap;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import lombok.extern.slf4j.Slf4j;
+import ph.adamw.calloji.client.Client;
+import ph.adamw.calloji.client.gui.GuiUtils;
 import ph.adamw.calloji.packet.data.plot.Plot;
 import ph.adamw.calloji.packet.data.plot.PlotType;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
@@ -18,16 +21,22 @@ import javax.annotation.Nullable;
 @Slf4j
 public class PlotUI extends StackPane {
     private final BoardUI board;
-    private Text valueText;
-    private Text nameText;
+    private Label valueText = GuiUtils.buildStyledLabel("", "bold");
+    private Label nameText = GuiUtils.buildStyledLabel("");
+    private Tooltip ownerTooltip = new Tooltip("Owner: -");
 
-    //TODO show the owner of a plot on hover or right click or smth like that
     public PlotUI(@Nullable BoardUI board) {
         this(board, true);
     }
 
     public PlotUI(@Nullable BoardUI board, boolean dynamic) {
         this.board = board;
+
+        StackPane.setAlignment(valueText, Pos.BOTTOM_CENTER);
+        StackPane.setAlignment(nameText, Pos.CENTER);
+        getChildren().addAll(valueText, nameText);
+
+        nameText.setTooltip(ownerTooltip);
 
         if(!dynamic) {
             setMinWidth(BoardUI.WIDTH);
@@ -46,25 +55,9 @@ public class PlotUI extends StackPane {
             .put(PlotType.BLUE, Color.ROYALBLUE)
             .build();
 
-    private Text generatePlotText(String x, String... classes) {
-        final Text text = new Text(x);
-        text.getStyleClass().addAll(classes);
-        text.setTextAlignment(TextAlignment.CENTER);
-
-        text.wrappingWidthProperty().setValue(BoardUI.WIDTH);
-        return text;
-    }
-
     public void load(Plot plot) {
         getStyleClass().addAll("border", "border-in", "plot");
-
-        if(nameText == null) {
-            nameText = generatePlotText(plot.getName());
-            addChild(nameText);
-            StackPane.setAlignment(nameText, Pos.CENTER);
-        } else {
-            nameText.setText(plot.getName());
-        }
+        nameText.setText(plot.getName());
 
         // Header
         if(COLOR_MAP.containsKey(plot.getType())) {
@@ -80,25 +73,21 @@ public class PlotUI extends StackPane {
 
         if(plot instanceof PropertyPlot) {
             final PropertyPlot x = ((PropertyPlot) plot);
-
-            if(valueText == null) {
-                valueText = generatePlotText("£" + x.getValue() + ".00", "bold");
-                addChild(valueText);
-                StackPane.setAlignment(valueText, Pos.BOTTOM_CENTER);
-            } else {
-                valueText.setText("£" + x.getValue() + ".00");
-            }
-
-            valueText.setFill(Color.BLACK);
+            valueText.setText("£" + x.getValue() + ".00");
+            valueText.setTextFill(Color.BLACK);
 
             if(x.getOwner() != null) {
                 valueText.getStyleClass().add("strikethrough");
+                ownerTooltip.setStyle("-fx-text-fill: white;");
+                ownerTooltip.setText("Owner: " + Client.getCache().getCachedPlayer(x.getOwner()).getNick());
             } else {
                 valueText.getStyleClass().remove("strikethrough");
+                ownerTooltip.setStyle("-fx-text-fill: red;");
+                ownerTooltip.setText("Owner: -");
             }
 
             if(x.isMortgaged()) {
-                valueText.setFill(Color.RED);
+                valueText.setTextFill(Color.RED);
                 valueText.setText(valueText.getText() + " (M)");
             }
         }
@@ -109,8 +98,8 @@ public class PlotUI extends StackPane {
 
             top.getChildren().clear();
 
-            int houses = s.getHouses() % 4;
-            int hotels = s.getHouses() / 4;
+            int houses = s.getHouses() % 5;
+            int hotels = s.getHouses() / 5;
 
             for(int i = 0; i < houses + hotels; i ++) {
                 final Pane pane = new Pane();

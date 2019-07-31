@@ -9,7 +9,7 @@ import ph.adamw.calloji.server.connection.ClientConnection;
 import ph.adamw.calloji.server.connection.event.ClientNickChangeEvent;
 
 @PacketLinkType(PacketType.NICK_EDIT)
-public class PacketLinkMonoNickEdit extends PacketLinkMono {
+public class PacketLinkMonoNickRequest extends PacketLinkMono {
     @Override
     public void handle(PacketType type, JsonElement content, ClientConnection connection) {
         for(ClientConnection i : connection.getPool().getImmutableConnections()) {

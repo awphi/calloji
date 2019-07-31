@@ -11,7 +11,7 @@ import ph.adamw.calloji.server.monopoly.MonoPropertyPlot;
 import ph.adamw.calloji.util.JsonUtils;
 
 @PacketLinkType(PacketType.MORTGAGE_REQUEST)
-public class PacketLinkMonoMortgageRequested extends PacketLinkMono {
+public class PacketLinkMonoMortgageRequest extends PacketLinkMono {
     @Override
     public void handle(PacketType type, JsonElement content, ClientConnection connection) {
         final MonoGame game = ServerRouter.getGame();

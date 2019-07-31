@@ -4,8 +4,10 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -27,6 +29,14 @@ public class GuiUtils {
 
     public static InputStream getGamePieceImageStream(GamePiece piece) {
         return GuiUtils.class.getResourceAsStream("/monopoly/" + piece.getImageRef() + ".png");
+    }
+
+    public static Label buildStyledLabel(String x, String... classes) {
+        final Label text = new Label(x);
+        text.getStyleClass().addAll(classes);
+        text.setTextAlignment(TextAlignment.CENTER);
+        text.setWrapText(true);
+        return text;
     }
 
     public static <T> T openOwnedWindow(Window window, String res, Stage stage) throws IOException {

@@ -9,12 +9,13 @@ My friends and I had, in the past, always wanted to play a quick, no hassle game
 > Based on [Monopoly Official Rules](https://en.wikibooks.org/wiki/Monopoly/Official_Rules)  
 
 ### Calloji Unique Rules
-1. Hotels are now the combination of 4 houses, automatically combined when a 4th one is built.
+1. Hotels are now the combination of 5 houses, automatically combined when a 5th one is built.
 2. There are infinite houses & hotels in the bank's possession so __there is no housing shortage rule__.
 3. Players may auction their property at any time during their turn.
 4. Mortgaged properties can be traded but not auctioned.
 5. Rent calculations have been simplified slightly. They are now based on standard multipliers & not arbitrary values but they remain close to the original values.
 6. Get out of jail free cards are tradable but will be used automatically upon entering jail. This is to stop purposeful game-stalling by waiting in jail to avoid rent.
+7. There is a maximum of 1 hotel on each plot.
 
 ## Technical Information
 This Calloji repository includes three modules (managed with maven). These are:

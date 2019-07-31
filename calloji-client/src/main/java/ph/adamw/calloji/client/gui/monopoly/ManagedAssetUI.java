@@ -11,6 +11,7 @@ import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.packet.data.HouseRequest;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 import ph.adamw.calloji.packet.data.plot.StreetPlot;
+import ph.adamw.calloji.util.GameConstants;
 
 public class ManagedAssetUI extends VBox {
     private final static Insets PADDING = new Insets(5, 5, 5, 5);
@@ -83,7 +84,7 @@ public class ManagedAssetUI extends VBox {
             final boolean isBuiltOn = plot.isBuiltOn();
 
             sellHouseButton.setDisable(b || (!hasMonopoly || !isBuiltOn || !Client.getCache().getBoard().canConstructOn(sp, false)));
-            buildHouseButton.setDisable(b || (!hasMonopoly || !canAffordHouse || !Client.getCache().getBoard().canConstructOn(sp, true)));
+            buildHouseButton.setDisable(b || (!hasMonopoly || !(sp.getHouses() + 1 <= GameConstants.MAX_HOUSES) || !canAffordHouse || !Client.getCache().getBoard().canConstructOn(sp, true)));
         }
     }
 

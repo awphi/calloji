@@ -1,6 +1,7 @@
 package ph.adamw.calloji.server.monopoly;
 
 import lombok.Getter;
+import ph.adamw.calloji.packet.data.MessageType;
 import ph.adamw.calloji.packet.data.plot.StreetPlot;
 import ph.adamw.calloji.util.GameConstants;
 
@@ -39,10 +40,14 @@ public class MonoStreetPlot extends MonoPropertyPlot {
 
         if(!plot.getOwner().equals(player.getConnectionId()) && !plot.isMortgaged()) {
             final StreetPlot st = plot;
-            int rem = player.tryRemoveMoney(st.getRent());
+            final MonoPlayer owner = game.getMonoPlayer(plot.getOwner());
 
-            if(player.getPlayer().isBankrupt()) {
-                game.getMonoPlayer(plot.getOwner()).addMoney(rem);
+            int amount = player.tryRemoveMoney(st.getRent());
+            owner.addMoney(amount);
+
+            if(amount > 0) {
+                owner.sendMessage(MessageType.SYSTEM, "You received a rent payment of £" + amount + ".00 from " + player.getConnectionNick() + " for " + plot.getName() + ".");
+                player.sendMessage(MessageType.SYSTEM, "You paid rent of £" + amount + ".00 to " + owner.getConnectionNick() + " for " + plot.getName() + ".");
             }
         }
     }

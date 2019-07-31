@@ -17,6 +17,7 @@ import ph.adamw.calloji.client.StringUtil;
 import ph.adamw.calloji.client.gui.monopoly.PlotUI;
 import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.packet.data.BidUpdate;
+import ph.adamw.calloji.packet.data.MessageType;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 import ph.adamw.calloji.util.GameConstants;
 

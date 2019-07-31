@@ -1,11 +1,12 @@
-package ph.adamw.calloji.client.gui;
+package ph.adamw.calloji.packet.data;
 
 import javafx.scene.paint.Color;
 import lombok.Getter;
 
 public enum MessageType {
     CHAT(Color.BLACK),
-    SYSTEM(Color.GREY);
+    SYSTEM(Color.GREY),
+    WARNING(Color.RED);
 
     @Getter
     private final Color color;

@@ -79,9 +79,14 @@ public class MonoGame implements ClientPoolListener {
             if(currentTurnPlayer.getPlayer().getGetOutOfJails() > 0) {
                 currentTurnPlayer.getPlayer().getOutOfJails --;
                 currentTurnPlayer.decJailed(currentTurnPlayer.getPlayer().getJailed());
+
+                currentTurnPlayer.sendMessage(MessageType.SYSTEM, "You automatically used your get out of jail free card to escape.");
+                sendAllMessage(MessageType.SYSTEM, currentTurnPlayer.getConnectionNick() + " used their get out of jail free card.", currentTurnPlayer);
             } else {
                 currentTurnTime = 0;
                 currentTurnPlayer.decJailed(1);
+
+                sendAllMessage(MessageType.SYSTEM, "Skipping turn of " + currentTurnPlayer.getConnectionNick() + " as they are in jail!");
             }
         }
 
@@ -107,14 +112,18 @@ public class MonoGame implements ClientPoolListener {
         }
 
         final int roll = ThreadLocalRandom.current().nextInt(1, GameConstants.DICE_AMOUNT * GameConstants.DICE_SIDES + 1);
-        connection.send(PacketType.DICE_ROLL_RESPONSE, new JsonPrimitive(roll));
-        getMonoPlayer(connection.getId()).moveSpaces(roll);
+        final MonoPlayer player = getMonoPlayer(connection.getId());
+        sendAllMessage(MessageType.SYSTEM, connection.getNick() + " rolled a " + roll + "!", player);
+        player.sendMessage(MessageType.SYSTEM, "You rolled a " + roll + "!");
+        player.moveSpaces(roll);
         hasRolled = true;
     }
 
     public void auction(PropertyPlot property, MonoPlayer payee) {
         extendCurrentTurn(GameConstants.AUCTION_TIME);
         sendToAll(PacketType.AUCTION_START, property);
+        final String owner = payee == null ? "The bank" : payee.getConnectionNick();
+        sendAllMessage(MessageType.SYSTEM, owner + " has placed " + property.getName() + " on public auction.");
         activeAuction = new MonoAuction(property);
 
         // Will discard of auction and deal w/ winner
@@ -131,6 +140,7 @@ public class MonoGame implements ClientPoolListener {
 
                 if(payee != null) {
                     payee.addMoney(activeAuction.getWinnerBid());
+                    payee.sendMessage(MessageType.SYSTEM, "You received a payment of £" + activeAuction.getWinnerBid() + ".00 from " + activeAuction.getWinner().getConnectionNick() + " for " + property.getName() + ".");
                 }
             }
 
@@ -168,9 +178,14 @@ public class MonoGame implements ClientPoolListener {
         n.updateBoard();
         updateAllPlayersOnAllClients();
 
+        sendAllMessage(MessageType.SYSTEM, n.getConnectionNick() + " has joined the game!", n);
+
         if(playerMap.size() == e.getPool().getCapacity()) {
             log.debug("Game has " + playerMap.size() + " players - commencing game!");
+            sendAllMessage(MessageType.SYSTEM, "Game beginning!");
             start();
+        } else {
+            sendAllMessage(MessageType.SYSTEM, "Waiting for " + (e.getPool().getCapacity() - playerMap.size()) + " more player before beginning the game.");
         }
     }
 
@@ -180,6 +195,7 @@ public class MonoGame implements ClientPoolListener {
         if(mp != null) {
             playerMap.remove(mp.getConnectionId());
             log.info("Deleting player " + mp.getConnectionId() + " due to a disconnect.");
+            sendAllMessage(MessageType.WARNING, mp.getConnectionNick() + " has left the game.");
 
             for(MonoPlayer i : playerMap.values()) {
                 i.send(PacketType.CLIENT_CONNECTION_UPDATE, new ConnectionUpdate(true, mp.getConnectionId()));
@@ -189,6 +205,8 @@ public class MonoGame implements ClientPoolListener {
 
     @Override
     public void onClientNickChanged(ClientNickChangeEvent e) {
+        updateBoardOnAllClients();
+
         final MonoPlayer mp = getMonoPlayer(e.getId());
         if(mp != null) {
             updatePlayerOnAllClients(mp);
@@ -216,6 +234,16 @@ public class MonoGame implements ClientPoolListener {
     void sendToAll(PacketType type, Object element) {
         for(MonoPlayer player : playerMap.values()) {
             player.send(type, element);
+        }
+    }
+
+    public void sendAllMessage(MessageType type, String txt, MonoPlayer... excludes) {
+        final List<MonoPlayer> list = Arrays.asList(excludes);
+
+        for(MonoPlayer player : playerMap.values()) {
+            if(!list.contains(player)) {
+                player.sendMessage(type, txt);
+            }
         }
     }
 

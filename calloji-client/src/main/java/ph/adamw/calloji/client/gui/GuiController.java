@@ -2,39 +2,26 @@ package ph.adamw.calloji.client.gui;
 
 import com.google.gson.JsonPrimitive;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
-import javafx.stage.WindowEvent;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.client.Client;
-import ph.adamw.calloji.client.ClientRouter;
 import ph.adamw.calloji.client.StringUtil;
 import ph.adamw.calloji.client.gui.monopoly.BoardUI;
 import ph.adamw.calloji.client.gui.monopoly.GenericPlayerUI;
 import ph.adamw.calloji.client.gui.monopoly.ManagedAssetUI;
-import ph.adamw.calloji.client.gui.monopoly.ThinPlotUI;
 import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.packet.data.*;
-import ph.adamw.calloji.packet.data.plot.PlotType;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 @Slf4j
 public class GuiController {
@@ -169,7 +156,7 @@ public class GuiController {
 			return;
 		}
 
-		Client.getRouter().send(PacketType.CHAT, new ChatMessage(chatTextField.getText(), ""));
+		Client.getRouter().send(PacketType.CHAT_MESSAGE, new ChatMessage(MessageType.CHAT, chatTextField.getText(), ""));
 		chatTextField.clear();
 	}
 
@@ -262,7 +249,9 @@ public class GuiController {
 
     public void setTurn(TurnUpdate update) {
 		if(!update.isExtension()) {
-			Client.getGui().displayChatMessage(MessageType.SYSTEM, "It is now the turn of " + update.getNick() + ".");
+			final String turn = update.getPid() == Client.getRouter().getPid() ? "your" : update.getNick() + "'s";
+			Client.getGui().displayChatMessage(MessageType.SYSTEM, "It is now " + turn + " turn.");
+
 			turnTime = update.getTurnTime();
 
 			if(update.getPid() == Client.getRouter().getPid()) {

@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.data.CardUpdate;
+import ph.adamw.calloji.packet.data.ChatMessage;
+import ph.adamw.calloji.packet.data.MessageType;
 import ph.adamw.calloji.packet.data.Player;
 import ph.adamw.calloji.packet.data.plot.Plot;
 import ph.adamw.calloji.packet.data.plot.PlotType;
@@ -13,6 +15,7 @@ import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.server.connection.ClientConnection;
 import ph.adamw.calloji.server.monopoly.card.MonoCard;
 import ph.adamw.calloji.server.monopoly.card.MonoCardPile;
+import ph.adamw.calloji.util.GameConstants;
 
 @Slf4j
 @AllArgsConstructor
@@ -63,9 +66,6 @@ public class MonoPlayer {
         }
     }
 
-    //TODO introduce a new generic system message packet to send to clients with a server message to display in chat
-    // i.e. when a player pulls a chance/comm chest, when a player pays rent, if their turn is skipped due to jail,
-    // auctions etc. etc.
     public void moveSpaces(int x) {
         // Passed GO
         if(player.boardPosition + x >= 40) {
@@ -82,16 +82,19 @@ public class MonoPlayer {
         } else {
             switch (plot.getType()) {
                 case GO:
-                    addMoney(200);
+                    addMoney(GameConstants.GO_MONEY);
+                    sendMessage(MessageType.SYSTEM, "You have received £" + GameConstants.GO_MONEY + ".00 for passing \"Go\".");
                     break;
                 case TAX:
-                    tryRemoveMoney(100);
-                    break;
                 case SUPER_TAX:
-                    tryRemoveMoney(200);
+                    final int amount = plot.getType().equals(PlotType.TAX) ? GameConstants.INCOME_TAX : GameConstants.SUPER_TAX;
+                    tryRemoveMoney(amount);
+                    sendMessage(MessageType.SYSTEM, "You have paid £" + amount + ".00 in tax to the bank.");
                     break;
                 case GO_TO_JAIL:
-                    setJailed(3);
+                    setJailed(GameConstants.GO_TO_JAIL_TURNS);
+                    sendMessage(MessageType.WARNING, "You have been sent to jail for " + GameConstants.GO_TO_JAIL_TURNS + " turns.");
+                    game.sendAllMessage(MessageType.SYSTEM, getConnectionNick() + " has been sent to jail for "+ GameConstants.GO_TO_JAIL_TURNS + " turns!", this);
                     break;
                 case CHANCE:
                 case COMMUNITY_CHEST: {
@@ -106,6 +109,7 @@ public class MonoPlayer {
                     final MonoCard card = pile.draw();
                     card.handle(this);
                     send(PacketType.CARD_DRAWN, new CardUpdate(pile.getName(), card.getText()));
+                    game.sendAllMessage(MessageType.SYSTEM, getConnectionNick() + " has drawn a " + pile.getName() +  " card!", this);
                 }
                 break;
             }
@@ -165,16 +169,23 @@ public class MonoPlayer {
         player.isBankrupt = b;
         game.updateBoardOnAllClients();
         game.updatePlayerOnAllClients(this);
+        game.sendAllMessage(MessageType.WARNING, getConnectionNick() + " has gone bankrupt!", this);
+        sendMessage(MessageType.WARNING, "You have gone bankrupt! You can continue to watch the game but no longer play.");
     }
 
     public int tryRemoveMoney(int money) {
+        if(money <= 0) {
+            return 0;
+        }
+
         int ret = money;
 
         if(player.balance >= money) {
             player.balance -= money;
         } else if(player.balance + getAssetsSellValue() + getBuildingsSellValue() >= money) {
             game.extendCurrentTurn(30);
-            //TODO (ForceAssetManagement) - if they exit the menu or dont send a response in x seconds then auto-sell stuff till we good
+            //TODO this method must block for 30 seconds while the player manages their assets
+            //TODO (ForceAssetManagement) - if at the end of the block it's not enough then auto-sell stuff till we good
         } else {
             ret = player.balance;
             player.balance = 0;
@@ -187,6 +198,10 @@ public class MonoPlayer {
 
     public void updateBoard() {
         send(PacketType.BOARD_UPDATE, game.getMonoBoard().getBoard());
+    }
+
+    public void sendMessage(MessageType messageType, String text) {
+        send(PacketType.CHAT_MESSAGE, new ChatMessage(messageType, text, ""));
     }
 
     public void setGetOutOfJails(int i) {

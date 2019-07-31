@@ -9,7 +9,7 @@ import ph.adamw.calloji.server.monopoly.MonoGame;
 import ph.adamw.calloji.util.JsonUtils;
 
 @PacketLinkType(PacketType.AUCTION_BID)
-public class PacketLinkMonoBidReceived extends PacketLinkMono {
+public class PacketLinkMonoBidRequest extends PacketLinkMono {
     @Override
     public void handle(PacketType type, JsonElement content, ClientConnection connection) {
         final int amount = JsonUtils.getObject(content, Integer.class);

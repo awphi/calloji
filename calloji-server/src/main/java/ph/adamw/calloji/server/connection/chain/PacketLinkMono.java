@@ -22,6 +22,7 @@ public abstract class PacketLinkMono extends PacketLinkBase {
 
     public PacketLinkMono setChainConnection(ClientConnection conn) {
         PacketLinkMono plink = this;
+
         do {
             plink.setConnection(conn);
             plink = (PacketLinkMono) plink.getSuccessor();
