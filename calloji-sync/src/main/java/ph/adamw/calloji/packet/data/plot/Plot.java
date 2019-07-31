@@ -7,7 +7,6 @@ import com.google.gson.JsonSerializer;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.util.JsonUtils;
 
 import java.io.Serializable;

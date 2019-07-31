@@ -1,13 +1,11 @@
 package ph.adamw.calloji.client;
 
-import com.google.common.reflect.ClassPath;
 import com.google.gson.JsonElement;
 import javafx.application.Platform;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import ph.adamw.calloji.client.chain.*;
 import ph.adamw.calloji.packet.*;
 import ph.adamw.calloji.packet.data.ConnectionUpdate;
 import ph.adamw.calloji.util.GameConstants;

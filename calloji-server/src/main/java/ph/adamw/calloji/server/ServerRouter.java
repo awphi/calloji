@@ -2,7 +2,6 @@ package ph.adamw.calloji.server;
 
 import com.google.common.eventbus.EventBus;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ph.adamw.calloji.server.connection.ClientPool;
@@ -11,6 +10,7 @@ import ph.adamw.calloji.util.LoggerUtils;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.Scanner;
 
 public class ServerRouter {
 	private static ClientPool clientPool;
@@ -53,7 +53,17 @@ public class ServerRouter {
 		game = new MonoGame();
 
 		log.info("Started server on port: " + port + ", client pool capacity: " + capacity);
-		new Thread(ServerRouter::waitForNextConnection).start();
+		new Thread(ServerRouter::waitForNextConnection, "Connection Acceptor").start();
+		new Thread(ServerRouter::readInput, "Console").start();
+	}
+
+	private static void readInput() {
+		final Scanner scanner = new Scanner(System.in);
+		while(true) {
+			final String in = scanner.nextLine();
+			//TODO
+			log.info("Unrecognized command: " + in);
+		}
 	}
 
 	private static void waitForNextConnection() {

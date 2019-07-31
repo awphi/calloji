@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.data.plot.Plot;
 import ph.adamw.calloji.packet.data.plot.PlotType;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
-import ph.adamw.calloji.packet.data.plot.StreetPlot;
 
 import java.io.Serializable;
 import java.util.ArrayList;

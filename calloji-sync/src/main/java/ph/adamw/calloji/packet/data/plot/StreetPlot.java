@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import ph.adamw.calloji.util.GameConstants;
 
-import java.io.Serializable;
-
 public class StreetPlot extends PropertyPlot {
     @Getter
     @Setter

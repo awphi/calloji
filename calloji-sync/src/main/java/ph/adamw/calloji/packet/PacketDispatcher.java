@@ -2,11 +2,8 @@ package ph.adamw.calloji.packet;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
-import ph.adamw.calloji.packet.data.ConnectionUpdate;
 import ph.adamw.calloji.util.JsonUtils;
-import sun.net.ConnectionResetException;
 
 import java.io.*;
 import java.net.SocketException;

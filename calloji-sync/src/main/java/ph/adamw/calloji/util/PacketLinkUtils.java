@@ -6,7 +6,6 @@ import ph.adamw.calloji.packet.PacketLinkBase;
 import ph.adamw.calloji.packet.PacketLinkType;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 @Slf4j
 public class PacketLinkUtils {

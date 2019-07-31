@@ -4,12 +4,10 @@ import com.google.gson.JsonElement;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.PacketLinkType;
 import ph.adamw.calloji.packet.PacketType;
-import ph.adamw.calloji.packet.data.plot.Plot;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 import ph.adamw.calloji.server.ServerRouter;
 import ph.adamw.calloji.server.connection.ClientConnection;
 import ph.adamw.calloji.server.monopoly.MonoGame;
-import ph.adamw.calloji.server.monopoly.MonoPropertyPlot;
 import ph.adamw.calloji.util.JsonUtils;
 
 @PacketLinkType(PacketType.PLOT_PURCHASED)

@@ -2,10 +2,8 @@ package ph.adamw.calloji.packet.data.plot;
 
 import lombok.Getter;
 import lombok.Setter;
-import ph.adamw.calloji.packet.data.Player;
 
 import javax.annotation.Nullable;
-import java.io.Serializable;
 
 @Getter
 public class PropertyPlot extends Plot {

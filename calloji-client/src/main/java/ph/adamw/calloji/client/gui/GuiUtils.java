@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
@@ -16,11 +15,6 @@ import ph.adamw.calloji.packet.data.GamePiece;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Pattern;
 
 public class GuiUtils {
     public static Image getGamePieceImage(GamePiece piece) {

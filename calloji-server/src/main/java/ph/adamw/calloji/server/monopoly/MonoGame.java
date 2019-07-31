@@ -1,6 +1,5 @@
 package ph.adamw.calloji.server.monopoly;
 
-import com.google.gson.JsonPrimitive;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.data.*;
