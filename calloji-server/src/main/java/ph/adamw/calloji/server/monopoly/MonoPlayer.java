@@ -184,8 +184,8 @@ public class MonoPlayer {
             player.balance -= money;
         } else if(player.balance + getAssetsSellValue() + getBuildingsSellValue() >= money) {
             game.extendCurrentTurn(30);
-            //TODO this method must block for 30 seconds while the player manages their assets
             //TODO (ForceAssetManagement) - if at the end of the block it's not enough then auto-sell stuff till we good
+            // this method must block for 30 seconds while the player manages their assets
         } else {
             ret = player.balance;
             player.balance = 0;
