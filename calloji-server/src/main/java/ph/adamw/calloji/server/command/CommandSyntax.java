@@ -6,20 +6,7 @@ public class CommandSyntax {
 	private final String[] pattern;
 	private final String fullString;
 
-	@Getter
-	private final String helpText;
-
-	@Getter
-	private final boolean isOnHelp;
-
-	public CommandSyntax(String pattern, String helpText) {
-		this(pattern, helpText, true);
-	}
-
-	public CommandSyntax(String pattern, String helpText, boolean isOnHelp) {
-		this.helpText = helpText;
-		this.isOnHelp = isOnHelp;
-
+	public CommandSyntax(String pattern) {
 		this.fullString = pattern;
 
 		if(pattern.isEmpty()) {
@@ -56,30 +43,6 @@ public class CommandSyntax {
 		return true;
 	}
 
-	/**
-	 * Matches raw arguments with raw strings expressed in the command syntax (i.e. not variable inputs [integer], [string] etc.)
-	 * @param args Arguments to run comparison against
-	 * @return int - How many raw string isValidNewStructure were present
-	 */
-	public int getArgumentMatches(String[] args) {
-		int c = 0;
-
-		for(int i = 0; i < args.length; i ++) {
-			if(i >= pattern.length) {
-				break;
-			}
-
-
-			if(!pattern[i].startsWith("[")) {
-				if (args[i].equalsIgnoreCase(pattern[i])) {
-					c ++;
-				}
-			}
-		}
-
-		return c;
-	}
-
 	public String isDataValid(String[] args) {
 		for(int i = 0; i < args.length; i ++) {
 			if(pattern[i].startsWith("[")) {
@@ -112,20 +75,5 @@ public class CommandSyntax {
 		}
 
 		return objs;
-	}
-
-	public String toHumanString() {
-		final StringBuilder sb = new StringBuilder();
-
-		for(String i : pattern) {
-			sb.append(" ");
-			if(i.startsWith("[")) {
-				sb.append("<" + CommandArgument.fromPattern(i).toHumanString() + ">");
-			} else {
-				sb.append(i);
-			}
-		}
-
-		return sb.toString();
 	}
 }

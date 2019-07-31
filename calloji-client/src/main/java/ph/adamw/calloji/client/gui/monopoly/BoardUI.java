@@ -49,7 +49,7 @@ public class BoardUI extends GridPane {
 
             final PlotUI[] panes = new PlotUI[getCols()];
             for(int j = 0; j < panes.length; j ++) {
-                panes[j] = new PlotUI(this);
+                panes[j] = new PlotUI();
                 setHalignment(panes[j], HPos.CENTER);
                 setValignment(panes[j], VPos.CENTER);
             }

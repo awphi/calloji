@@ -24,7 +24,7 @@ public class PacketLinkMonoAuctionRequest extends PacketLinkMono {
 
         if(plotLandedOn) {
             game.auction(stoodOn, null);
-        } else if(plotOwned && !plot.isClean()) {
+        } else if(plotOwned && !(plot.isMortgaged() || plot.isBuiltOn())) {
             game.auction(stoodOn, game.getMonoPlayer(connection.getId()));
         }
     }

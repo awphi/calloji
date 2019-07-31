@@ -36,13 +36,13 @@ public class ClientPool {
 
 	private long getNextClientId() {
 		if(map.keySet().size() >= capacity) {
-			return -1L;
+			return -1;
 		}
 
 		long id;
 
 		do {
-			id = UUID.randomUUID().getLeastSignificantBits();
+			id = UUID.randomUUID().getMostSignificantBits();
 		} while(map.keySet().contains(id));
 
 		return id;

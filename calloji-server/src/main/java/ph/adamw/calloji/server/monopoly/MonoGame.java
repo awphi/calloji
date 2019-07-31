@@ -47,6 +47,8 @@ public class MonoGame implements ClientPoolListener {
     @Getter
     private MonoAuction activeAuction;
 
+    private Integer rigged = null;
+
     public void start() {
         while(getWinner() == null && !playerMap.isEmpty()) {
             playTurn();
@@ -54,6 +56,10 @@ public class MonoGame implements ClientPoolListener {
 
         log.debug("Game over! Winner: " + getWinner());
         // TODO Declare winner packet + shut down server (or restart??)
+    }
+
+    public void rigDice(int x) {
+        rigged = x;
     }
 
     void extendCurrentTurn(int secs) {
@@ -110,7 +116,8 @@ public class MonoGame implements ClientPoolListener {
             return;
         }
 
-        final int roll = ThreadLocalRandom.current().nextInt(1, GameConstants.DICE_AMOUNT * GameConstants.DICE_SIDES + 1);
+        final int roll = rigged != null ? rigged : ThreadLocalRandom.current().nextInt(1, GameConstants.DICE_AMOUNT * GameConstants.DICE_SIDES + 1);
+        rigged = null;
         final MonoPlayer player = getMonoPlayer(connection.getId());
         sendAllMessage(MessageType.SYSTEM, connection.getNick() + " rolled a " + roll + "!", player);
         player.sendMessage(MessageType.SYSTEM, "You rolled a " + roll + "!");

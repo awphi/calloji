@@ -58,7 +58,7 @@ public class Player implements Serializable {
 
     public boolean hasMonopolyOf(PlotType type, Board board) {
         for(Plot i : board.getAllPlotsOfType(type)) {
-            if(i instanceof PropertyPlot && ((Long) id).equals(((PropertyPlot) i).getOwner())) {
+            if(i instanceof PropertyPlot && !((Long) id).equals(((PropertyPlot) i).getOwner())) {
                 return false;
             }
         }

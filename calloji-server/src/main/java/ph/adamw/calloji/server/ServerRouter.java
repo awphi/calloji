@@ -4,17 +4,22 @@ import com.google.common.eventbus.EventBus;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ph.adamw.calloji.server.command.Command;
+import ph.adamw.calloji.server.command.CommandParser;
+import ph.adamw.calloji.server.command.CommandRigDice;
 import ph.adamw.calloji.server.connection.ClientPool;
 import ph.adamw.calloji.server.monopoly.MonoGame;
 import ph.adamw.calloji.util.LoggerUtils;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class ServerRouter {
 	private static ClientPool clientPool;
 	private static ServerSocket socket;
+	private static CommandParser parser;
 
 	@Getter
 	private static MonoGame game;
@@ -30,6 +35,9 @@ public class ServerRouter {
 		// Must init the logger before instantiating objects that use it via @Slf4j
 		LoggerUtils.init(args);
 		log = LoggerFactory.getLogger(ServerRouter.class);
+
+		parser = new CommandParser();
+		parser.register(new CommandRigDice());
 
 		int capacity = 4;
 
@@ -61,8 +69,15 @@ public class ServerRouter {
 		final Scanner scanner = new Scanner(System.in);
 		while(true) {
 			final String in = scanner.nextLine();
-			//TODO
-			log.info("Unrecognized command: " + in);
+			final String[] split = in.split(" ");
+			final String[] args = split.length > 1 ? Arrays.copyOfRange(split, 1, split.length) : new String[0];
+
+			final Command cmd = parser.getCommand(split[0]);
+			if(cmd != null) {
+				cmd.accept(args);
+			} else {
+				log.info("Unrecognized command: " + in);
+			}
 		}
 	}
 

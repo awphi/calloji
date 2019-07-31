@@ -22,10 +22,6 @@ public class PropertyPlot extends Plot {
         this.value = value;
     }
 
-    public boolean isClean() {
-        return isMortgaged() || isBuiltOn();
-    }
-
     public boolean isBuiltOn() {
         return false;
     }

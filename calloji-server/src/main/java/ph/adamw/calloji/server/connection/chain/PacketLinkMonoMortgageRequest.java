@@ -19,7 +19,7 @@ public class PacketLinkMonoMortgageRequest extends PacketLinkMono {
 
         final MonoPropertyPlot monoPlot = game.getMonoBoard().getMonoPlot(plot);
 
-        if(!monoPlot.getPlot().isClean()) {
+        if(!monoPlot.getPlot().isMortgaged() && !monoPlot.getPlot().isBuiltOn()) {
             monoPlot.mortgage();
         } else if(monoPlot.getPlot().isMortgaged() && game.getMonoPlayer(connection.getId()).getPlayer().getBalance() >= monoPlot.getPlot().getUnmortgageCost()) {
             monoPlot.unmortgage();

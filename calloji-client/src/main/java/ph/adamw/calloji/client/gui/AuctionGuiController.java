@@ -54,7 +54,7 @@ public class AuctionGuiController {
     @FXML
     private void initialize() {
         title.setText("Auction For:\n" + plot.getName());
-        final PlotUI plotUI = new PlotUI(null, false);
+        final PlotUI plotUI = new PlotUI();
         plotUI.load(plot);
         vbox.getChildren().add(plotUI);
 

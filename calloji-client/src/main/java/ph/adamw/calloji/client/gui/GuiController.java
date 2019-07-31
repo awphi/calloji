@@ -17,7 +17,9 @@ import ph.adamw.calloji.client.gui.monopoly.GenericPlayerUI;
 import ph.adamw.calloji.client.gui.monopoly.ManagedAssetUI;
 import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.packet.data.*;
+import ph.adamw.calloji.packet.data.plot.PlotType;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
+import ph.adamw.calloji.packet.data.plot.StreetPlot;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

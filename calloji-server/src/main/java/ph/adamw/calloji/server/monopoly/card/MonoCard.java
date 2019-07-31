@@ -5,6 +5,7 @@ import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 import ph.adamw.calloji.packet.data.plot.StreetPlot;
 import ph.adamw.calloji.server.monopoly.MonoPlayer;
 import ph.adamw.calloji.server.monopoly.MonoStreetPlot;
+import ph.adamw.calloji.util.GameConstants;
 
 public abstract class MonoCard {
     @Getter
@@ -61,7 +62,7 @@ public abstract class MonoCard {
             for(PropertyPlot i : player.getPlayer().getOwnedPlots(player.getGame().getMonoBoard().getBoard())) {
                 if(i instanceof StreetPlot) {
                     final MonoStreetPlot sp = (MonoStreetPlot) player.getGame().getMonoBoard().getMonoPlot(i);
-                    sum += (sp.getPlot().getHouses() % 5) * house + (sp.getPlot().getHouses() / 5) * hotel;
+                    sum += (sp.getPlot().getHouses() % GameConstants.MAX_HOUSES) * house + (sp.getPlot().getHouses() / GameConstants.MAX_HOUSES) * hotel;
                 }
             }
 

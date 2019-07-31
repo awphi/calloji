@@ -10,9 +10,12 @@ import java.util.List;
 
 public class Board implements Serializable {
     public Board() {
+        // For testing purposes
+        final StreetPlot oldKentRoad = new StreetPlot("Old Kent Road", PlotType.BROWN, 60, 50);
+
         Collections.addAll(plots,
                 Plot.getCommonInstance(PlotType.GO),
-                new StreetPlot("Old Kent Road", PlotType.BROWN, 60, 50),
+                oldKentRoad,
                 Plot.getCommonInstance(PlotType.COMMUNITY_CHEST),
                 new StreetPlot("Whitechapel Road", PlotType.BROWN, 60, 50),
                 new Plot("Income Tax", PlotType.TAX),
@@ -96,6 +99,6 @@ public class Board implements Serializable {
             }
         }
 
-        return (high - low) > 1;
+        return (high - low) <= 1;
     }
 }

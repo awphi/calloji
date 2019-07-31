@@ -3,6 +3,8 @@ package ph.adamw.calloji.util;
 import com.google.gson.*;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.data.plot.Plot;
+import ph.adamw.calloji.packet.data.plot.PropertyPlot;
+import ph.adamw.calloji.packet.data.plot.StreetPlot;
 
 @Slf4j
 public class JsonUtils {
@@ -15,6 +17,10 @@ public class JsonUtils {
     static {
         gsonBuilder.registerTypeAdapter(Plot.class, Plot.DESERIALIZER);
         gsonBuilder.registerTypeAdapter(Plot.class, Plot.SERIALIZER);
+        gsonBuilder.registerTypeAdapter(PropertyPlot.class, Plot.DESERIALIZER);
+        gsonBuilder.registerTypeAdapter(PropertyPlot.class, Plot.SERIALIZER);
+        gsonBuilder.registerTypeAdapter(StreetPlot.class, Plot.DESERIALIZER);
+        gsonBuilder.registerTypeAdapter(StreetPlot.class, Plot.SERIALIZER);
         gson = gsonBuilder.create();
     }
 
