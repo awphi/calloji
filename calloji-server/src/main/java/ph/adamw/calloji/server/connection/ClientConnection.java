@@ -70,7 +70,7 @@ public class ClientConnection extends PacketDispatcher {
 
             log.info("Failed to receive a heartbeat from: " + id + ", forcefully closing their connection now!");
             disconnect();
-        });
+        }, "Kill" + id);
 
         if(!isDead) {
             killThread.start();

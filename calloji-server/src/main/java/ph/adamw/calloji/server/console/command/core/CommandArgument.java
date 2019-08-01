@@ -1,4 +1,4 @@
-package ph.adamw.calloji.server.console.command;
+package ph.adamw.calloji.server.console.command.core;
 
 import lombok.extern.log4j.Log4j2;
 

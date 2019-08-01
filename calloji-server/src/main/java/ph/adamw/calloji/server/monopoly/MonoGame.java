@@ -151,7 +151,7 @@ public class MonoGame {
             }
 
             activeAuction = null;
-        }).start();
+        }, "Auc").start();
     }
 
     private MonoPlayer getWinner() {

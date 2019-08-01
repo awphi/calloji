@@ -25,7 +25,7 @@ public class PacketLinkConnect extends PacketLinkBase {
             Client.getRouter().setPid(conn.getId());
             Client.getGui().displayChatMessage(MessageType.SYSTEM, "Connected to server!");
 
-            final Thread heartbeat = new Thread(() -> {
+            new Thread(() -> {
                 while(Client.getRouter().isConnected()) {
                     Client.getRouter().send(PacketType.HEARTBEAT, new JsonObject());
 
@@ -35,10 +35,7 @@ public class PacketLinkConnect extends PacketLinkBase {
                         e.printStackTrace();
                     }
                 }
-            });
-
-            heartbeat.setName("Heartbeat Thread");
-            heartbeat.start();
+            }, "Heart").start();
         }
     }
 }

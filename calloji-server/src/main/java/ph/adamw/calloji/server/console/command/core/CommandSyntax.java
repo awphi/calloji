@@ -1,4 +1,4 @@
-package ph.adamw.calloji.server.console.command;
+package ph.adamw.calloji.server.console.command.core;
 
 public class CommandSyntax {
 	private final String[] pattern;

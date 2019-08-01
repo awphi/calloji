@@ -3,7 +3,7 @@ package ph.adamw.calloji.server.console;
 import lombok.extern.log4j.Log4j2;
 import net.minecrell.terminalconsole.SimpleTerminalConsole;
 import ph.adamw.calloji.server.ServerRouter;
-import ph.adamw.calloji.server.console.command.Command;
+import ph.adamw.calloji.server.console.command.core.Command;
 
 import java.util.Arrays;
 

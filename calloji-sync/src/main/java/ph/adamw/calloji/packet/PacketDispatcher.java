@@ -18,7 +18,7 @@ public abstract class PacketDispatcher {
     protected abstract boolean isConnected();
 
     protected void startReceiving() {
-        new Thread(this::receive, "Packet Inbound Thread").start();
+        new Thread(this::receive, "PktIn").start();
     }
 
     public void send(PacketType type, Object content) {

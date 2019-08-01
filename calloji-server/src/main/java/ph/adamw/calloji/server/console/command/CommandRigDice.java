@@ -2,6 +2,8 @@ package ph.adamw.calloji.server.console.command;
 
 import lombok.extern.log4j.Log4j2;
 import ph.adamw.calloji.server.ServerRouter;
+import ph.adamw.calloji.server.console.command.core.Command;
+import ph.adamw.calloji.server.console.command.core.CommandSyntax;
 
 @Log4j2
 public class CommandRigDice extends Command {

@@ -3,7 +3,7 @@ package ph.adamw.calloji.server;
 import com.google.common.eventbus.EventBus;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
-import ph.adamw.calloji.server.console.command.CommandParser;
+import ph.adamw.calloji.server.console.command.core.CommandParser;
 import ph.adamw.calloji.server.console.command.CommandRigDice;
 import ph.adamw.calloji.server.connection.ClientPool;
 import ph.adamw.calloji.server.console.MainConsole;
@@ -20,19 +20,21 @@ public class ServerRouter {
 	@Getter
 	private final static CommandParser parser = new CommandParser();
 
+	static {
+		parser.register(new CommandRigDice());
+	}
+
 	@Getter
 	private static EventBus eventBus = new EventBus();
 
 	@Getter
 	private final static MonoGame game = new MonoGame();
 
-	private static int port = 8080;
-
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		new Thread(() -> new MainConsole().start(), "Console").start();
-		parser.register(new CommandRigDice());
 
 		int capacity = 4;
+		int port = 8080;
 
 		for(String i : args) {
 			if(i.matches("--port=([0-9]+)")) {
@@ -44,12 +46,7 @@ public class ServerRouter {
 			}
 		}
 
-		try {
-			socket = new ServerSocket(port);
-		} catch (IOException e) {
-			throw new RuntimeException(e.getMessage());
-		}
-
+		socket = new ServerSocket(port);
 		clientPool = new ClientPool(capacity);
 
 		log.info("Started server on port: " + port + ", client pool capacity: " + capacity);

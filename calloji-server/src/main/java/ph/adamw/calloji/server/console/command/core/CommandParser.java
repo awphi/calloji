@@ -1,4 +1,4 @@
-package ph.adamw.calloji.server.console.command;
+package ph.adamw.calloji.server.console.command.core;
 
 import java.util.HashMap;
 import java.util.Map;
