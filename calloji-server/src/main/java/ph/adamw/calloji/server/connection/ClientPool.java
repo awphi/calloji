@@ -2,6 +2,7 @@ package ph.adamw.calloji.server.connection;
 
 import com.google.common.collect.ImmutableSet;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.data.ConnectionUpdate;
 import ph.adamw.calloji.packet.PacketType;
@@ -14,7 +15,7 @@ import java.net.Socket;
 import java.util.TreeMap;
 import java.util.UUID;
 
-@Slf4j
+@Log4j2
 public class ClientPool {
 	private final TreeMap<Long, ClientConnection> map = new TreeMap<>();
 

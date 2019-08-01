@@ -1,13 +1,14 @@
 package ph.adamw.calloji.server.monopoly;
 
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.packet.data.MessageType;
 import ph.adamw.calloji.packet.data.plot.PlotType;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 
-@Slf4j
+@Log4j2
 public class MonoPropertyPlot {
     @Getter
     private final PropertyPlot plot;

@@ -2,13 +2,14 @@ package ph.adamw.calloji.packet;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.util.JsonUtils;
 
 import java.io.*;
 import java.net.SocketException;
 
-@Slf4j
+@Log4j2
 public abstract class PacketDispatcher {
     protected abstract OutputStream getOutputStream();
     protected abstract InputStream getInputStream();

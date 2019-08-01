@@ -1,11 +1,11 @@
-package ph.adamw.calloji.server.command;
+package ph.adamw.calloji.server.console.command;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
 @AllArgsConstructor
-@Slf4j
+@Log4j2
 public abstract class Command {
     @Getter
     private final String base;

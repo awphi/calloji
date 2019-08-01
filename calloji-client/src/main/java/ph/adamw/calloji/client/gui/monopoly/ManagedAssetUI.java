@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.client.Client;
 import ph.adamw.calloji.packet.PacketType;
@@ -14,7 +15,7 @@ import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 import ph.adamw.calloji.packet.data.plot.StreetPlot;
 import ph.adamw.calloji.util.GameConstants;
 
-@Slf4j
+@Log4j2
 public class ManagedAssetUI extends VBox {
     private final static Insets PADDING = new Insets(5, 5, 5, 5);
     private final static Insets MARGIN_H10 = new Insets(0, 20, 0, 0);

@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.client.Client;
 import ph.adamw.calloji.client.gui.GuiUtils;
@@ -17,9 +18,7 @@ import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 import ph.adamw.calloji.packet.data.plot.StreetPlot;
 import ph.adamw.calloji.util.GameConstants;
 
-import javax.annotation.Nullable;
-
-@Slf4j
+@Log4j2
 public class PlotUI extends StackPane {
     private Label valueText = GuiUtils.buildStyledLabel("", "bold");
     private Label nameText = GuiUtils.buildStyledLabel("");

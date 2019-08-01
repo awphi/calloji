@@ -5,13 +5,13 @@ import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.layout.*;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import ph.adamw.calloji.packet.data.Board;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
+@Log4j2
 public class BoardUI extends GridPane {
     private static final int SIZE = 11;
     public static final int WIDTH = 75;

@@ -10,7 +10,6 @@ import javafx.stage.Window;
 import lombok.Getter;
 import ph.adamw.calloji.client.gui.GuiController;
 import ph.adamw.calloji.client.gui.SplashController;
-import ph.adamw.calloji.util.LoggerUtils;
 
 import java.io.IOException;
 
@@ -25,14 +24,10 @@ public class Client extends Application {
 	private static Stage stage;
 
 	@Getter
-	private static ClientCache cache;
+	private static ClientCache cache = new ClientCache();
 
 	public static void main(String[] args) throws IOException {
-		// Must init the logger before instantiating objects that use it
-		LoggerUtils.init(args);
-
 		router = new ClientRouter();
-		cache = new ClientCache();
 		Application.launch(args);
 	}
 

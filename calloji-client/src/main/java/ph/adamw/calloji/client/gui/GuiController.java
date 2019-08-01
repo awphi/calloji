@@ -9,6 +9,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.client.Client;
 import ph.adamw.calloji.client.StringUtil;
@@ -17,15 +18,13 @@ import ph.adamw.calloji.client.gui.monopoly.GenericPlayerUI;
 import ph.adamw.calloji.client.gui.monopoly.ManagedAssetUI;
 import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.packet.data.*;
-import ph.adamw.calloji.packet.data.plot.PlotType;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
-import ph.adamw.calloji.packet.data.plot.StreetPlot;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
-@Slf4j
+@Log4j2
 public class GuiController {
 	@FXML
 	private TextField chatTextField;

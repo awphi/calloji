@@ -1,6 +1,7 @@
 package ph.adamw.calloji.packet.data;
 
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.data.plot.Plot;
 import ph.adamw.calloji.packet.data.plot.PlotType;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Slf4j
+@Log4j2
 public class Player implements Serializable {
     public int balance = 1500;
 

@@ -7,6 +7,5 @@ import lombok.Getter;
 @Getter
 public class ClientNickChangeEvent {
     private long id;
-    
     private String newNick;
 }

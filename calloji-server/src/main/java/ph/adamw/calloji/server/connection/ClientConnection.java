@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.PacketDispatcher;
 import ph.adamw.calloji.packet.PacketType;
@@ -14,7 +15,7 @@ import ph.adamw.calloji.util.PacketLinkUtils;
 import java.io.*;
 import java.net.Socket;
 
-@Slf4j
+@Log4j2
 public class ClientConnection extends PacketDispatcher {
     @Getter
     private final Socket socket;

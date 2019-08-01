@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.*;
 import ph.adamw.calloji.packet.data.ConnectionUpdate;
@@ -15,7 +16,7 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
-@Slf4j
+@Log4j2
 public class ClientRouter extends PacketDispatcher {
 	private PacketLinkBase linkChain;
 

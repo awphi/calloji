@@ -8,6 +8,5 @@ import ph.adamw.calloji.server.connection.ClientPool;
 @Getter
 public class ClientConnectedEvent {
     private long id;
-
     private ClientPool pool;
 }

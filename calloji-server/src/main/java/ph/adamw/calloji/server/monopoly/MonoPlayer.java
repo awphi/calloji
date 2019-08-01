@@ -2,6 +2,7 @@ package ph.adamw.calloji.server.monopoly;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.data.CardUpdate;
 import ph.adamw.calloji.packet.data.ChatMessage;
@@ -17,7 +18,7 @@ import ph.adamw.calloji.server.monopoly.card.MonoCard;
 import ph.adamw.calloji.server.monopoly.card.MonoCardPile;
 import ph.adamw.calloji.util.GameConstants;
 
-@Slf4j
+@Log4j2
 @AllArgsConstructor
 public class MonoPlayer {
     private final ClientConnection connection;
@@ -119,7 +120,7 @@ public class MonoPlayer {
         game.updatePlayerOnAllClients(this);
     }
 
-    public int getAssetsSellValue() {
+    public int getAssetsMortgageValue() {
         int v = 0;
 
         for(PropertyPlot i : getPlayer().getOwnedPlots(game.getMonoBoard().getBoard())) {
@@ -182,7 +183,7 @@ public class MonoPlayer {
 
         if(player.balance >= money) {
             player.balance -= money;
-        } else if(player.balance + getAssetsSellValue() + getBuildingsSellValue() >= money) {
+        } else if(player.balance + getAssetsMortgageValue() + getBuildingsSellValue() >= money) {
             game.extendCurrentTurn(30);
             //TODO (ForceAssetManagement) - if at the end of the block it's not enough then auto-sell stuff till we good
             // this method must block for 30 seconds while the player manages their assets

@@ -2,9 +2,9 @@ package ph.adamw.calloji.packet;
 
 import com.google.gson.JsonElement;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
-@Slf4j
+@Log4j2
 public abstract class PacketLinkBase {
     protected final PacketType type;
 

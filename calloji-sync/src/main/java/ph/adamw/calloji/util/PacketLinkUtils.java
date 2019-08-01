@@ -1,13 +1,14 @@
 package ph.adamw.calloji.util;
 
 import com.google.common.reflect.ClassPath;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.PacketLinkBase;
 import ph.adamw.calloji.packet.PacketLinkType;
 
 import java.io.IOException;
 
-@Slf4j
+@Log4j2
 public class PacketLinkUtils {
     public static PacketLinkBase buildChain() throws IOException {
         PacketLinkBase linkChain = null;

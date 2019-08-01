@@ -2,41 +2,34 @@ package ph.adamw.calloji.server;
 
 import com.google.common.eventbus.EventBus;
 import lombok.Getter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import ph.adamw.calloji.server.command.Command;
-import ph.adamw.calloji.server.command.CommandParser;
-import ph.adamw.calloji.server.command.CommandRigDice;
+import lombok.extern.log4j.Log4j2;
+import ph.adamw.calloji.server.console.command.CommandParser;
+import ph.adamw.calloji.server.console.command.CommandRigDice;
 import ph.adamw.calloji.server.connection.ClientPool;
+import ph.adamw.calloji.server.console.MainConsole;
 import ph.adamw.calloji.server.monopoly.MonoGame;
-import ph.adamw.calloji.util.LoggerUtils;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.Arrays;
-import java.util.Scanner;
 
+@Log4j2
 public class ServerRouter {
 	private static ClientPool clientPool;
 	private static ServerSocket socket;
-	private static CommandParser parser;
 
 	@Getter
-	private static MonoGame game;
-
-	private static int port = 8080;
-
-	private static Logger log;
+	private final static CommandParser parser = new CommandParser();
 
 	@Getter
 	private static EventBus eventBus = new EventBus();
 
-	public static void main(String[] args) {
-		// Must init the logger before instantiating objects that use it via @Slf4j
-		LoggerUtils.init(args);
-		log = LoggerFactory.getLogger(ServerRouter.class);
+	@Getter
+	private final static MonoGame game = new MonoGame();
 
-		parser = new CommandParser();
+	private static int port = 8080;
+
+	public static void main(String[] args) {
+		new Thread(() -> new MainConsole().start(), "Console").start();
 		parser.register(new CommandRigDice());
 
 		int capacity = 4;
@@ -58,27 +51,9 @@ public class ServerRouter {
 		}
 
 		clientPool = new ClientPool(capacity);
-		game = new MonoGame();
 
 		log.info("Started server on port: " + port + ", client pool capacity: " + capacity);
-		new Thread(ServerRouter::waitForNextConnection, "Connection Acceptor").start();
-		new Thread(ServerRouter::readInput, "Console").start();
-	}
-
-	private static void readInput() {
-		final Scanner scanner = new Scanner(System.in);
-		while(true) {
-			final String in = scanner.nextLine();
-			final String[] split = in.split(" ");
-			final String[] args = split.length > 1 ? Arrays.copyOfRange(split, 1, split.length) : new String[0];
-
-			final Command cmd = parser.getCommand(split[0]);
-			if(cmd != null) {
-				cmd.accept(args);
-			} else {
-				log.info("Unrecognized command: " + in);
-			}
-		}
+		new Thread(ServerRouter::waitForNextConnection, "ConnAcc").start();
 	}
 
 	private static void waitForNextConnection() {

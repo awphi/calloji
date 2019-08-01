@@ -1,7 +1,8 @@
 package ph.adamw.calloji.server.monopoly;
 
+import com.google.common.eventbus.Subscribe;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import ph.adamw.calloji.packet.data.*;
 import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
@@ -10,7 +11,6 @@ import ph.adamw.calloji.server.connection.ClientConnection;
 import ph.adamw.calloji.server.connection.event.ClientConnectedEvent;
 import ph.adamw.calloji.server.connection.event.ClientDisconnectedEvent;
 import ph.adamw.calloji.server.connection.event.ClientNickChangeEvent;
-import ph.adamw.calloji.server.connection.event.ClientPoolListener;
 import ph.adamw.calloji.server.monopoly.card.MonoCardPile;
 import ph.adamw.calloji.util.GameConstants;
 
@@ -18,8 +18,8 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-@Slf4j
-public class MonoGame implements ClientPoolListener {
+@Log4j2
+public class MonoGame {
     public MonoGame() {
         ServerRouter.getEventBus().register(this);
     }
@@ -174,7 +174,7 @@ public class MonoGame implements ClientPoolListener {
         return c == 1 ? x : null;
     }
 
-    @Override
+    @Subscribe
     public void onClientConnect(ClientConnectedEvent e) {
         final MonoPlayer n = new MonoPlayer(e.getPool().get(e.getId()), this, new Player(GamePiece.next(), e.getId()));
         playerMap.put(e.getId(), n);
@@ -195,7 +195,7 @@ public class MonoGame implements ClientPoolListener {
         }
     }
 
-    @Override
+    @Subscribe
     public void onClientDisconnect(ClientDisconnectedEvent e) {
         final MonoPlayer mp = getMonoPlayer(e.getId());
         if(mp != null) {
@@ -209,7 +209,7 @@ public class MonoGame implements ClientPoolListener {
         }
     }
 
-    @Override
+    @Subscribe
     public void onClientNickChanged(ClientNickChangeEvent e) {
         updateBoardOnAllClients();
 

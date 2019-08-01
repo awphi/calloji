@@ -1,6 +1,4 @@
-package ph.adamw.calloji.server.command;
-
-import lombok.Getter;
+package ph.adamw.calloji.server.console.command;
 
 public class CommandSyntax {
 	private final String[] pattern;
