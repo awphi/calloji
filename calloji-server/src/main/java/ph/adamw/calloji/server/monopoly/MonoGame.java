@@ -257,4 +257,8 @@ public class MonoGame {
     public MonoPlayer getMonoPlayer(Long id) {
         return playerMap.get(id);
     }
+
+    public Collection<MonoPlayer> getPlayers() {
+        return playerMap.values();
+    }
 }

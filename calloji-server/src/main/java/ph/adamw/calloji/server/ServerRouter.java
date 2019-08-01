@@ -3,6 +3,7 @@ package ph.adamw.calloji.server;
 import com.google.common.eventbus.EventBus;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
+import ph.adamw.calloji.server.console.command.CommandListPlayers;
 import ph.adamw.calloji.server.console.command.core.CommandParser;
 import ph.adamw.calloji.server.console.command.CommandRigDice;
 import ph.adamw.calloji.server.connection.ClientPool;
@@ -22,6 +23,7 @@ public class ServerRouter {
 
 	static {
 		parser.register(new CommandRigDice());
+		parser.register(new CommandListPlayers());
 	}
 
 	@Getter
