@@ -6,7 +6,8 @@ import lombok.Getter;
 public enum MessageType {
     CHAT(Color.BLACK),
     SYSTEM(Color.GREY),
-    WARNING(Color.RED);
+    WARNING(Color.RED),
+    ADMIN(Color.DARKBLUE);
 
     @Getter
     private final Color color;

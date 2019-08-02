@@ -2,6 +2,7 @@ package ph.adamw.calloji.server;
 
 import com.google.common.eventbus.EventBus;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 import ph.adamw.calloji.server.console.command.CommandListPlayers;
 import ph.adamw.calloji.server.console.command.core.CommandParser;
@@ -15,8 +16,10 @@ import java.net.ServerSocket;
 
 @Log4j2
 public class ServerRouter {
-	private static ClientPool clientPool;
 	private static ServerSocket socket;
+
+	@Getter
+	private static ClientPool clientPool;
 
 	@Getter
 	private final static CommandParser parser = new CommandParser();
@@ -30,10 +33,13 @@ public class ServerRouter {
 	private static EventBus eventBus = new EventBus();
 
 	@Getter
-	private final static MonoGame game = new MonoGame();
+	@Setter
+	private static MonoGame game = new MonoGame();
 
 	public static void main(String[] args) throws IOException {
 		new Thread(() -> new MainConsole().start(), "Console").start();
+
+		eventBus.register(game);
 
 		int capacity = 4;
 		int port = 8080;

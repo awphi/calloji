@@ -20,17 +20,13 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Log4j2
 public class MonoGame {
-    public MonoGame() {
-        ServerRouter.getEventBus().register(this);
-    }
-
     @Getter
     private final MonoCardPile communityChestPile = new MonoCardPile("Community Chest", MonoCardPile.COMM_CHEST);
 
     @Getter
     private final MonoCardPile chancePile = new MonoCardPile("Chance", MonoCardPile.CHANCE);
 
-    private final Map<Long, MonoPlayer> playerMap = new HashMap<>();
+    private Map<Long, MonoPlayer> playerMap = new HashMap<>();
 
     private int currentTurnTime = GameConstants.TURN_TIME;
 
@@ -49,13 +45,48 @@ public class MonoGame {
 
     private Integer rigged = null;
 
+    public MonoGame() {
+        ServerRouter.getEventBus().register(this);
+    }
+
+    public MonoGame(MonoGame old) {
+        this();
+        this.playerMap = old.playerMap;
+    }
+
     public void start() {
         while(getWinner() == null && !playerMap.isEmpty()) {
             playTurn();
         }
 
-        log.debug("Game over! Winner: " + getWinner());
-        // TODO Declare winner packet + shut down server (or restart??)
+        final MonoPlayer pl = getWinner();
+        log.debug("Game over! Winner: " + pl);
+        sendAllMessage(MessageType.ADMIN, "Game Over. " + pl.getConnectionNick() + " has won!", pl);
+        pl.sendMessage(MessageType.ADMIN, "Congratulations. You have won!");
+
+        sendAllMessage(MessageType.ADMIN, "The game will restart in 30 seconds...");
+
+        int timer = 30;
+        while(timer > 0) {
+            timer ++;
+
+            if(timer <= 5) {
+                sendAllMessage(MessageType.ADMIN, Integer.toString(timer));
+            }
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ignored) {}
+        }
+
+
+        final MonoGame game = new MonoGame(this);
+        ServerRouter.setGame(game);
+        if(playerMap.size() == ServerRouter.getClientPool().getCapacity()) {
+            game.updateBoardOnAllClients();
+            game.updateAllPlayersOnAllClients();
+            game.start();
+        }
     }
 
     public void rigDice(int x) {
