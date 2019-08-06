@@ -78,7 +78,9 @@ public class GuiController {
 	@FXML
 	private ListView<ManagedAssetUI> assetManagementListView;
 
+	//TODO wrap chat messages in the listview
 	public void displayChatMessage(MessageType type, String txt) {
+		//TODO if it's a warning or admin message then focus the chat tab
 		final Label text = new Label("[" + DATE_FORMAT.format(new Date()) + "] " + txt);
 		text.setTextFill(type.getColor());
 		Platform.runLater(() -> {

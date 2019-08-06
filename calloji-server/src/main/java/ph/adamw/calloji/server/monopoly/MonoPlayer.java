@@ -1,5 +1,6 @@
 package ph.adamw.calloji.server.monopoly;
 
+import com.google.gson.JsonObject;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
@@ -185,8 +186,29 @@ public class MonoPlayer {
             player.balance -= money;
         } else if(player.balance + getAssetsMortgageValue() + getBuildingsSellValue() >= money) {
             game.extendCurrentTurn(30);
-            //TODO (ForceAssetManagement) - if at the end of the block it's not enough then auto-sell stuff till we good
-            // this method must block for 30 seconds while the player manages their assets
+            sendMessage(MessageType.WARNING, "You are about to go bankrupt! You have been given 30 seconds to manage your assets to obtain at least £" + money + ".00!");
+            send(PacketType.FORCE_MANAGE_ASSETS, new JsonObject());
+
+            // Block for 30 seconds
+            int timer = 30;
+            while(timer > 0) {
+                timer ++;
+
+                if(timer <= 10) {
+                    sendMessage(MessageType.WARNING, Integer.toString(timer));
+                }
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ignored) {}
+            }
+
+            // Now we check if they've managed their assets
+            if(player.balance >= money) {
+                player.balance -= money;
+            } else {
+                autosellAssets(money);
+            }
         } else {
             ret = player.balance;
             player.balance = 0;
@@ -195,6 +217,16 @@ public class MonoPlayer {
 
         game.updatePlayerOnAllClients(this);
         return ret;
+    }
+
+    private void autosellAssets(int moneyRequired) {
+        while(player.balance < moneyRequired) {
+            //TODO autosell and update the player balance
+        }
+
+        game.updateBoardOnAllClients();
+        game.updatePlayerOnAllClients(this);
+        sendMessage(MessageType.ADMIN, "Some of your assets have been automatically sold/mortgaged to avoid bankruptcy as you failed to respond in time.");
     }
 
     public void updateBoard() {
