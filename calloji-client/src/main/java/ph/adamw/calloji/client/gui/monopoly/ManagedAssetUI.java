@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 import ph.adamw.calloji.client.Client;
 import ph.adamw.calloji.packet.PacketType;
@@ -23,6 +24,10 @@ public class ManagedAssetUI extends VBox {
 
     private final Button buildHouseButton = new Button("Build House - £0.00");
     private final Button sellHouseButton = new Button("Sell House - £0.00");
+
+    @Getter
+    @Setter
+    private boolean forcedManagement = false;
 
     @Getter
     private PropertyPlot plot;
@@ -75,18 +80,19 @@ public class ManagedAssetUI extends VBox {
     // Acts as the client-side validation (also validated server side of course)
     public void setButtonsDisable(boolean b) {
         mortgageButton.setDisable(b || plot.isBuiltOn());
-        auctionButton.setDisable(b || plot.isMortgaged());
+        auctionButton.setDisable(b || forcedManagement || plot.isMortgaged());
 
         if(plot instanceof StreetPlot) {
             final StreetPlot sp = (StreetPlot) plot;
             sellHouseButton.setDisable(b ||
                     !sp.canSellHouse(Client.getCache().getPlayer().getPlayer(), Client.getCache().getBoard()));
 
-            buildHouseButton.setDisable(b ||
+            buildHouseButton.setDisable(b || forcedManagement ||
                     !sp.canBuildHouse(Client.getCache().getPlayer().getPlayer(), Client.getCache().getBoard()));
         }
     }
 
+    // Load is ran on a board update i.e the state of this plot has changed
     public void load(PropertyPlot i) {
         this.plot = i;
 
@@ -96,6 +102,7 @@ public class ManagedAssetUI extends VBox {
             mortgageButton.setText("Mortgage - £" + i.getValue() / 2 + ".00");
         }
 
+        // Invalidates the buttons enabled states with the new plot
         setButtonsDisable(false);
     }
 }

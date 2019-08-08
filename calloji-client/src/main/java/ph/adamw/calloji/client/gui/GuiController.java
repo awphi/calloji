@@ -125,8 +125,11 @@ public class GuiController {
 			turnTimer.setText(StringUtil.formatSecondMinutes(turnTime));
 
 			if(turnTime == 0 && !rollDiceButton.isDisabled()) {
-				displayChatMessage(MessageType.SYSTEM, "Time's up!");
+				for(ManagedAssetUI i : assetManagementListView.getItems()) {
+					i.setForcedManagement(false);
+				}
 				setActionsDisabled(true);
+				displayChatMessage(MessageType.SYSTEM, "Turn over...");
 			}
 		}
 	}
@@ -154,6 +157,16 @@ public class GuiController {
 		}
 	}
 
+	public void forceAssetManagement() {
+		for(ManagedAssetUI i : assetManagementListView.getItems()) {
+			i.setForcedManagement(true);
+			i.setButtonsDisable(false);
+		}
+
+		rollDiceButton.setDisable(true);
+	}
+
+	//TODO add an end turn button?
 	private void setActionsDisabled(boolean b) {
 		for(ManagedAssetUI i : assetManagementListView.getItems()) {
 			i.setButtonsDisable(b);
