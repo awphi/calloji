@@ -5,10 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
-import ph.adamw.calloji.packet.data.CardUpdate;
-import ph.adamw.calloji.packet.data.ChatMessage;
-import ph.adamw.calloji.packet.data.MessageType;
-import ph.adamw.calloji.packet.data.Player;
+import ph.adamw.calloji.packet.data.*;
 import ph.adamw.calloji.packet.data.plot.Plot;
 import ph.adamw.calloji.packet.data.plot.PlotType;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
@@ -18,6 +15,11 @@ import ph.adamw.calloji.server.connection.ClientConnection;
 import ph.adamw.calloji.server.monopoly.card.MonoCard;
 import ph.adamw.calloji.server.monopoly.card.MonoCardPile;
 import ph.adamw.calloji.util.GameConstants;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Log4j2
 @AllArgsConstructor
@@ -133,11 +135,8 @@ public class MonoPlayer {
 
     public int getBuildingsSellValue() {
         int v = 0;
-        for(PropertyPlot i : getPlayer().getOwnedPlots(game.getMonoBoard().getBoard())) {
-            if(i instanceof StreetPlot) {
-                final StreetPlot y = (StreetPlot) i;
-                v += y.getHouses() * (y.getBuildCost() / 2);
-            }
+        for(StreetPlot i : getPlayer().getOwnedStreetPlots(game.getMonoBoard().getBoard())) {
+            v += i.getHouses() * (i.getBuildCost() / 2);
         }
 
         return v;
@@ -188,6 +187,7 @@ public class MonoPlayer {
             game.extendCurrentTurn(30);
             sendMessage(MessageType.WARNING, "You are about to go bankrupt! You have been given 30 seconds to manage your assets to obtain at least £" + money + ".00!");
             send(PacketType.FORCE_MANAGE_ASSETS, new JsonObject());
+            game.setBankruptee(this);
 
             // Block for 30 seconds
             int timer = 30;
@@ -215,18 +215,44 @@ public class MonoPlayer {
             setBankrupt(true);
         }
 
+        game.setBankruptee(null);
         game.updatePlayerOnAllClients(this);
         return ret;
     }
 
+    @SuppressWarnings("unchecked")
     private void autosellAssets(int moneyRequired) {
-        while(player.balance < moneyRequired) {
-            //TODO autosell and update the player balance
+        final Board board = game.getMonoBoard().getBoard();
+
+        // Attempt to sell off houses first
+        while(player.balance < moneyRequired && getBuildingsSellValue() > 0) {
+            final Iterator<StreetPlot> streetPlots = player.getOwnedStreetPlots(board).iterator();
+
+            do {
+                final StreetPlot plot = streetPlots.next();
+
+                if (plot.canSellHouse(player, board)) {
+                    ((MonoStreetPlot) game.getMonoBoard().getMonoPlot(plot)).sellHouse();
+                }
+            } while (streetPlots.hasNext() && player.balance < moneyRequired);
+        }
+
+        // Now we try mortgaging stuff
+        while(player.balance < moneyRequired && getAssetsMortgageValue()> 0) {
+            final Iterator<PropertyPlot> plots = player.getOwnedPlots(board).iterator();
+
+            do {
+                final PropertyPlot plot = plots.next();
+
+                if (!plot.isMortgaged() && !plot.isBuiltOn()) {
+                    game.getMonoBoard().getMonoPlot(plot).mortgage();
+                }
+            } while (plots.hasNext() && player.balance < moneyRequired);
         }
 
         game.updateBoardOnAllClients();
         game.updatePlayerOnAllClients(this);
-        sendMessage(MessageType.ADMIN, "Some of your assets have been automatically sold/mortgaged to avoid bankruptcy as you failed to respond in time.");
+        sendMessage(MessageType.WARNING, "Some of your assets have been automatically sold/mortgaged to avoid bankruptcy as you failed to respond in time.");
     }
 
     public void updateBoard() {

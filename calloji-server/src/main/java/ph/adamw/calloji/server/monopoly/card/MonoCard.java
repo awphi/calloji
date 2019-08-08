@@ -59,11 +59,9 @@ public abstract class MonoCard {
         public void handle(MonoPlayer player) {
             int sum = 0;
 
-            for(PropertyPlot i : player.getPlayer().getOwnedPlots(player.getGame().getMonoBoard().getBoard())) {
-                if(i instanceof StreetPlot) {
-                    final MonoStreetPlot sp = (MonoStreetPlot) player.getGame().getMonoBoard().getMonoPlot(i);
-                    sum += (sp.getPlot().getHouses() % GameConstants.MAX_HOUSES) * house + (sp.getPlot().getHouses() / GameConstants.MAX_HOUSES) * hotel;
-                }
+            for(StreetPlot i : player.getPlayer().getOwnedStreetPlots(player.getGame().getMonoBoard().getBoard())) {
+                final MonoStreetPlot sp = (MonoStreetPlot) player.getGame().getMonoBoard().getMonoPlot(i);
+                sum += (sp.getPlot().getHouses() % GameConstants.MAX_HOUSES) * house + (sp.getPlot().getHouses() / GameConstants.MAX_HOUSES) * hotel;
             }
 
             player.tryRemoveMoney(sum);

@@ -15,20 +15,19 @@ public class MonoStreetPlot extends MonoPropertyPlot {
         this.plot = plot;
     }
 
-    public void buildHouses(int i) {
-        if(plot.getHouses() + i <= GameConstants.MAX_HOUSES) {
-            plot.setHouses(plot.getHouses() + i);
+    public void buildHouse() {
+        if(plot.getHouses() + 1 <= GameConstants.MAX_HOUSES) {
+            plot.setHouses(plot.getHouses() + 1);
             game.updateBoardOnAllClients();
-            game.getMonoPlayer(plot.getOwner()).tryRemoveMoney(plot.getBuildCost() * i);
+            game.getMonoPlayer(plot.getOwner()).tryRemoveMoney(plot.getBuildCost());
         }
     }
 
-    public void sellHouses(int amount) {
-        if(plot.getHouses() - amount >= 0) {
-            final int toRemove = Math.min(amount, plot.getHouses());
-            plot.setHouses(plot.getHouses() - toRemove);
+    public void sellHouse() {
+        if(plot.getHouses() - 1 >= 0) {
+            plot.setHouses(plot.getHouses() - 1);
             game.updateBoardOnAllClients();
-            game.getMonoPlayer(plot.getOwner()).addMoney(toRemove * (plot.getBuildCost() / 2));
+            game.getMonoPlayer(plot.getOwner()).addMoney(1 * (plot.getBuildCost() / 2));
         }
     }
 

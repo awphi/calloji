@@ -2,6 +2,7 @@ package ph.adamw.calloji.server.monopoly;
 
 import com.google.common.eventbus.Subscribe;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 import ph.adamw.calloji.packet.data.*;
 import ph.adamw.calloji.packet.PacketType;
@@ -44,6 +45,10 @@ public class MonoGame {
     private MonoAuction activeAuction;
 
     private Integer rigged = null;
+
+    @Setter
+    @Getter
+    private MonoPlayer bankruptee;
 
     public MonoGame() {
         ServerRouter.getEventBus().register(this);
@@ -142,15 +147,14 @@ public class MonoGame {
         } while(currentTurnTime > 0);
     }
 
-    public void rollDice(ClientConnection connection) {
+    public void rollDice(MonoPlayer player) {
         if(hasRolled) {
             return;
         }
 
         final int roll = rigged != null ? rigged : ThreadLocalRandom.current().nextInt(1, GameConstants.DICE_AMOUNT * GameConstants.DICE_SIDES + 1);
         rigged = null;
-        final MonoPlayer player = getMonoPlayer(connection.getId());
-        sendAllMessage(MessageType.SYSTEM, connection.getNick() + " rolled a " + roll + "!", player);
+        sendAllMessage(MessageType.SYSTEM, player.getConnectionNick() + " rolled a " + roll + "!", player);
         player.sendMessage(MessageType.SYSTEM, "You rolled a " + roll + "!");
         player.moveSpaces(roll);
         hasRolled = true;
@@ -232,7 +236,7 @@ public class MonoGame {
         if(mp != null) {
             playerMap.remove(mp.getConnectionId());
             log.info("Deleting player " + mp.getConnectionId() + " due to a disconnect.");
-            sendAllMessage(MessageType.WARNING, mp.getConnectionNick() + " has left the game.");
+            sendAllMessage(MessageType.ADMIN, mp.getConnectionNick() + " has left the game.");
 
             for(MonoPlayer i : playerMap.values()) {
                 i.send(PacketType.CLIENT_CONNECTION_UPDATE, new ConnectionUpdate(true, mp.getConnectionId()));

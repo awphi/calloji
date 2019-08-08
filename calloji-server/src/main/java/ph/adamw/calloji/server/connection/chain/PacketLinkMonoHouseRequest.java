@@ -16,25 +16,21 @@ import ph.adamw.calloji.util.JsonUtils;
 public class PacketLinkMonoHouseRequest extends PacketLinkMono {
     @Override
     public void handle(PacketType type, JsonElement content, ClientConnection connection) {
-        final HouseRequest request = JsonUtils.getObject(content, HouseRequest.class);
-
         final MonoGame game = ServerRouter.getGame();
-        final MonoStreetPlot monoPlot = (MonoStreetPlot) game.getMonoBoard().getMonoPlot(request.getPlot());
-        final StreetPlot plot = monoPlot.getPlot();
         final MonoPlayer player = game.getMonoPlayer(connection.getId());
 
-        final boolean hasMonopoly = player.getPlayer().hasMonopolyOf(plot.getType(), game.getMonoBoard().getBoard());
-        final boolean canAffordHouse = player.getPlayer().getBalance() >= plot.getBuildCost();
-        final boolean isBuiltOn = plot.isBuiltOn();
+        if((player != game.getCurrentTurnPlayer() || player != game.getBankruptee())) {
+            return;
+        }
 
-        if(request.isBuild()) {
-            if(hasMonopoly && canAffordHouse && game.getMonoBoard().getBoard().canConstructOn(plot, true)) {
-                monoPlot.buildHouses(1);
-            }
-        } else {
-            if(hasMonopoly && isBuiltOn && game.getMonoBoard().getBoard().canConstructOn(plot, false)) {
-                monoPlot.sellHouses(1);
-            }
+        final HouseRequest request = JsonUtils.getObject(content, HouseRequest.class);
+        final MonoStreetPlot monoPlot = (MonoStreetPlot) game.getMonoBoard().getMonoPlot(request.getPlot());
+        final StreetPlot plot = monoPlot.getPlot();
+
+        if(player == game.getCurrentTurnPlayer() && request.isBuild() && plot.canBuildHouse(player.getPlayer(), game.getMonoBoard().getBoard())) {
+            monoPlot.buildHouse();
+        } else if(!request.isBuild() && plot.canSellHouse(player.getPlayer(), game.getMonoBoard().getBoard())) {
+            monoPlot.sellHouse();
         }
     }
 }

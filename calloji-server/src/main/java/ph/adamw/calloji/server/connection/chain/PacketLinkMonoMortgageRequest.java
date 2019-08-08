@@ -7,6 +7,7 @@ import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 import ph.adamw.calloji.server.ServerRouter;
 import ph.adamw.calloji.server.connection.ClientConnection;
 import ph.adamw.calloji.server.monopoly.MonoGame;
+import ph.adamw.calloji.server.monopoly.MonoPlayer;
 import ph.adamw.calloji.server.monopoly.MonoPropertyPlot;
 import ph.adamw.calloji.util.JsonUtils;
 
@@ -16,8 +17,13 @@ public class PacketLinkMonoMortgageRequest extends PacketLinkMono {
     public void handle(PacketType type, JsonElement content, ClientConnection connection) {
         final MonoGame game = ServerRouter.getGame();
         final PropertyPlot plot = JsonUtils.getObject(content, PropertyPlot.class);
+        final MonoPlayer player = game.getMonoPlayer(connection.getId());
 
         final MonoPropertyPlot monoPlot = game.getMonoBoard().getMonoPlot(plot);
+
+        if((player != game.getCurrentTurnPlayer() || player != game.getBankruptee())) {
+            return;
+        }
 
         if(!monoPlot.getPlot().isMortgaged() && !monoPlot.getPlot().isBuiltOn()) {
             monoPlot.mortgage();

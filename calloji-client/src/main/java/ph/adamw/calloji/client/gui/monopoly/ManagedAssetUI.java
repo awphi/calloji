@@ -7,13 +7,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.client.Client;
 import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.packet.data.HouseRequest;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 import ph.adamw.calloji.packet.data.plot.StreetPlot;
-import ph.adamw.calloji.util.GameConstants;
 
 @Log4j2
 public class ManagedAssetUI extends VBox {
@@ -81,13 +79,11 @@ public class ManagedAssetUI extends VBox {
 
         if(plot instanceof StreetPlot) {
             final StreetPlot sp = (StreetPlot) plot;
+            sellHouseButton.setDisable(b ||
+                    !sp.canSellHouse(Client.getCache().getPlayer().getPlayer(), Client.getCache().getBoard()));
 
-            final boolean hasMonopoly = Client.getCache().getPlayer().getPlayer().hasMonopolyOf(plot.getType(), Client.getCache().getBoard());
-            final boolean canAffordHouse = Client.getCache().getPlayer().getPlayer().getBalance() >= sp.getBuildCost();
-            final boolean isBuiltOn = plot.isBuiltOn();
-
-            sellHouseButton.setDisable(b || (!hasMonopoly || !isBuiltOn || !Client.getCache().getBoard().canConstructOn(sp, false)));
-            buildHouseButton.setDisable(b || (!hasMonopoly || !(sp.getHouses() + 1 <= GameConstants.MAX_HOUSES) || !canAffordHouse || !Client.getCache().getBoard().canConstructOn(sp, true)));
+            buildHouseButton.setDisable(b ||
+                    !sp.canBuildHouse(Client.getCache().getPlayer().getPlayer(), Client.getCache().getBoard()));
         }
     }
 

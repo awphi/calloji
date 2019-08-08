@@ -75,27 +75,25 @@ public class Board implements Serializable {
         return result;
     }
 
-    public boolean canConstructOn(StreetPlot plot, boolean build) {
+    public boolean isHouseChangeAcceptable(StreetPlot plot, boolean build) {
         int change = build ? 1 : -1;
         int high = 0;
         int low = Integer.MAX_VALUE;
 
         for(Plot i : getAllPlotsOfType(plot.getType())) {
-            if(i instanceof StreetPlot) {
-                final StreetPlot sp = (StreetPlot) i;
-                int houses = sp.getHouses();
+            final StreetPlot sp = (StreetPlot) i;
+            int houses = sp.getHouses();
 
-                if(i.equals(plot)) {
-                    houses += change;
-                }
+            if(i.equals(plot)) {
+                houses += change;
+            }
 
-                if(houses > high) {
-                    high = houses;
-                }
+            if(houses > high) {
+                high = houses;
+            }
 
-                if(houses < low) {
-                    low = houses;
-                }
+            if(houses < low) {
+                low = houses;
             }
         }
 

@@ -94,7 +94,7 @@
                          <padding>
                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                          </padding>
-                         <ListView fx:id="chatListView" prefHeight="538.0" prefWidth="359.0" VBox.vgrow="ALWAYS">
+                         <ListView fx:id="chatListView" VBox.vgrow="ALWAYS">
                              <VBox.margin>
                                  <Insets bottom="10.0" />
                              </VBox.margin>

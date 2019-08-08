@@ -6,10 +6,12 @@ import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.data.plot.Plot;
 import ph.adamw.calloji.packet.data.plot.PlotType;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
+import ph.adamw.calloji.packet.data.plot.StreetPlot;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Log4j2
@@ -55,6 +57,12 @@ public class Player implements Serializable {
         }
 
         return result;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<StreetPlot> getOwnedStreetPlots(Board board) {
+        // Janky casting but works
+        return (List<StreetPlot>)(List<?>) getOwnedPlots(board).stream().filter(p -> p instanceof StreetPlot).collect(Collectors.toList());
     }
 
     public boolean hasMonopolyOf(PlotType type, Board board) {

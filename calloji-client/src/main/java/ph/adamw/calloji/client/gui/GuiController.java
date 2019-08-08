@@ -2,12 +2,17 @@ package ph.adamw.calloji.client.gui;
 
 import com.google.gson.JsonPrimitive;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Text;
+import javafx.util.Callback;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
@@ -78,15 +83,19 @@ public class GuiController {
 	@FXML
 	private ListView<ManagedAssetUI> assetManagementListView;
 
-	//TODO wrap chat messages in the listview
 	public void displayChatMessage(MessageType type, String txt) {
-		//TODO if it's a warning or admin message then focus the chat tab
 		final Label text = new Label("[" + DATE_FORMAT.format(new Date()) + "] " + txt);
+		text.maxWidthProperty().bind(chatListView.widthProperty().subtract(15));
+		text.setWrapText(true);
 		text.setTextFill(type.getColor());
 		Platform.runLater(() -> {
 			chatListView.getItems().add(text);
 			chatListView.scrollTo(chatListView.getItems().size() - 1);
 		});
+
+		if(type == MessageType.ADMIN || type == MessageType.WARNING) {
+			Platform.runLater(() -> chatListView.requestFocus());
+		}
 	}
 
 	@FXML

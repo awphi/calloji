@@ -10,6 +10,7 @@ import javafx.stage.Window;
 import lombok.Getter;
 import ph.adamw.calloji.client.gui.GuiController;
 import ph.adamw.calloji.client.gui.SplashController;
+import ph.adamw.calloji.packet.data.MessageType;
 
 import java.io.IOException;
 
