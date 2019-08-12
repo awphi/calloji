@@ -112,7 +112,7 @@ public class GuiController {
 			Platform.exit();
 		});
 
-		loadBoard(new Board());
+		//loadBoard(new Board());
 	}
 
 	private void decrementTurnTimer() {
