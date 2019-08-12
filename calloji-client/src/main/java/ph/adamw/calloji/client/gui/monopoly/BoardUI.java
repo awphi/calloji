@@ -14,7 +14,6 @@ import java.util.List;
 @Log4j2
 public class BoardUI extends GridPane {
     private static final int SIZE = 11;
-    public static final int PLOT_SIZE = 65;
 
     private static final Insets PADDING = new Insets(20, 20, 20, 20);
 
@@ -32,7 +31,7 @@ public class BoardUI extends GridPane {
         for(int i = 0; i < SIZE; i ++) {
             ColumnConstraints n = new ColumnConstraints();
             n.setHgrow(Priority.ALWAYS);
-            n.setPrefWidth(PLOT_SIZE);
+            n.setPrefWidth(1);
 
             getColumnConstraints().add(n);
         }
@@ -40,7 +39,7 @@ public class BoardUI extends GridPane {
         for(int i = 0; i < SIZE; i ++) {
             RowConstraints n = new RowConstraints();
             n.setVgrow(Priority.ALWAYS);
-            n.setPrefHeight(PLOT_SIZE);
+            n.setPrefHeight(1);
 
             getRowConstraints().add(n);
 

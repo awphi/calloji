@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import ph.adamw.calloji.client.Client;
@@ -33,9 +34,6 @@ public class GuiController {
 	@FXML
 	@Getter
 	private Menu nicknameMenu;
-
-	@FXML
-	private BorderPane mainBorderPane;
 
 	private final BoardUI boardUI = new BoardUI();
 
@@ -76,6 +74,9 @@ public class GuiController {
 	@FXML
 	private ListView<ManagedAssetUI> assetManagementListView;
 
+	@FXML
+	private StackPane centerStackPane;
+
 	public void displayChatMessage(MessageType type, String txt) {
 		final Label text = new Label("[" + DATE_FORMAT.format(new Date()) + "] " + txt);
 		text.maxWidthProperty().bind(chatListView.widthProperty().subtract(15));
@@ -98,7 +99,7 @@ public class GuiController {
 		assetManagementListView.setSelectionModel(new NullSelectionModel<>());
 
 		playersBorderPane.setCenter(playerListView);
-		mainBorderPane.setCenter(boardUI);
+		centerStackPane.getChildren().add(boardUI);
 
 		chatListView.setPlaceholder(new Label("Not connected to a game!"));
 		playerListView.setPlaceholder(new Label("Not connected to a game!"));

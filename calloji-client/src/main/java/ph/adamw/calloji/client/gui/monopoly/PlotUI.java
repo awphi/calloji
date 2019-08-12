@@ -1,8 +1,6 @@
 package ph.adamw.calloji.client.gui.monopoly;
 
 import com.google.common.collect.ImmutableMap;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -22,10 +20,9 @@ import ph.adamw.calloji.util.GameConstants;
 @Log4j2
 public class PlotUI extends StackPane {
     private Label valueText = GuiUtils.buildStyledLabel("", "bold");
-    private Label nameText = GuiUtils.buildStyledLabel("");
+    private Label nameText = GuiUtils.buildStyledLabel("", "centred", "word-ellipsis");
     private Tooltip ownerTooltip = new Tooltip("Owner: -");
     private HBox header = new HBox();
-    private boolean isSmall = false;
 
     private static final Insets MARGIN_HOUSE = new Insets(0, 1, 0, 1);
 
@@ -34,13 +31,12 @@ public class PlotUI extends StackPane {
         StackPane.setAlignment(nameText, Pos.CENTER);
         getChildren().addAll(valueText, nameText);
 
-        widthProperty().addListener((observable, oldValue, newValue) -> sizeChanged(newValue.intValue(), false));
-        heightProperty().addListener((observable, oldValue, newValue) -> sizeChanged(newValue.intValue(), true));
+        nameText.maxHeightProperty().bind(heightProperty().multiply(0.5d));
 
         header.getStyleClass().addAll("border", "border-out", "plot-header");
         header.setAlignment(Pos.CENTER);
-        header.maxHeightProperty().bind(heightProperty().divide(5));
-        header.minHeightProperty().bind(heightProperty().divide(5));
+        header.maxHeightProperty().bind(heightProperty().multiply(0.2d));
+        header.minHeightProperty().bind(heightProperty().multiply(0.2d));
         StackPane.setAlignment(header, Pos.TOP_CENTER);
     }
 
@@ -55,30 +51,9 @@ public class PlotUI extends StackPane {
             .put(PlotType.BLUE, Color.ROYALBLUE)
             .build();
 
-    public void sizeChanged(int newValue, boolean height) {
-        final double otherDim;
-
-        if(height) {
-            otherDim = getWidth();
-        } else {
-            otherDim = getHeight();
-        }
-
-        if(newValue < BoardUI.PLOT_SIZE) {
-            isSmall = true;
-            getChildren().remove(nameText);
-        } else if(isSmall && otherDim >= BoardUI.PLOT_SIZE) {
-            isSmall = false;
-            getChildren().add(nameText);
-        }
-    }
-
     public void load(Plot plot) {
         getStyleClass().addAll("border", "border-in", "plot");
-
-        if(!isSmall) {
-            nameText.setText(plot.getName());
-        }
+        nameText.setText(plot.getName());
 
         if(plot instanceof PropertyPlot) {
             valueText.setTooltip(ownerTooltip);

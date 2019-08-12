@@ -31,6 +31,10 @@ ListView {
     -fx-font-weight: bolder;
 }
 
+.word-ellipsis {
+    -fx-text-overrun: word-ellipsis;
+}
+
 .list-cell:even {
     -fx-background-color: #EBEDEF;
     -fx-border-color: transparent transparent #AEB6BF transparent;

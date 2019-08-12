@@ -4,7 +4,6 @@ import com.google.gson.JsonObject;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.packet.data.*;
 import ph.adamw.calloji.packet.data.plot.Plot;
 import ph.adamw.calloji.packet.data.plot.PlotType;
@@ -17,9 +16,6 @@ import ph.adamw.calloji.server.monopoly.card.MonoCardPile;
 import ph.adamw.calloji.util.GameConstants;
 
 import java.util.Iterator;
-import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @Log4j2
 @AllArgsConstructor

@@ -1,7 +1,6 @@
 package ph.adamw.calloji.server.monopoly.card;
 
 import lombok.Getter;
-import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 import ph.adamw.calloji.packet.data.plot.StreetPlot;
 import ph.adamw.calloji.server.monopoly.MonoPlayer;
 import ph.adamw.calloji.server.monopoly.MonoStreetPlot;
