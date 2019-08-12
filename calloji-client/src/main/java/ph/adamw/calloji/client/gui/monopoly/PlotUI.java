@@ -1,6 +1,8 @@
 package ph.adamw.calloji.client.gui.monopoly;
 
 import com.google.common.collect.ImmutableMap;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -9,7 +11,6 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.client.Client;
 import ph.adamw.calloji.client.gui.GuiUtils;
 import ph.adamw.calloji.packet.data.plot.Plot;
@@ -24,6 +25,7 @@ public class PlotUI extends StackPane {
     private Label nameText = GuiUtils.buildStyledLabel("");
     private Tooltip ownerTooltip = new Tooltip("Owner: -");
     private HBox header = new HBox();
+    private boolean isSmall = false;
 
     private static final Insets MARGIN_HOUSE = new Insets(0, 1, 0, 1);
 
@@ -32,13 +34,13 @@ public class PlotUI extends StackPane {
         StackPane.setAlignment(nameText, Pos.CENTER);
         getChildren().addAll(valueText, nameText);
 
-        setMinWidth(BoardUI.WIDTH);
-        setMinHeight(BoardUI.WIDTH);
+        widthProperty().addListener((observable, oldValue, newValue) -> sizeChanged(newValue.intValue(), false));
+        heightProperty().addListener((observable, oldValue, newValue) -> sizeChanged(newValue.intValue(), true));
 
         header.getStyleClass().addAll("border", "border-out", "plot-header");
         header.setAlignment(Pos.CENTER);
-        header.setMaxHeight(15);
-        header.setMinHeight(15);
+        header.maxHeightProperty().bind(heightProperty().divide(5));
+        header.minHeightProperty().bind(heightProperty().divide(5));
         StackPane.setAlignment(header, Pos.TOP_CENTER);
     }
 
@@ -53,12 +55,33 @@ public class PlotUI extends StackPane {
             .put(PlotType.BLUE, Color.ROYALBLUE)
             .build();
 
+    public void sizeChanged(int newValue, boolean height) {
+        final double otherDim;
+
+        if(height) {
+            otherDim = getWidth();
+        } else {
+            otherDim = getHeight();
+        }
+
+        if(newValue < BoardUI.PLOT_SIZE) {
+            isSmall = true;
+            getChildren().remove(nameText);
+        } else if(isSmall && otherDim >= BoardUI.PLOT_SIZE) {
+            isSmall = false;
+            getChildren().add(nameText);
+        }
+    }
+
     public void load(Plot plot) {
         getStyleClass().addAll("border", "border-in", "plot");
-        nameText.setText(plot.getName());
+
+        if(!isSmall) {
+            nameText.setText(plot.getName());
+        }
 
         if(plot instanceof PropertyPlot) {
-            nameText.setTooltip(ownerTooltip);
+            valueText.setTooltip(ownerTooltip);
 
             final PropertyPlot x = ((PropertyPlot) plot);
             valueText.setText("£" + x.getValue() + ".00");
@@ -79,7 +102,7 @@ public class PlotUI extends StackPane {
                 valueText.setText(valueText.getText() + " (M)");
             }
         } else {
-            nameText.setTooltip(null);
+            valueText.setTooltip(null);
         }
 
         if(plot instanceof StreetPlot) {
@@ -97,9 +120,9 @@ public class PlotUI extends StackPane {
             int hotels = s.getHouses() / GameConstants.MAX_HOUSES;
 
             for(int i = 0; i < houses + hotels; i ++) {
-                final HBox pane = new HBox();
-                pane.setMinHeight(10);
-                pane.setMinWidth(10);
+                final HBox house = new HBox();
+                house.minHeightProperty().bind(header.heightProperty().multiply(0.8));
+                house.maxHeightProperty().bind(header.heightProperty().multiply(0.8));
 
                 String type = "house";
 
@@ -108,9 +131,9 @@ public class PlotUI extends StackPane {
                     hotels --;
                 }
 
-                pane.getStyleClass().addAll("border", "border-in", type);
-                header.getChildren().add(pane);
-                HBox.setMargin(pane, MARGIN_HOUSE);
+                house.getStyleClass().addAll("border", "border-in", type);
+                header.getChildren().add(house);
+                HBox.setMargin(house, MARGIN_HOUSE);
             }
         } else {
             getChildren().remove(header);

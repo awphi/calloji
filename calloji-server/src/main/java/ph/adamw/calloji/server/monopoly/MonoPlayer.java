@@ -42,7 +42,7 @@ public class MonoPlayer {
         return connection.getId();
     }
 
-    String getConnectionNick() {
+    public String getConnectionNick() {
         return connection.getNick();
     }
 

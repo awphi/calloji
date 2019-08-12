@@ -2,22 +2,15 @@ package ph.adamw.calloji.client.gui;
 
 import com.google.gson.JsonPrimitive;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.text.Text;
-import javafx.util.Callback;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import ph.adamw.calloji.client.Client;
-import ph.adamw.calloji.client.StringUtil;
 import ph.adamw.calloji.client.gui.monopoly.BoardUI;
 import ph.adamw.calloji.client.gui.monopoly.GenericPlayerUI;
 import ph.adamw.calloji.client.gui.monopoly.ManagedAssetUI;
@@ -117,12 +110,14 @@ public class GuiController {
 			timer.interrupt();
 			Platform.exit();
 		});
+
+		loadBoard(new Board());
 	}
 
 	private void decrementTurnTimer() {
 		if(turnTime > 0) {
 			turnTime --;
-			turnTimer.setText(StringUtil.formatSecondMinutes(turnTime));
+			turnTimer.setText(GuiUtils.formatSecondMinutes(turnTime));
 
 			if(turnTime == 0 && !rollDiceButton.isDisabled()) {
 				for(ManagedAssetUI i : assetManagementListView.getItems()) {
@@ -166,7 +161,6 @@ public class GuiController {
 		rollDiceButton.setDisable(true);
 	}
 
-	//TODO add an end turn button?
 	private void setActionsDisabled(boolean b) {
 		for(ManagedAssetUI i : assetManagementListView.getItems()) {
 			i.setButtonsDisable(b);

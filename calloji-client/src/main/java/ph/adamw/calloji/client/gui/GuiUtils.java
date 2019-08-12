@@ -25,6 +25,13 @@ public class GuiUtils {
         return GuiUtils.class.getResourceAsStream("/monopoly/" + piece.getImageRef() + ".png");
     }
 
+    public static String formatSecondMinutes(int seconds) {
+        return (Integer.toString(seconds / 60).length() == 1 ? "0" : "")
+                + seconds / 60 + ":"
+                + (Integer.toString(seconds % 60).length() == 1 ? "0" : "")
+                + seconds % 60;
+    }
+
     public static Label buildStyledLabel(String x, String... classes) {
         final Label text = new Label(x);
         text.getStyleClass().addAll(classes);

@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import lombok.Getter;
 import ph.adamw.calloji.client.Client;
-import ph.adamw.calloji.client.StringUtil;
 import ph.adamw.calloji.client.gui.monopoly.PlotUI;
 import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.packet.data.BidUpdate;
@@ -75,7 +74,7 @@ public class AuctionGuiController {
     private void decrementTimer() {
         if(time > 0) {
             time --;
-            auctionTimer.setText(StringUtil.formatSecondMinutes(time));
+            auctionTimer.setText(GuiUtils.formatSecondMinutes(time));
 
             if(time == 0) {
                 String msg = "Nobody bid so the property remains on the market!";

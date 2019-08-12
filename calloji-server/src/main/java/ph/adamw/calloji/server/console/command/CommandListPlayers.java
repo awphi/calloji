@@ -19,7 +19,7 @@ public class CommandListPlayers extends Command {
     public void handle(Object[] args) {
         log.info(" --- Player List --- ");
         for(MonoPlayer i : ServerRouter.getGame().getPlayers()) {
-            log.info(i.getConnectionId() + ": " + i.getConnectionId() + " -> " + JsonUtils.getJsonElement(i.getPlayer()).toString());
+            log.info(i.getConnectionNick() + ": " + i.getConnectionId() + " -> " + JsonUtils.getJsonElement(i.getPlayer()).toString());
         }
         log.info(" ------ ");
     }
