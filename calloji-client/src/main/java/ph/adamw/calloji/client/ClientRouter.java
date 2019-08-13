@@ -56,6 +56,22 @@ public class ClientRouter extends PacketDispatcher {
 		Client.getGui().unloadBoard();
 	}
 
+	public boolean attemptConnect(String host, int port) {
+		try {
+			connect(host, port);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+
+		Platform.runLater(() -> {
+			Client.getGui().getDisconnectButton().setDisable(false);
+			Client.getGui().getNickEditButton().setDisable(false);
+		});
+
+		return true;
+	}
+
 	public void disconnect() {
 		try {
 			socket.close();
@@ -63,7 +79,10 @@ public class ClientRouter extends PacketDispatcher {
 			e.printStackTrace();
 		}
 
-		Platform.runLater(() -> Client.getGui().getDisconnectButton().setDisable(true));
+		Platform.runLater(() -> {
+			Client.getGui().getDisconnectButton().setDisable(true);
+			Client.getGui().getNickEditButton().setDisable(true);
+		});
 	}
 
 	@Override

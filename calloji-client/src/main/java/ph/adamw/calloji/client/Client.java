@@ -6,10 +6,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import lombok.Getter;
 import ph.adamw.calloji.client.gui.GuiController;
-import ph.adamw.calloji.client.gui.SplashController;
 
 import java.io.IOException;
 
@@ -31,18 +29,6 @@ public class Client extends Application {
 		Application.launch(args);
 	}
 
-	public static boolean attemptConnect(String host, int port) {
-		try {
-			router.connect(host, port);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
-
-		Platform.runLater(() -> Client.getGui().getDisconnectButton().setDisable(false));
-		return true;
-	}
-
 	@Override
 	public void start(Stage stage) throws Exception {
 		Client.stage = stage;
@@ -55,7 +41,6 @@ public class Client extends Application {
 
 		stage.setTitle("Calloji Client [awphi]");
 		stage.setScene(scene);
-		stage.setOnShown(event -> SplashController.open((Window) event.getSource()));
 		stage.show();
 	}
 

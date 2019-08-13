@@ -9,6 +9,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Window;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import ph.adamw.calloji.client.Client;
@@ -77,13 +78,18 @@ public class GuiController {
 	@FXML
 	private StackPane centerStackPane;
 
+	@FXML
+	@Getter
+	private MenuItem nickEditButton;
+
 	public void displayChatMessage(MessageType type, String txt) {
-		final Label text = new Label("[" + DATE_FORMAT.format(new Date()) + "] " + txt);
-		text.maxWidthProperty().bind(chatListView.widthProperty().subtract(15));
-		text.setWrapText(true);
-		text.setTextFill(type.getColor());
+		final Label label = new Label("[" + DATE_FORMAT.format(new Date()) + "] " + txt);
+		label.maxWidthProperty().bind(chatListView.widthProperty().subtract(15));
+		label.setWrapText(true);
+		label.setTextFill(type.getColor());
+
 		Platform.runLater(() -> {
-			chatListView.getItems().add(text);
+			chatListView.getItems().add(label);
 			chatListView.scrollTo(chatListView.getItems().size() - 1);
 		});
 
@@ -105,14 +111,15 @@ public class GuiController {
 		playerListView.setPlaceholder(new Label("Not connected to a game!"));
 		assetManagementListView.setPlaceholder(new Label("No assets owned!"));
 
-		final Thread timer = GuiUtils.startRunner("Turn Timer Decrementer", this::decrementTurnTimer, 1000);
+		final Thread timer = GuiUtils.startRunner("TTimer", this::decrementTurnTimer, 1000);
 
 		Client.getStage().setOnCloseRequest(event -> {
 			timer.interrupt();
 			Platform.exit();
 		});
 
-		//loadBoard(new Board());
+
+		Client.getStage().setOnShown(event -> SplashController.open((Window) event.getSource()));
 	}
 
 	private void decrementTurnTimer() {
@@ -233,23 +240,23 @@ public class GuiController {
 
     public void loadPlayer(PlayerUpdate update) {
 		if(update.getId() == Client.getRouter().getPid()) {
-			balanceLabel.setText("Balance: £" + update.getPlayer().getBalance());
+			balanceLabel.setText("Balance: £" + update.getPlayer().getBalance() + ".00");
 			getOutOfJailsLabel.setText("Get Out of Jail Cards: " + update.getPlayer().getGetOutOfJails());
 			jailedLabel.setText("Jailed: " + update.getPlayer().getJailed());
 		}
 
 		// If there's no player to reload then this is a new player and we must create props for it
 		if(isPlayerUpdateFresh(update)) {
-			final GenericPlayerUI gen = new GenericPlayerUI(update, boardUI);
+			final GenericPlayerUI gen = new GenericPlayerUI(update, boardUI, centerStackPane);
 
 			if(update.getId() == Client.getRouter().getPid()) {
 				playerListView.getItems().add(0, gen);
 			} else {
 				playerListView.getItems().add(gen);
 			}
+		} else {
+			reloadPlayer(update);
 		}
-
-		reloadPlayer(update);
     }
 
 	public void focusGenericPlayer(GenericPlayerUI owner) {
@@ -260,7 +267,7 @@ public class GuiController {
 	public void removeOtherPlayer(long id) {
 		for(GenericPlayerUI i : playerListView.getItems()) {
 			if(i.getPid() == id) {
-				i.deleteGamePiece();
+				centerStackPane.getChildren().remove(i.getGamePieceOnBoard());
 				playerListView.getItems().remove(i);
 				break;
 			}

@@ -43,7 +43,7 @@ public class SplashController {
     private void onConnectButtonPressed(ActionEvent actionEvent) {
         final String[] split = ipField.getText().split(":");
 
-        if(nickField.getText().isEmpty() || ipField.getText().isEmpty() || split.length < 2 || !split[1].matches("[0-9]+") || !Client.attemptConnect(split[0], Integer.parseInt(split[1]))) {
+        if(nickField.getText().isEmpty() || ipField.getText().isEmpty() || split.length < 2 || !split[1].matches("[0-9]+") || !Client.getRouter().attemptConnect(split[0], Integer.parseInt(split[1]))) {
             final ShakeTransition shake = new ShakeTransition(ipField, null);
             shake.playFromStart();
         } else {

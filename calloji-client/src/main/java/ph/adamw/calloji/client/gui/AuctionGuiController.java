@@ -57,7 +57,7 @@ public class AuctionGuiController {
         plotUI.load(plot);
         vbox.getChildren().add(plotUI);
 
-        timer = GuiUtils.startRunner("Auction Time Decrementer", this::decrementTimer, 1000);
+        timer = GuiUtils.startRunner("ATimer", this::decrementTimer, 1000);
         stage.setOnCloseRequest(event -> timer.interrupt());
 
         bidTextField.setTextFormatter(new TextFormatter<>(change -> {

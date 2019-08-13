@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import lombok.Getter;
@@ -29,7 +30,8 @@ public class GenericPlayerUI extends VBox {
     @Getter
     private PlayerUpdate lastUpdate;
 
-    private GamePieceUI gamePieceOnBoard = null;
+    @Getter
+    private final GamePieceUI gamePieceOnBoard;
 
     private final ImageView gamePieceImage;
     private final Label nickname;
@@ -37,7 +39,7 @@ public class GenericPlayerUI extends VBox {
 
     private final ListView<ThinPlotUI> ownedPlots;
 
-    public GenericPlayerUI(PlayerUpdate update, BoardUI boardUI) {
+    public GenericPlayerUI(PlayerUpdate update, BoardUI boardUI, StackPane stackPane) {
         setPadding(PADDING);
         final HBox hbox = new HBox();
         hbox.setAlignment(Pos.CENTER_LEFT);
@@ -48,9 +50,8 @@ public class GenericPlayerUI extends VBox {
 
         final Player player = update.getPlayer();
 
-        if(boardUI != null) {
-            this.gamePieceOnBoard = new GamePieceUI(player.getGamePiece(), player.getBoardPosition(), boardUI, this);
-        }
+        this.gamePieceOnBoard = new GamePieceUI(player.getGamePiece(), player.getBoardPosition(), boardUI, this);
+        stackPane.getChildren().add(gamePieceOnBoard);
 
         gamePieceImage = new ImageView();
         gamePieceImage.maxHeight(GAME_PIECE_SIZE);
@@ -81,10 +82,8 @@ public class GenericPlayerUI extends VBox {
         ownedPlots.setMaxHeight(60);
         ownedPlots.setPlaceholder(new Label("No owned properties."));
         getChildren().add(ownedPlots);
-    }
 
-    public void deleteGamePiece() {
-        gamePieceOnBoard.delete();
+        reload(update);
     }
 
     public void reload(PlayerUpdate update) {
@@ -107,13 +106,16 @@ public class GenericPlayerUI extends VBox {
             this.setDisable(true);
         }
 
-        money.setText("£" + player.getBalance());
+        money.setText("£" + player.getBalance() + ".00");
 
         gamePieceImage.setImage(GuiUtils.getGamePieceImage(player.getGamePiece()));
 
         ownedPlots.getItems().clear();
-        for(PropertyPlot i : Client.getCache().getOwnedPlots(update.getPlayer())) {
-            ownedPlots.getItems().add(new ThinPlotUI(i));
+
+        if(Client.getCache().getBoard() != null) {
+            for (PropertyPlot i : Client.getCache().getOwnedPlots(update.getPlayer())) {
+                ownedPlots.getItems().add(new ThinPlotUI(i));
+            }
         }
 
         lastUpdate = update;

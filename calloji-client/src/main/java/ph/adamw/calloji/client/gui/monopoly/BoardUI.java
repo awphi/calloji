@@ -1,7 +1,7 @@
 package ph.adamw.calloji.client.gui.monopoly;
 
 import javafx.geometry.HPos;
-import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.layout.*;
@@ -15,14 +15,10 @@ import java.util.List;
 public class BoardUI extends GridPane {
     private static final int SIZE = 11;
 
-    private static final Insets PADDING = new Insets(20, 20, 20, 20);
-
     private final List<PlotUI> renderedPlots = new ArrayList<>();
 
     public BoardUI() {
         super();
-
-        setPadding(PADDING);
 
         getRowConstraints().clear();
         getColumnConstraints().clear();
@@ -112,5 +108,10 @@ public class BoardUI extends GridPane {
                 x.unload();
             }
         }
+    }
+
+    public Point2D getPointFromBoardPos(int pos) {
+        final PlotUI ui = getRenderedPlot(pos);
+        return new Point2D(ui.getLayoutX() + (ui.getWidth() / 2d), ui.getLayoutY() + (ui.getHeight() / 2d));
     }
 }
