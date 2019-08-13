@@ -30,10 +30,15 @@ public class Client extends Application {
 	}
 
 	@Override
-	public void start(Stage stage) throws Exception {
+	public void start(Stage stage) {
 		Client.stage = stage;
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/gui.fxml"));
-		Parent root = fxmlLoader.load();
+		Parent root = null;
+		try {
+			root = fxmlLoader.load();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		gui = fxmlLoader.getController();
 

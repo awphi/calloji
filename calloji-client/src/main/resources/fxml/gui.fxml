@@ -17,6 +17,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 <BorderPane minHeight="600" minWidth="1015" prefHeight="840" prefWidth="1280" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.adamw.calloji.client.gui.GuiController">
     <stylesheets>
         <URL value="@style.css" />
@@ -65,15 +66,12 @@
                              <Button fx:id="rollDiceButton" disable="true" mnemonicParsing="false" onAction="#onRollDicePressed" prefHeight="48.0" prefWidth="102.0" text="Roll Dice" BorderPane.alignment="CENTER" />
                      </left>
                      <right>
-                             <VBox prefHeight="52.0" prefWidth="182.0" BorderPane.alignment="CENTER">
-                                 <children>
-                                     <Label fx:id="turnTimer" text="00:00" textAlignment="CENTER" />
-                                 </children>
-                                 <styleClass>
-                                     <String fx:value="centred" />
-                                     <String fx:value="button-look" />
-                                 </styleClass>
-                             </VBox>
+                         <HBox prefHeight="52.0" prefWidth="182.0" BorderPane.alignment="CENTER" alignment="CENTER">
+                             <styleClass>
+                                 <String fx:value="button-look"/>
+                             </styleClass>
+                             <Label fx:id="turnTimer" text="00:00" textAlignment="CENTER"/>
+                         </HBox>
                      </right>
                      <VBox.margin>
                         <Insets />
@@ -106,7 +104,11 @@
                                      <Insets right="10.0" />
                                  </HBox.margin>
                              </TextField>
-                             <Button mnemonicParsing="false" onAction="#onChatSubmitted" text="🡆" HBox.hgrow="ALWAYS" />
+                             <Button mnemonicParsing="false" onAction="#onChatSubmitted" HBox.hgrow="ALWAYS">
+                                 <graphic>
+                                     <FontIcon iconLiteral="fa-arrow-right"/>
+                                 </graphic>
+                             </Button>
                         <VBox.margin>
                            <Insets />
                         </VBox.margin>
