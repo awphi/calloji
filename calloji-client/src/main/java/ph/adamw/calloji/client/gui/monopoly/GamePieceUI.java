@@ -17,7 +17,7 @@ public class GamePieceUI extends ImageView {
 
     private static final ColorAdjust colorAdjust = new ColorAdjust();
 
-    public GamePieceUI(GamePiece piece, int boardPosition, BoardUI boardUI, GenericPlayerUI owner) {
+    public GamePieceUI(GamePiece piece, int boardPosition, BoardUI boardUI) {
         super(GuiUtils.getGamePieceImage(piece));
         this.boardUI = boardUI;
 
@@ -28,14 +28,7 @@ public class GamePieceUI extends ImageView {
         setFitWidth(GenericPlayerUI.GAME_PIECE_SIZE);
 
         setOnMouseEntered(event -> setEffect(colorAdjust));
-
         setOnMouseExited(event -> setEffect(null));
-
-        setOnMouseClicked(event -> {
-            if(event.getButton() == MouseButton.PRIMARY) {
-                Client.getGui().focusGenericPlayer(owner);
-            }
-        });
 
         moveTo(boardPosition);
 

@@ -55,21 +55,6 @@ public class Client extends Application {
 			router.disconnectAndAlertServer();
 		}
 
-		int timer = 0;
-
-		// Loop will terminate if the onDisconnect req is fulfilled or will force quit after 5 seconds and let the server
-		// handle it as a lost connection.
-		while(router.isConnected() && timer < 5) {
-			timer ++;
-
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-
-		router.disconnect();
 		System.exit(0);
 	}
 }

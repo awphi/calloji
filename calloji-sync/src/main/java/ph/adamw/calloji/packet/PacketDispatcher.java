@@ -20,7 +20,7 @@ public abstract class PacketDispatcher {
         new Thread(this::receive, "PktIn").start();
     }
 
-    public void send(PacketType type, Object content) {
+    public boolean send(PacketType type, Object content) {
         final JsonObject parent = new JsonObject();
 
         log.debug("Dispatching " + type.name() + ": " + content.getClass().getSimpleName());
@@ -37,7 +37,10 @@ public abstract class PacketDispatcher {
             getOutputStream().write((parent.toString() + "\n").getBytes());
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
+
+        return true;
     }
 
     private void receive() {

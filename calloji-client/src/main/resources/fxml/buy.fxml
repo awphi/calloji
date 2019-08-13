@@ -9,12 +9,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" prefHeight="310.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.adamw.calloji.client.gui.BuyGuiController">
+<BorderPane fx:id="borderPane" prefHeight="311.0" prefWidth="410.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.adamw.calloji.client.gui.BuyGuiController">
     <stylesheets>
         <URL value="@style.css" />
     </stylesheets>
    <top>
-      <Label fx:id="title" alignment="CENTER" prefHeight="0.0" prefWidth="460.0" text="You have been offered the deed to:&#13; Whitechapel Road" textAlignment="CENTER" textOverrun="CLIP" BorderPane.alignment="CENTER">
+      <Label fx:id="title" alignment="CENTER" prefHeight="0.0" prefWidth="460.0" text="You have been offered the deed to: Liverpool Street Station" textAlignment="CENTER" textOverrun="CLIP" BorderPane.alignment="CENTER">
          <font>
             <Font size="23.0" />
          </font>

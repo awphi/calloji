@@ -11,12 +11,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="321.0" prefWidth="410.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.adamw.calloji.client.gui.AuctionGuiController">
+<BorderPane prefHeight="309.0" prefWidth="409.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.adamw.calloji.client.gui.AuctionGuiController">
    <stylesheets>
       <URL value="@style.css" />
    </stylesheets>
    <top>
-      <Label fx:id="title" alignment="CENTER" contentDisplay="CENTER" prefHeight="68.0" prefWidth="418.0" text="Auction For: &#13; Old Kent Road" textAlignment="CENTER" BorderPane.alignment="CENTER">
+      <Label fx:id="title" alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="370.0" text="Auction For: Liverpool Street Station" textAlignment="CENTER" BorderPane.alignment="CENTER">
          <font>
             <Font size="23.0" />
          </font>
@@ -53,7 +53,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </VBox>
-                  <TextField fx:id="bidTextField" promptText="Enter Bid..." onKeyReleased="#onBidFieldKeyUp">
+                  <TextField fx:id="bidTextField" onKeyReleased="#onBidFieldKeyUp" promptText="Enter Bid...">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>

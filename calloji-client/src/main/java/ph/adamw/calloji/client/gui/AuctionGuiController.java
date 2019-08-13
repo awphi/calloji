@@ -54,6 +54,8 @@ public class AuctionGuiController {
     private void initialize() {
         title.setText("Auction For:\n" + plot.getName());
         final PlotUI plotUI = new PlotUI();
+        plotUI.setMinHeight(75);
+        plotUI.setMinWidth(60);
         plotUI.load(plot);
         vbox.getChildren().add(plotUI);
 

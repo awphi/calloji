@@ -24,18 +24,6 @@ public class PacketLinkConnect extends PacketLinkBase {
         } else {
             Client.getRouter().setPid(conn.getId());
             Client.getGui().displayChatMessage(MessageType.SYSTEM, "Connected to server!");
-
-            new Thread(() -> {
-                while(Client.getRouter().isConnected()) {
-                    Client.getRouter().send(PacketType.HEARTBEAT, new JsonObject());
-
-                    try {
-                        Thread.sleep(GameConstants.HEARTBEAT_PULSE * 1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }, "Heart").start();
         }
     }
 }

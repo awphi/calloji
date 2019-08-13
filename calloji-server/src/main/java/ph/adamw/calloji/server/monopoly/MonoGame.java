@@ -65,8 +65,11 @@ public class MonoGame {
 
         final MonoPlayer pl = getWinner();
         log.debug("Game over! Winner: " + pl);
-        sendAllMessage(MessageType.ADMIN, "Game Over. " + pl.getConnectionNick() + " has won!", pl);
-        pl.sendMessage(MessageType.ADMIN, "Congratulations. You have won!");
+
+        if(pl != null) {
+            sendAllMessage(MessageType.ADMIN, "Game Over. " + pl.getConnectionNick() + " has won!", pl);
+            pl.sendMessage(MessageType.ADMIN, "Congratulations. You have won!");
+        }
 
         sendAllMessage(MessageType.ADMIN, "The game will restart in 30 seconds...");
 

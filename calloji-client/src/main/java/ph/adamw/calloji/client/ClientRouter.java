@@ -1,6 +1,7 @@
 package ph.adamw.calloji.client;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import javafx.application.Platform;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -19,7 +20,7 @@ import java.net.Socket;
 public class ClientRouter extends PacketDispatcher {
 	private PacketLinkBase linkChain;
 
-	private final Socket socket = new Socket();
+	private Socket socket = new Socket();
 
 	@Setter
 	@Getter
@@ -30,6 +31,9 @@ public class ClientRouter extends PacketDispatcher {
 
 	@Getter(AccessLevel.PROTECTED)
 	private OutputStream outputStream;
+
+	@Getter
+	private Thread heartbeat;
 
 	public ClientRouter() throws IOException {
 		linkChain = PacketLinkUtils.buildChain();
@@ -47,6 +51,7 @@ public class ClientRouter extends PacketDispatcher {
 
 		inputStream = socket.getInputStream();
 
+		startHeartBeat();
 		startReceiving();
 	}
 
@@ -73,8 +78,13 @@ public class ClientRouter extends PacketDispatcher {
 	}
 
 	public void disconnect() {
+		heartbeat.interrupt();
+		heartbeat = null;
+
 		try {
 			socket.close();
+
+			socket = new Socket();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -92,6 +102,18 @@ public class ClientRouter extends PacketDispatcher {
 
 	@Override
 	public boolean isConnected() {
-		return !socket.isClosed() && outputStream != null;
+		return  heartbeat != null && heartbeat.isAlive();
+	}
+
+	public void startHeartBeat() {
+		heartbeat = new Thread(() -> {
+			while(Client.getRouter().send(PacketType.HEARTBEAT, new JsonObject())) {
+				try {
+					Thread.sleep(GameConstants.HEARTBEAT_PULSE * 1000);
+				} catch (InterruptedException ignored) {}
+			}
+		}, "HBeat");
+
+		heartbeat.start();
 	}
 }

@@ -94,6 +94,6 @@ public class ClientConnection extends PacketDispatcher {
 
     @Override
     protected boolean isConnected() {
-        return !isDead && !socket.isClosed() && outputStream != null && socket.isConnected();
+        return !isDead;
     }
 }

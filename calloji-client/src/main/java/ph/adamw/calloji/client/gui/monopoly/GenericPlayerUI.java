@@ -50,7 +50,7 @@ public class GenericPlayerUI extends VBox {
 
         final Player player = update.getPlayer();
 
-        this.gamePieceOnBoard = new GamePieceUI(player.getGamePiece(), player.getBoardPosition(), boardUI, this);
+        this.gamePieceOnBoard = new GamePieceUI(player.getGamePiece(), player.getBoardPosition(), boardUI);
         stackPane.getChildren().add(gamePieceOnBoard);
 
         gamePieceImage = new ImageView();

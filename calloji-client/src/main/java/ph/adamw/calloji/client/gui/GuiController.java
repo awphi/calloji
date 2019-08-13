@@ -44,12 +44,6 @@ public class GuiController {
 	private BorderPane playersBorderPane;
 
 	@FXML
-	private TabPane rightTabPane;
-
-	@FXML
-	private Tab playersTab;
-
-	@FXML
 	private Button rollDiceButton;
 
 	@FXML
@@ -258,11 +252,6 @@ public class GuiController {
 			reloadPlayer(update);
 		}
     }
-
-	public void focusGenericPlayer(GenericPlayerUI owner) {
-		rightTabPane.getSelectionModel().select(playersTab);
-		playerListView.scrollTo(owner);
-	}
 
 	public void removeOtherPlayer(long id) {
 		for(GenericPlayerUI i : playerListView.getItems()) {
