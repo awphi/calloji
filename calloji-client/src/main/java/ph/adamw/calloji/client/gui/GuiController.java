@@ -19,6 +19,7 @@ import ph.adamw.calloji.client.gui.monopoly.ManagedAssetUI;
 import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.packet.data.*;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
+import ph.adamw.calloji.util.GameConstants;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,6 +37,7 @@ public class GuiController {
 	@Getter
 	private Menu nicknameMenu;
 
+	@Getter
 	private final BoardUI boardUI = new BoardUI();
 
 	private final ListView<GenericPlayerUI> playerListView = new ListView<>();
@@ -114,12 +116,14 @@ public class GuiController {
 
 
 		Client.getStage().setOnShown(event -> {
-			//SplashController.open((Window) event.getSource());
-			loadBoard(new Board());
+			SplashController.open((Window) event.getSource());
+
+			/*
+			boardUI.load(new Board());
 			final Player p = new Player(GamePiece.BATTLESHIP, 1000);
 			loadPlayer(new PlayerUpdate(p, 1000, "Adam"));
-			p.boardPosition = 39;
 			loadPlayer(new PlayerUpdate(p, 1000, "Adam"));
+			*/
 		});
 	}
 
@@ -149,7 +153,7 @@ public class GuiController {
 	}
 
 	public void updateManagedAssets(Board board) {
-		for(PropertyPlot i : Client.getCache().getCachedPlayer(Client.getRouter().getPid()).getPlayer().getOwnedPlots(board)) {
+		for(PropertyPlot i : Client.getCache().getOtherPlayer(Client.getRouter().getPid()).getPlayer().getOwnedPlots(board)) {
 			ManagedAssetUI ui = getManagedAsset(i);
 
 			if(ui == null) {
@@ -212,31 +216,14 @@ public class GuiController {
 		});
 	}
 
-	public void loadBoard(Board board) {
-		boardUI.loadBoard(board);
-	}
-
-	public void unloadBoard() {
-		boardUI.unload();
-	}
-
-	private boolean isPlayerUpdateFresh(PlayerUpdate update) {
+	private GenericPlayerUI getGenericPlayerUI(long pid) {
 		for(GenericPlayerUI i : playerListView.getItems()) {
-			if(i.getPid() == update.getId()) {
-				return false;
+			if(i.getPid() == pid) {
+				return i;
 			}
 		}
 
-		return true;
-	}
-
-	private void reloadPlayer(PlayerUpdate update) {
-		for(GenericPlayerUI i : playerListView.getItems()) {
-			if(i.getPid() == update.getId()) {
-				i.reload(update);
-				break;
-			}
-		}
+		return null;
 	}
 
     public void loadPlayer(PlayerUpdate update) {
@@ -246,8 +233,10 @@ public class GuiController {
 			jailedLabel.setText("Jailed: " + update.getPlayer().getJailed());
 		}
 
+		final GenericPlayerUI ui = getGenericPlayerUI(update.getId());
+
 		// If there's no player to reload then this is a new player and we must create props for it
-		if(isPlayerUpdateFresh(update)) {
+		if(ui == null) {
 			final GenericPlayerUI gen = new GenericPlayerUI(update, boardUI, centerStackPane);
 
 			if(update.getId() == Client.getRouter().getPid()) {
@@ -256,34 +245,42 @@ public class GuiController {
 				playerListView.getItems().add(gen);
 			}
 		} else {
-			reloadPlayer(update);
+			ui.reload(update);
 		}
     }
 
-	public void removeOtherPlayer(long id) {
-		for(GenericPlayerUI i : playerListView.getItems()) {
-			if(i.getPid() == id) {
-				centerStackPane.getChildren().remove(i.getGamePieceOnBoard());
-				playerListView.getItems().remove(i);
-				break;
-			}
+	public void removePlayer(long id) {
+		final GenericPlayerUI ui = getGenericPlayerUI(id);
+		if(ui == null) {
+			return;
 		}
+
+		centerStackPane.getChildren().remove(ui.getGamePieceOnBoard());
+		playerListView.getItems().remove(ui);
 	}
 
-    public void setTurn(TurnUpdate update) {
-		if(!update.isExtension()) {
-			final String turn = update.getPid() == Client.getRouter().getPid() ? "your" : update.getNick() + "'s";
-			Client.getGui().displayChatMessage(MessageType.SYSTEM, "It is now " + turn + " turn.");
-
-			turnTime = update.getTurnTime();
-
-			if(update.getPid() == Client.getRouter().getPid()) {
-				setActionsDisabled(false);
-			}
-		} else {
-			turnTime += update.getTurnTime();
+    public void updateTurnStatus(NewTurnUpdate update) {
+		final NewTurnUpdate last = Client.getCache().getLastTurnUpdate();
+		if(Client.getCache().getLastTurnUpdate() != null) {
+			getGenericPlayerUI(last.getPid()).getGamePieceOnBoard().setOpacity(GenericPlayerUI.IDLE_OPACITY);
 		}
+
+		getGenericPlayerUI(update.getPid()).getGamePieceOnBoard().setOpacity(1);
+		final String turn = update.getPid() == Client.getRouter().getPid() ? "your" : update.getNick() + "'s";
+		Client.getGui().displayChatMessage(MessageType.SYSTEM, "It is now " + turn + " turn.");
+
+		turnTime = GameConstants.TURN_TIME;
+
+		if(update.getPid() == Client.getRouter().getPid()) {
+			setActionsDisabled(false);
+		}
+
+		Client.getCache().cacheTurnUpdate(update);
     }
+
+    public void extendTurnTimer(int secs) {
+		turnTime += secs;
+	}
 
 	@FXML
 	private void onRollDicePressed(ActionEvent actionEvent) {

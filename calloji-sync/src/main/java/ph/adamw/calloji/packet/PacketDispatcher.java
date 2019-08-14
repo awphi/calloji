@@ -21,6 +21,10 @@ public abstract class PacketDispatcher {
     }
 
     public boolean send(PacketType type, Object content) {
+        if(!isConnected()) {
+            return false;
+        }
+
         final JsonObject parent = new JsonObject();
 
         log.debug("Dispatching " + type.name() + ": " + content.getClass().getSimpleName());

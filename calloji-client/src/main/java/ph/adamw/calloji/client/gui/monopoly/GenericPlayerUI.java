@@ -1,5 +1,6 @@
 package ph.adamw.calloji.client.gui.monopoly;
 
+import com.sun.xml.internal.bind.v2.model.core.ID;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
@@ -22,6 +23,8 @@ import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 @Log4j2
 public class GenericPlayerUI extends VBox {
     public static final int GAME_PIECE_SIZE = 40;
+    public static final double IDLE_OPACITY = 0.3;
+
     private static final Insets INSETS_10_RIGHT = new Insets(0, 10, 0, 0);
     private static final Insets PADDING = new Insets(10, 10, 10, 10);
 
@@ -51,7 +54,8 @@ public class GenericPlayerUI extends VBox {
 
         final Player player = update.getPlayer();
 
-        this.gamePieceOnBoard = new GamePieceUI(player.getGamePiece(), boardUI);
+        gamePieceOnBoard = new GamePieceUI(player.getGamePiece(), boardUI);
+        gamePieceOnBoard.setOpacity(IDLE_OPACITY);
         stackPane.getChildren().add(gamePieceOnBoard);
 
         final Point2D go = boardUI.getPointFromBoardPos(0);

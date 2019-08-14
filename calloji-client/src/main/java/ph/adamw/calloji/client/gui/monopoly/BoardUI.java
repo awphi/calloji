@@ -50,7 +50,7 @@ public class BoardUI extends GridPane {
         }
     }
 
-    public void loadBoard(Board board) {
+    public void load(Board board) {
         int xDir = -1;
         int yDir = 0;
 

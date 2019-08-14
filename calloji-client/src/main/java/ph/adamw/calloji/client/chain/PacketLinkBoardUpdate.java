@@ -18,7 +18,7 @@ public class PacketLinkBoardUpdate extends PacketLinkBase {
         final Board board = JsonUtils.getObject(content, Board.class);
         Client.getCache().cacheBoard(board);
         Platform.runLater(() -> {
-            Client.getGui().loadBoard(board);
+            Client.getGui().getBoardUI().load(board);
             Client.getGui().updateManagedAssets(board);
         });
     }

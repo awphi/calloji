@@ -85,10 +85,10 @@ public class ManagedAssetUI extends VBox {
         if(plot instanceof StreetPlot) {
             final StreetPlot sp = (StreetPlot) plot;
             sellHouseButton.setDisable(b ||
-                    !sp.canSellHouse(Client.getCache().getPlayer().getPlayer(), Client.getCache().getBoard()));
+                    !sp.canSellHouse(Client.getCache().getClientPlayer().getPlayer(), Client.getCache().getBoard()));
 
             buildHouseButton.setDisable(b || forcedManagement ||
-                    !sp.canBuildHouse(Client.getCache().getPlayer().getPlayer(), Client.getCache().getBoard()));
+                    !sp.canBuildHouse(Client.getCache().getClientPlayer().getPlayer(), Client.getCache().getBoard()));
         }
     }
 

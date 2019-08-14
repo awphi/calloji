@@ -2,6 +2,7 @@ package ph.adamw.calloji.client;
 
 import lombok.Getter;
 import ph.adamw.calloji.packet.data.Board;
+import ph.adamw.calloji.packet.data.NewTurnUpdate;
 import ph.adamw.calloji.packet.data.Player;
 import ph.adamw.calloji.packet.data.PlayerUpdate;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
@@ -15,7 +16,9 @@ public class ClientCache {
     private Board board;
     private Map<Long, PlayerUpdate> players = new HashMap<>();
 
-    private PlayerUpdate player;
+    private PlayerUpdate clientPlayer;
+
+    private NewTurnUpdate lastTurnUpdate;
 
     public void cacheBoard(Board board) {
         this.board = board;
@@ -23,13 +26,17 @@ public class ClientCache {
 
     public void cachePlayer(PlayerUpdate update) {
         if(update.getId() == Client.getRouter().getPid()) {
-            player = update;
+            clientPlayer = update;
         }
 
         players.put(update.getId(), update);
     }
 
-    public PlayerUpdate getCachedPlayer(long id) {
+    public void cacheTurnUpdate(NewTurnUpdate update) {
+        this.lastTurnUpdate = update;
+    }
+
+    public PlayerUpdate getOtherPlayer(long id) {
         return players.get(id);
     }
 

@@ -5,9 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class TurnUpdate {
+public class NewTurnUpdate {
     private final long pid;
-    private final int turnTime;
     private final String nick;
-    private boolean isExtension;
 }

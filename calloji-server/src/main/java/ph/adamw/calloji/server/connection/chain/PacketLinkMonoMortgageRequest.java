@@ -21,7 +21,7 @@ public class PacketLinkMonoMortgageRequest extends PacketLinkMono {
 
         final MonoPropertyPlot monoPlot = game.getMonoBoard().getMonoPlot(plot);
 
-        if((player != game.getCurrentTurnPlayer() || player != game.getBankruptee())) {
+        if(player != game.getCurrentTurnPlayer() && player != game.getBankruptee()) {
             return;
         }
 

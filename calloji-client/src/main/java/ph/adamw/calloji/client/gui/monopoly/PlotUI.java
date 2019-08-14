@@ -65,7 +65,7 @@ public class PlotUI extends StackPane {
             if(x.getOwner() != null) {
                 valueText.setTextFill(Color.GREEN);
                 ownerTooltip.setStyle("-fx-text-fill: white;");
-                ownerTooltip.setText("Owner: " + Client.getCache().getCachedPlayer(x.getOwner()).getNick());
+                ownerTooltip.setText("Owner: " + Client.getCache().getOtherPlayer(x.getOwner()).getNick());
             } else {
                 valueText.setTextFill(Color.BLACK);
                 ownerTooltip.setStyle("-fx-text-fill: red;");

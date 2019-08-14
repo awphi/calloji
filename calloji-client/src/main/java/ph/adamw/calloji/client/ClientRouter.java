@@ -58,7 +58,7 @@ public class ClientRouter extends PacketDispatcher {
 	public void disconnectAndAlertServer() {
 		send(PacketType.CLIENT_CONNECTION_UPDATE, new ConnectionUpdate(true, getPid()));
 		disconnect();
-		Client.getGui().unloadBoard();
+		Client.getGui().getBoardUI().unload();
 	}
 
 	public boolean attemptConnect(String host, int port) {

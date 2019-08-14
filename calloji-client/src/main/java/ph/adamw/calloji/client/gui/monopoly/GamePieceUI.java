@@ -21,15 +21,10 @@ public class GamePieceUI extends ImageView {
     private final BoardUI boardUI;
     private int currentPos = 0;
 
-    private static final double DEFAULT_OPACITY = 0.4;
-    private static final double MOVING_OPACITY = 1;
-
 
     public GamePieceUI(GamePiece piece, BoardUI boardUI) {
         super(GuiUtils.getGamePieceImage(piece));
         this.boardUI = boardUI;
-
-        setOpacity(DEFAULT_OPACITY);
 
         StackPane.setAlignment(this, Pos.TOP_LEFT);
         setFitHeight(GenericPlayerUI.GAME_PIECE_SIZE);
@@ -47,10 +42,12 @@ public class GamePieceUI extends ImageView {
         final int to = getNextCorner(pos);
 
         // While we're not the same line
-        while(c != to) {
+        int counter = 0;
+        while(c != to || (pos == currentPos && counter < 3)) {
             final Point2D nextCorner = boardUI.getPointFromBoardPos(c);
             path.getElements().add(new LineTo(nextCorner.getX(), nextCorner.getY()));
             c = getNextCorner(c);
+            counter ++;
         }
 
         final Point2D start = boardUI.getPointFromBoardPos(currentPos);
@@ -62,11 +59,7 @@ public class GamePieceUI extends ImageView {
 
         log.debug(path.getElements());
         final PathTransition pathTransition = new PathTransition(Duration.seconds((path.getElements().size() - 1) * 2), path, this);
-        pathTransition.setOnFinished(event -> {
-            setOpacity(DEFAULT_OPACITY);
-            toFront();
-        });
-        setOpacity(MOVING_OPACITY);
+        pathTransition.setOnFinished(event -> toFront());
         pathTransition.playFromStart();
 
         currentPos = pos;

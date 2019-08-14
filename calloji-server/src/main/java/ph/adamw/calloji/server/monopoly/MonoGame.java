@@ -102,7 +102,7 @@ public class MonoGame {
 
     void extendCurrentTurn(int secs) {
         currentTurnTime += secs;
-        sendToAll(PacketType.TURN_UPDATE, new TurnUpdate(currentTurnPlayer.getConnectionId(), secs, currentTurnPlayer.getConnectionNick(), true));
+        sendToAll(PacketType.TURN_EXTENSION, secs);
     }
 
     //TODO introduce trading to the game inside the players tab where u can trade assets + cash.
@@ -133,7 +133,7 @@ public class MonoGame {
             }
         }
 
-        sendToAll(PacketType.TURN_UPDATE, new TurnUpdate(currentTurnPlayer.getConnectionId(), currentTurnTime, currentTurnPlayer.getConnectionNick(), false));
+        sendToAll(PacketType.NEW_TURN, new NewTurnUpdate(currentTurnPlayer.getConnectionId(), currentTurnPlayer.getConnectionNick()));
 
         // Allows turns to be extended from a separate thread
         do {
