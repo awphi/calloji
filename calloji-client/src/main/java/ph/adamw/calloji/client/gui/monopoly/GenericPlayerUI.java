@@ -1,6 +1,7 @@
 package ph.adamw.calloji.client.gui.monopoly;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -50,8 +51,12 @@ public class GenericPlayerUI extends VBox {
 
         final Player player = update.getPlayer();
 
-        this.gamePieceOnBoard = new GamePieceUI(player.getGamePiece(), player.getBoardPosition(), boardUI);
+        this.gamePieceOnBoard = new GamePieceUI(player.getGamePiece(), boardUI);
         stackPane.getChildren().add(gamePieceOnBoard);
+
+        final Point2D go = boardUI.getPointFromBoardPos(0);
+        gamePieceOnBoard.setTranslateX(go.getX() - (gamePieceOnBoard.getFitWidth() / 2));
+        gamePieceOnBoard.setTranslateY(go.getY() - (gamePieceOnBoard.getFitHeight() / 2));
 
         gamePieceImage = new ImageView();
         gamePieceImage.maxHeight(GAME_PIECE_SIZE);

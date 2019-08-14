@@ -113,7 +113,14 @@ public class GuiController {
 		});
 
 
-		Client.getStage().setOnShown(event -> SplashController.open((Window) event.getSource()));
+		Client.getStage().setOnShown(event -> {
+			//SplashController.open((Window) event.getSource());
+			loadBoard(new Board());
+			final Player p = new Player(GamePiece.BATTLESHIP, 1000);
+			loadPlayer(new PlayerUpdate(p, 1000, "Adam"));
+			p.boardPosition = 39;
+			loadPlayer(new PlayerUpdate(p, 1000, "Adam"));
+		});
 	}
 
 	private void decrementTurnTimer() {
