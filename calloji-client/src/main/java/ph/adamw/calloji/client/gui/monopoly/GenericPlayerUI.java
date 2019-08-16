@@ -99,7 +99,7 @@ public class GenericPlayerUI extends VBox {
         final Player player = update.getPlayer();
 
         if(gamePieceOnBoard != null) {
-            gamePieceOnBoard.moveTo(player.getBoardPosition());
+            gamePieceOnBoard.moveTo(player.getBoardPosition(), player.getLastMoveType());
         }
 
         if(Client.getRouter().getPid() == update.getId()) {

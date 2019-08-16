@@ -15,6 +15,7 @@ import javafx.util.Duration;
 import lombok.extern.log4j.Log4j2;
 import ph.adamw.calloji.client.gui.GuiUtils;
 import ph.adamw.calloji.packet.data.GamePiece;
+import ph.adamw.calloji.packet.data.MoveType;
 
 @Log4j2
 public class GamePieceUI extends ImageView {
@@ -31,22 +32,22 @@ public class GamePieceUI extends ImageView {
         setFitWidth(GenericPlayerUI.GAME_PIECE_SIZE);
     }
 
-    public void moveTo(int pos) {
-        if(pos == currentPos) {
+    public void moveTo(int pos, final MoveType moveType) {
+        if(moveType == MoveType.NONE) {
             return;
         }
 
         final Path path = new Path();
 
-        int c = getNextCorner(currentPos);
-        final int to = getNextCorner(pos);
+        int c = getNextCorner(currentPos, moveType);
+        final int to = getNextCorner(pos, moveType);
 
         // While we're not the same line
         int counter = 0;
         while(c != to || (pos == currentPos && counter < 3)) {
             final Point2D nextCorner = boardUI.getPointFromBoardPos(c);
             path.getElements().add(new LineTo(nextCorner.getX(), nextCorner.getY()));
-            c = getNextCorner(c);
+            c = getNextCorner(c, moveType);
             counter ++;
         }
 
@@ -65,11 +66,14 @@ public class GamePieceUI extends ImageView {
         currentPos = pos;
     }
 
-    private int getNextCorner(double a) {
-        if(a % 10 == 0) {
-            return (int) ((a + 10) % 40);
-        }
+    private static int getNextCorner(double a, final MoveType type) {
+        if (a % 10 == 0) {
+            final int nudge = type == MoveType.FORWARD ? 10 : -10;
 
-        return ((int) (Math.ceil(a / 10d) * 10d)) % 40;
+            return (int) ((a + nudge) % 40);
+        } else {
+            final double num = type == MoveType.FORWARD ? Math.ceil(a / 10d) * 10d : Math.floor(a / 10d) * 10d;
+            return ((int) num) % 40;
+        }
     }
 }

@@ -19,6 +19,8 @@ public class Player implements Serializable {
 
     public int boardPosition = 0;
 
+    public MoveType lastMoveType = MoveType.NONE;
+
     public int jailed = 0;
 
     public int getOutOfJails = 0;

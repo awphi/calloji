@@ -136,6 +136,7 @@ public class GuiController {
 				for(ManagedAssetUI i : assetManagementListView.getItems()) {
 					i.setForcedManagement(false);
 				}
+
 				setActionsDisabled(true);
 				displayChatMessage(MessageType.SYSTEM, "Turn over...");
 			}
@@ -261,8 +262,9 @@ public class GuiController {
 
     public void updateTurnStatus(NewTurnUpdate update) {
 		final NewTurnUpdate last = Client.getCache().getLastTurnUpdate();
-		if(Client.getCache().getLastTurnUpdate() != null) {
-			getGenericPlayerUI(last.getPid()).getGamePieceOnBoard().setOpacity(GenericPlayerUI.IDLE_OPACITY);
+		final GenericPlayerUI lastUI = getGenericPlayerUI(last.getPid());
+		if(Client.getCache().getLastTurnUpdate() != null && lastUI != null) {
+			lastUI.getGamePieceOnBoard().setOpacity(GenericPlayerUI.IDLE_OPACITY);
 		}
 
 		getGenericPlayerUI(update.getPid()).getGamePieceOnBoard().setOpacity(1);

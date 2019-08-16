@@ -1,5 +1,6 @@
 package ph.adamw.calloji.server.monopoly;
 
+import com.google.common.collect.Iterables;
 import com.google.common.eventbus.Subscribe;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +27,7 @@ public class MonoGame {
     @Getter
     private final MonoCardPile chancePile = new MonoCardPile("Chance", MonoCardPile.CHANCE);
 
-    private Map<Long, MonoPlayer> playerMap = new HashMap<>();
+    private Map<Long, MonoPlayer> playerMap = new TreeMap<>();
 
     private int currentTurnTime = GameConstants.TURN_TIME;
 
@@ -35,8 +36,6 @@ public class MonoGame {
 
     @Getter
     private MonoBoard monoBoard = new MonoBoard(this);
-
-    private int nextTurnPlayerIndex = 0;
 
     private boolean hasRolled = false;
 
@@ -59,7 +58,9 @@ public class MonoGame {
     }
 
     public void start() {
+        final Iterator<Long> it = Iterables.cycle(playerMap.keySet()).iterator();
         while(getWinner() == null && !playerMap.isEmpty()) {
+            currentTurnPlayer = playerMap.get(it.next());
             playTurn();
         }
 
@@ -107,12 +108,6 @@ public class MonoGame {
 
     //TODO introduce trading to the game inside the players tab where u can trade assets + cash.
     private void playTurn() {
-        final Iterator<Long> it = playerMap.keySet().iterator();
-        while(currentTurnPlayer == null || currentTurnPlayer.getPlayer().isBankrupt()) {
-            currentTurnPlayer = getMonoPlayer(it.next());
-            nextTurnPlayerIndex = (nextTurnPlayerIndex + 1) % playerMap.size();
-        }
-
         log.debug("Turn of player: " + currentTurnPlayer);
 
         hasRolled = false;
@@ -238,7 +233,6 @@ public class MonoGame {
         if(mp != null) {
             playerMap.remove(mp.getConnectionId());
             log.info("Deleting player " + mp.getConnectionId() + " due to a disconnect.");
-            sendAllMessage(MessageType.ADMIN, mp.getConnectionNick() + " has left the game.");
 
             for(MonoPlayer i : playerMap.values()) {
                 i.send(PacketType.CLIENT_CONNECTION_UPDATE, new ConnectionUpdate(true, mp.getConnectionId()));

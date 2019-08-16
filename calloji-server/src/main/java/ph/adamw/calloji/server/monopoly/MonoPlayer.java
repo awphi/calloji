@@ -67,9 +67,12 @@ public class MonoPlayer {
     }
 
     public void moveSpaces(int x) {
-        // Passed GO
-        if(player.boardPosition + x >= 40) {
-            addMoney(200);
+        if(x > 0) {
+            player.lastMoveType = MoveType.FORWARD;
+        } else if(x < 0) {
+            player.lastMoveType = MoveType.BACKWARD;
+        } else {
+            player.lastMoveType = MoveType.NONE;
         }
 
         player.boardPosition = (player.boardPosition + x) % 40;
@@ -81,10 +84,6 @@ public class MonoPlayer {
             mono.landedOnBy(this, x);
         } else {
             switch (plot.getType()) {
-                case GO:
-                    addMoney(GameConstants.GO_MONEY);
-                    sendMessage(MessageType.SYSTEM, "You have received £" + GameConstants.GO_MONEY + ".00 for passing \"Go\".");
-                    break;
                 case TAX:
                 case SUPER_TAX:
                     final int amount = plot.getType().equals(PlotType.TAX) ? GameConstants.INCOME_TAX : GameConstants.SUPER_TAX;
@@ -115,8 +114,15 @@ public class MonoPlayer {
             }
         }
 
+        // Passed GO
+        if(player.boardPosition + x >= 40) {
+            addMoney(GameConstants.GO_MONEY);
+            sendMessage(MessageType.SYSTEM, "You have received £" + GameConstants.GO_MONEY + ".00 for passing \"Go\".");
+        }
+
         game.updateBoardOnAllClients();
         game.updatePlayerOnAllClients(this);
+        player.lastMoveType = MoveType.NONE;
     }
 
     public int getAssetsMortgageValue() {
