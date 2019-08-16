@@ -70,10 +70,10 @@ public class GamePieceUI extends ImageView {
         if (a % 10 == 0) {
             final int nudge = type == MoveType.FORWARD ? 10 : -10;
 
-            return (int) ((a + nudge) % 40);
+            return Math.floorMod((int) a + nudge, 40);
         } else {
             final double num = type == MoveType.FORWARD ? Math.ceil(a / 10d) * 10d : Math.floor(a / 10d) * 10d;
-            return ((int) num) % 40;
+            return Math.floorMod((int) num, 40);
         }
     }
 }

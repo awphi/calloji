@@ -16,9 +16,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-
 <?import org.kordamp.ikonli.javafx.FontIcon?>
-<BorderPane minHeight="600" minWidth="1015" prefHeight="840" prefWidth="1280" xmlns="http://javafx.com/javafx/8.0.191" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.adamw.calloji.client.gui.GuiController">
+
+<BorderPane minHeight="600" minWidth="1015" prefHeight="840" prefWidth="1280" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.adamw.calloji.client.gui.GuiController">
     <stylesheets>
         <URL value="@style.css" />
     </stylesheets>
@@ -63,19 +63,22 @@
                   </BorderPane>
                   <BorderPane prefHeight="44.0" prefWidth="360.0">
                      <left>
-                             <Button fx:id="rollDiceButton" disable="true" mnemonicParsing="false" onAction="#onRollDicePressed" prefHeight="48.0" prefWidth="102.0" text="Roll Dice" BorderPane.alignment="CENTER" />
+                             <Button fx:id="rollDiceButton" disable="true" mnemonicParsing="false" onAction="#onRollDicePressed" prefHeight="181.0" prefWidth="102.0" text="Roll Dice" BorderPane.alignment="CENTER" />
                      </left>
                      <right>
-                         <HBox prefHeight="52.0" prefWidth="182.0" BorderPane.alignment="CENTER" alignment="CENTER">
+                         <HBox alignment="CENTER" prefHeight="44.0" prefWidth="88.0" BorderPane.alignment="CENTER">
                              <styleClass>
-                                 <String fx:value="button-look"/>
+                                 <String fx:value="button-look" />
                              </styleClass>
-                             <Label fx:id="turnTimer" text="00:00" textAlignment="CENTER"/>
+                             <Label fx:id="turnTimer" prefHeight="0.0" prefWidth="29.0" text="00:00" textAlignment="CENTER" />
                          </HBox>
                      </right>
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
+                     <center>
+                        <Button fx:id="endTurnButton" onAction="#onEndTurnButtonPressed" disable="true" mnemonicParsing="false" prefHeight="85.0" prefWidth="98.0" text="End Turn" BorderPane.alignment="CENTER" />
+                     </center>
                   </BorderPane>
                </children>
                <padding>
@@ -87,7 +90,7 @@
             </VBox>
          </bottom>
          <center>
-             <TabPane fx:id="rightTabPane" nodeOrientation="LEFT_TO_RIGHT" prefHeight="678.0" prefWidth="290.0" stylesheets="@style.css" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="250.0" tabMaxWidth="400.0" tabMinHeight="25.0" tabMinWidth="100.0" BorderPane.alignment="CENTER">
+             <TabPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="678.0" prefWidth="290.0" stylesheets="@style.css" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="250.0" tabMaxWidth="400.0" tabMinHeight="25.0" tabMinWidth="100.0" BorderPane.alignment="CENTER">
                  <Tab text="Chat">
                      <VBox prefHeight="646.0" prefWidth="257.0" style="-fx-alignment: center;">
                          <padding>
@@ -106,7 +109,7 @@
                              </TextField>
                              <Button mnemonicParsing="false" onAction="#onChatSubmitted" HBox.hgrow="ALWAYS">
                                  <graphic>
-                                     <FontIcon iconLiteral="fa-arrow-right"/>
+                                     <FontIcon iconLiteral="fa-arrow-right" />
                                  </graphic>
                              </Button>
                         <VBox.margin>
@@ -115,7 +118,7 @@
                          </HBox>
                      </VBox>
                  </Tab>
-                 <Tab fx:id="playersTab" text="Players">
+                 <Tab text="Players">
                      <BorderPane fx:id="playersBorderPane" prefHeight="200.0" prefWidth="200.0">
                          <padding>
                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

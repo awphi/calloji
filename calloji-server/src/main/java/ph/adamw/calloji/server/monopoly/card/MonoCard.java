@@ -33,7 +33,7 @@ public abstract class MonoCard {
         @Override
         public void handle(MonoPlayer player) {
             if(boardSpot != null && boardSpot != player.getPlayer().getBoardPosition()) {
-                player.moveForward(boardSpot);
+                player.moveTo(boardSpot);
             }
 
             if(money > 0) {

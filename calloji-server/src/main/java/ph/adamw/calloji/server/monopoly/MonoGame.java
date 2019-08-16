@@ -29,6 +29,7 @@ public class MonoGame {
 
     private Map<Long, MonoPlayer> playerMap = new TreeMap<>();
 
+    @Getter
     private int currentTurnTime = GameConstants.TURN_TIME;
 
     @Getter
@@ -48,7 +49,10 @@ public class MonoGame {
     @Getter
     private MonoPlayer bankruptee;
 
+    private final Thread gameThread;
+
     public MonoGame() {
+        this.gameThread = Thread.currentThread();
         ServerRouter.getEventBus().register(this);
     }
 
@@ -101,9 +105,18 @@ public class MonoGame {
         rigged = x;
     }
 
-    void extendCurrentTurn(int secs) {
+    public void extendCurrentTurn(int secs) {
+        if(secs <= 0) {
+            return;
+        }
+
         currentTurnTime += secs;
         sendToAll(PacketType.TURN_EXTENSION, secs);
+    }
+
+    public void endCurrentTurn() {
+        currentTurnTime = 0;
+        gameThread.interrupt();
     }
 
     //TODO introduce trading to the game inside the players tab where u can trade assets + cash.

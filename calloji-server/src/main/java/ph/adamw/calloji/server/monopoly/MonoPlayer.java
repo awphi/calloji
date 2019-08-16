@@ -42,13 +42,13 @@ public class MonoPlayer {
         return connection.getNick();
     }
 
-    public void moveForward(Integer x) {
+    public void moveTo(Integer x) {
         if(x == null) {
             log.debug("Plot index given was null when attempting to move - board is probably missing the given type!");
             return;
         }
 
-        moveSpaces((x - player.getBoardPosition()) % 40);
+        moveSpaces(Math.floorMod(x - player.getBoardPosition(),40));
     }
 
     public void addAsset(MonoPropertyPlot plot) {
@@ -146,7 +146,7 @@ public class MonoPlayer {
 
     public void setJailed(int y) {
         player.jailed = y;
-        moveForward(game.getMonoBoard().indexOfFirstPlot(PlotType.JAIL));
+        moveTo(game.getMonoBoard().indexOfFirstPlot(PlotType.JAIL));
         game.updatePlayerOnAllClients(this);
     }
 

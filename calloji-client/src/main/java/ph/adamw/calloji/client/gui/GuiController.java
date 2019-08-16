@@ -1,5 +1,6 @@
 package ph.adamw.calloji.client.gui;
 
+import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -77,6 +78,9 @@ public class GuiController {
 	@FXML
 	@Getter
 	private MenuItem nickEditButton;
+
+	@FXML
+	private Button endTurnButton;
 
 	public void displayChatMessage(MessageType type, String txt) {
 		final Label label = new Label("[" + DATE_FORMAT.format(new Date()) + "] " + txt);
@@ -262,9 +266,12 @@ public class GuiController {
 
     public void updateTurnStatus(NewTurnUpdate update) {
 		final NewTurnUpdate last = Client.getCache().getLastTurnUpdate();
-		final GenericPlayerUI lastUI = getGenericPlayerUI(last.getPid());
-		if(Client.getCache().getLastTurnUpdate() != null && lastUI != null) {
-			lastUI.getGamePieceOnBoard().setOpacity(GenericPlayerUI.IDLE_OPACITY);
+		if(last != null) {
+			final GenericPlayerUI lastUI = getGenericPlayerUI(last.getPid());
+
+			if(lastUI != null) {
+				lastUI.getGamePieceOnBoard().setOpacity(GenericPlayerUI.IDLE_OPACITY);
+			}
 		}
 
 		getGenericPlayerUI(update.getPid()).getGamePieceOnBoard().setOpacity(1);
@@ -287,6 +294,8 @@ public class GuiController {
 	@FXML
 	private void onRollDicePressed(ActionEvent actionEvent) {
 		Client.getRouter().send(PacketType.ROLL_DICE_REQ, true);
+		rollDiceButton.setDisable(true);
+		endTurnButton.setDisable(false);
 	}
 
 	@FXML
@@ -297,5 +306,10 @@ public class GuiController {
 	@FXML
 	private void onDisconnectPressed(ActionEvent actionEvent) {
 		Client.getRouter().disconnectAndAlertServer();
+	}
+
+	@FXML
+	private void onEndTurnButtonPressed(ActionEvent actionEvent) {
+		Client.getRouter().send(PacketType.END_TURN_REQUEST, new JsonObject());
 	}
 }
