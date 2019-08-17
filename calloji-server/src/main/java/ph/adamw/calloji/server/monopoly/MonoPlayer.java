@@ -66,16 +66,7 @@ public class MonoPlayer {
         }
     }
 
-    public void moveSpaces(int x) {
-        log.debug("spaces: " + x);
-        if(x > 0) {
-            player.lastMoveType = MoveType.FORWARD;
-        } else if(x < 0) {
-            player.lastMoveType = MoveType.BACKWARD;
-        } else {
-            player.lastMoveType = MoveType.NONE;
-        }
-
+    public void moveSpaces(final int x) {
         if(player.boardPosition + x >= 40 && player.getJailed() <= 0) {
             addMoney(GameConstants.GO_MONEY);
             sendMessage(MessageType.SYSTEM, "You have received £" + GameConstants.GO_MONEY + ".00 for passing Go.");
@@ -121,7 +112,17 @@ public class MonoPlayer {
         }
 
         game.updateBoardOnAllClients();
+
+        if(x > 0) {
+            player.lastMoveType = MoveType.FORWARD;
+        } else if(x < 0) {
+            player.lastMoveType = MoveType.BACKWARD;
+        } else {
+            player.lastMoveType = MoveType.NONE;
+        }
+
         game.updatePlayerOnAllClients(this);
+
         player.lastMoveType = MoveType.NONE;
     }
 

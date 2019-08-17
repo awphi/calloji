@@ -13,7 +13,7 @@ public class PacketLinkMonoEndTurn extends PacketLinkMonoTurnOnly {
     public void handle(PacketType type, JsonElement content, MonoPlayer player) {
         final MonoGame game = ServerRouter.getGame();
 
-        if(game.getActiveAuction() == null && game.getBankruptee() == null) {
+        if(game.getActiveAuction() == null && game.getBankruptee() == null && game.isHasRolled()) {
             ServerRouter.getGame().endCurrentTurn();
         }
     }

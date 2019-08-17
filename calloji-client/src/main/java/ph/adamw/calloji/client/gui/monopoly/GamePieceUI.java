@@ -44,13 +44,15 @@ public class GamePieceUI extends ImageView {
         setFitWidth(GenericPlayerUI.GAME_PIECE_SIZE);
     }
 
-    public void moveTo(final int pos, final MoveType moveType) {
+    //TODO fix the going backwards when the direction is forward but we're past the goal already.
+    // i.e. when the dice is rigged to 7 and the first chance card is go to GO
+    public void moveTo(final int goal, final MoveType moveType) {
         if(moveType == MoveType.NONE) {
             return;
         }
 
         if(isAnimated) {
-            animationQueue.add(new AnimationRequest(pos, moveType));
+            animationQueue.add(new AnimationRequest(goal, moveType));
             return;
         }
 
@@ -58,27 +60,28 @@ public class GamePieceUI extends ImageView {
 
         final Path path = new Path();
 
-        int c = getNextCorner(currentPos, moveType);
-        final int to = getNextCorner(pos, moveType);
-
-        // Conditions:
-        //   - not on the same row as the goal
-        //   - goal is the same as the the current position so we need to go all the way around
-
-        //TODO fix the going backwards when the direction is forward but we're past the goal already.
-        // i.e. when the dice is rigged to 7 and the first chance card is go to GO
-        while(c != to) {
-            final Point2D nextCorner = boardUI.getPointFromBoardPos(c);
-            path.getElements().add(new LineTo(nextCorner.getX(), nextCorner.getY()));
-            c = getNextCorner(c, moveType);
-        }
-
         final Point2D start = boardUI.getPointFromBoardPos(currentPos);
         final MoveTo moveTo = new MoveTo(start.getX(), start.getY());
         path.getElements().add(0, moveTo);
 
-        final Point2D goal = boardUI.getPointFromBoardPos(pos);
-        path.getElements().add(new LineTo(goal.getX(), goal.getY()));
+        int goalPos = goal;
+        int cornerPos = currentPos;
+
+        // If the goal is behind us add the offset that we have to go round the whole board
+        if(moveType == MoveType.FORWARD && goal <= currentPos) {
+            goalPos += 40;
+        }
+
+        final int corners = Math.abs(multiplesInRange(currentPos, goalPos, 10));
+
+        for(int i = 0; i < corners; i ++) {
+            cornerPos = getNextCorner(cornerPos, moveType);
+            final Point2D nextCorner = boardUI.getPointFromBoardPos(cornerPos);
+            path.getElements().add(new LineTo(nextCorner.getX(), nextCorner.getY()));
+        }
+
+        final Point2D fin = boardUI.getPointFromBoardPos(goal);
+        path.getElements().add(new LineTo(fin.getX(), fin.getY()));
 
         final PathTransition anim = new PathTransition(Duration.seconds((path.getElements().size() - 1) * 1.25), path, this);
         anim.setOnFinished(event -> {
@@ -92,9 +95,13 @@ public class GamePieceUI extends ImageView {
             }
         });
 
-        currentPos = pos;
+        currentPos = goal;
         currentAnimation = anim;
         anim.playFromStart();
+    }
+
+    private static int multiplesInRange(int from, int to, int multiple) {
+        return (to / multiple) - (from / multiple);
     }
 
     private static int getNextCorner(double a, final MoveType type) {

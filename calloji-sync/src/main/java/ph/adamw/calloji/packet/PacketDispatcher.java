@@ -2,6 +2,7 @@ package ph.adamw.calloji.packet;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import lombok.extern.log4j.Log4j2;
 import ph.adamw.calloji.util.JsonUtils;
 
@@ -79,6 +80,7 @@ public abstract class PacketDispatcher {
                         continue;
                     }
 
+                    //TODO deal w invalid json here
                     final JsonObject json = JsonUtils.parseJson(i).getAsJsonObject();
                     final PacketType type = PacketType.getPacket(json.get("packet_id").getAsInt());
 
