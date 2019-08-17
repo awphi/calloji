@@ -83,7 +83,7 @@ public class GamePieceUI extends ImageView {
         final Point2D fin = boardUI.getPointFromBoardPos(goal);
         path.getElements().add(new LineTo(fin.getX(), fin.getY()));
 
-        final PathTransition anim = new PathTransition(Duration.seconds((path.getElements().size() - 1) * 1.25), path, this);
+        final PathTransition anim = new PathTransition(Duration.seconds(Math.abs(goalPos - currentPos) * 0.125d), path, this);
         anim.setOnFinished(event -> {
             toFront();
 

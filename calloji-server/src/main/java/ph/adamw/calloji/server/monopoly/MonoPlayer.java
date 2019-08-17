@@ -73,6 +73,22 @@ public class MonoPlayer {
         }
 
         player.boardPosition = (player.boardPosition + x) % 40;
+
+        game.updateBoardOnAllClients();
+
+        if(x > 0) {
+            player.lastMoveType = MoveType.FORWARD;
+        } else if(x < 0) {
+            player.lastMoveType = MoveType.BACKWARD;
+        } else {
+            player.lastMoveType = MoveType.NONE;
+        }
+
+        game.updatePlayerOnAllClients(this);
+
+        player.lastMoveType = MoveType.NONE;
+
+
         final Plot plot = game.getMonoBoard().getIndexedPlot(player.boardPosition);
         final MonoPropertyPlot mono = game.getMonoBoard().getMonoPlot(plot);
 
@@ -110,20 +126,6 @@ public class MonoPlayer {
                 break;
             }
         }
-
-        game.updateBoardOnAllClients();
-
-        if(x > 0) {
-            player.lastMoveType = MoveType.FORWARD;
-        } else if(x < 0) {
-            player.lastMoveType = MoveType.BACKWARD;
-        } else {
-            player.lastMoveType = MoveType.NONE;
-        }
-
-        game.updatePlayerOnAllClients(this);
-
-        player.lastMoveType = MoveType.NONE;
     }
 
     public int getAssetsMortgageValue() {
