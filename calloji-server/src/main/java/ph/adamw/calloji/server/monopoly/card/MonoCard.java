@@ -80,7 +80,7 @@ public abstract class MonoCard {
 
     public static class GoToJail extends MonoCard {
         public GoToJail() {
-            super("Go to jail. Move directly to jail. Do not pass \"Go\". Do not collect £200", false);
+            super("Go to jail. Move directly to jail. Do not pass Go. Do not collect £" + GameConstants.GO_MONEY + ".00", false);
         }
 
         @Override

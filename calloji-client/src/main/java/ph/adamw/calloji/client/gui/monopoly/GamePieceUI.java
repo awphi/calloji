@@ -1,6 +1,7 @@
 package ph.adamw.calloji.client.gui.monopoly;
 
 import javafx.animation.PathTransition;
+import javafx.animation.Transition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
@@ -12,16 +13,27 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import ph.adamw.calloji.client.gui.GuiUtils;
 import ph.adamw.calloji.packet.data.GamePiece;
 import ph.adamw.calloji.packet.data.MoveType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Log4j2
 public class GamePieceUI extends ImageView {
     private final BoardUI boardUI;
     private int currentPos = 0;
 
+    private final List<AnimationRequest> animationQueue = new ArrayList<>();
+
+    @Getter
+    private boolean isAnimated = false;
+
+    private Transition currentAnimation;
 
     public GamePieceUI(GamePiece piece, BoardUI boardUI) {
         super(GuiUtils.getGamePieceImage(piece));
@@ -32,23 +44,33 @@ public class GamePieceUI extends ImageView {
         setFitWidth(GenericPlayerUI.GAME_PIECE_SIZE);
     }
 
-    public void moveTo(int pos, final MoveType moveType) {
+    public void moveTo(final int pos, final MoveType moveType) {
         if(moveType == MoveType.NONE) {
             return;
         }
+
+        if(isAnimated) {
+            animationQueue.add(new AnimationRequest(pos, moveType));
+            return;
+        }
+
+        isAnimated = true;
 
         final Path path = new Path();
 
         int c = getNextCorner(currentPos, moveType);
         final int to = getNextCorner(pos, moveType);
 
-        // While we're not the same line
-        int counter = 0;
-        while(c != to || (pos == currentPos && counter < 3)) {
+        // Conditions:
+        //   - not on the same row as the goal
+        //   - goal is the same as the the current position so we need to go all the way around
+
+        //TODO fix the going backwards when the direction is forward but we're past the goal already.
+        // i.e. when the dice is rigged to 7 and the first chance card is go to GO
+        while(c != to) {
             final Point2D nextCorner = boardUI.getPointFromBoardPos(c);
             path.getElements().add(new LineTo(nextCorner.getX(), nextCorner.getY()));
             c = getNextCorner(c, moveType);
-            counter ++;
         }
 
         final Point2D start = boardUI.getPointFromBoardPos(currentPos);
@@ -58,12 +80,21 @@ public class GamePieceUI extends ImageView {
         final Point2D goal = boardUI.getPointFromBoardPos(pos);
         path.getElements().add(new LineTo(goal.getX(), goal.getY()));
 
-        log.debug(path.getElements());
-        final PathTransition pathTransition = new PathTransition(Duration.seconds((path.getElements().size() - 1) * 2), path, this);
-        pathTransition.setOnFinished(event -> toFront());
-        pathTransition.playFromStart();
+        final PathTransition anim = new PathTransition(Duration.seconds((path.getElements().size() - 1) * 1.25), path, this);
+        anim.setOnFinished(event -> {
+            toFront();
+
+            isAnimated = false;
+
+            if(!animationQueue.isEmpty()) {
+                final AnimationRequest req = animationQueue.remove(0);
+                moveTo(req.getBoardPos(), req.getMoveType());
+            }
+        });
 
         currentPos = pos;
+        currentAnimation = anim;
+        anim.playFromStart();
     }
 
     private static int getNextCorner(double a, final MoveType type) {
@@ -75,5 +106,31 @@ public class GamePieceUI extends ImageView {
             final double num = type == MoveType.FORWARD ? Math.ceil(a / 10d) * 10d : Math.floor(a / 10d) * 10d;
             return Math.floorMod((int) num, 40);
         }
+    }
+
+    public void cancelAnimation() {
+        if(!animationQueue.isEmpty()) {
+            animationQueue.clear();
+        }
+
+        if(currentAnimation != null) {
+            currentAnimation.stop();
+            currentAnimation = null;
+        }
+
+        isAnimated = false;
+    }
+
+    public void reposition() {
+        final Point2D point = boardUI.getPointFromBoardPos(currentPos);
+        setTranslateX(point.getX() - getFitWidth() / 2);
+        setTranslateY(point.getY() - getFitHeight() / 2);
+    }
+
+    @AllArgsConstructor
+    @Getter
+    private static class AnimationRequest {
+        private final int boardPos;
+        private final MoveType moveType;
     }
 }

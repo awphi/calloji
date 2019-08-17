@@ -7,6 +7,7 @@ import ph.adamw.calloji.util.JsonUtils;
 
 import java.io.*;
 import java.net.SocketException;
+import java.util.Arrays;
 
 @Log4j2
 public abstract class PacketDispatcher {
@@ -27,9 +28,9 @@ public abstract class PacketDispatcher {
 
         final JsonObject parent = new JsonObject();
 
-        log.debug("Dispatching " + type.name() + ": " + content.getClass().getSimpleName());
-
         parent.addProperty("packet_id", type.getId());
+
+        log.debug("Dispatching " + type.name() + ": " + content.toString());
 
         if(content instanceof JsonElement) {
             parent.add("data", (JsonElement) content);
@@ -48,8 +49,17 @@ public abstract class PacketDispatcher {
     }
 
     private void receive() {
+        final BufferedReader br = new BufferedReader(new InputStreamReader(getInputStream()));
+
         while(isConnected()) {
             try {
+                if(!br.ready()) {
+                    continue;
+                }
+
+                String content = br.readLine();
+
+                /*
                 int ch;
                 final StringBuilder sb = new StringBuilder();
                 while((ch = getInputStream().read()) != -1) {
@@ -58,10 +68,11 @@ public abstract class PacketDispatcher {
                         break;
                     }
                 }
+                */
 
                 // String is split here as sometimes messages can stack up due to latency and this avoids us trying to parse multiple json
                 // objects as one.
-                final String[] split = sb.toString().split("\n");
+                final String[] split = content.split("\n");
 
                 for(String i : split) {
                     if(i.equals("")) {

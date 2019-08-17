@@ -21,6 +21,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Log4j2
 public class MonoGame {
+    //TODO stop a player from being able to avoid rolling the dice
+
     @Getter
     private final MonoCardPile communityChestPile = new MonoCardPile("Community Chest", MonoCardPile.COMM_CHEST);
 
@@ -38,21 +40,21 @@ public class MonoGame {
     @Getter
     private MonoBoard monoBoard = new MonoBoard(this);
 
+    @Getter
     private boolean hasRolled = false;
 
     @Getter
-    private MonoAuction activeAuction;
+    private MonoAuction activeAuction = null;
 
     private Integer rigged = null;
 
     @Setter
     @Getter
-    private MonoPlayer bankruptee;
+    private MonoPlayer bankruptee = null;
 
-    private final Thread gameThread;
+    private Thread gameThread;
 
     public MonoGame() {
-        this.gameThread = Thread.currentThread();
         ServerRouter.getEventBus().register(this);
     }
 
@@ -61,7 +63,14 @@ public class MonoGame {
         this.playerMap = old.playerMap;
     }
 
-    public void start() {
+    public void startGame() {
+        gameThread = new Thread(this::runGame, "Game");
+        gameThread.start();
+    }
+
+    private void runGame() {
+        sendAllMessage(MessageType.ADMIN, "Game beginning!");
+
         final Iterator<Long> it = Iterables.cycle(playerMap.keySet()).iterator();
         while(getWinner() == null && !playerMap.isEmpty()) {
             currentTurnPlayer = playerMap.get(it.next());
@@ -97,7 +106,7 @@ public class MonoGame {
         if(playerMap.size() == ServerRouter.getClientPool().getCapacity()) {
             game.updateBoardOnAllClients();
             game.updateAllPlayersOnAllClients();
-            game.start();
+            game.startGame();
         }
     }
 
@@ -151,7 +160,8 @@ public class MonoGame {
             try {
                 Thread.sleep(cache * 1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
+                break;
             }
 
         } while(currentTurnTime > 0);
@@ -162,7 +172,16 @@ public class MonoGame {
             return;
         }
 
-        final int roll = rigged != null ? rigged : ThreadLocalRandom.current().nextInt(1, GameConstants.DICE_AMOUNT * GameConstants.DICE_SIDES + 1);
+        int roll = 0;
+
+        if(rigged == null) {
+            for(int i = 0; i < GameConstants.DICE_AMOUNT; i ++) {
+                roll += ThreadLocalRandom.current().nextInt(1, GameConstants.DICE_SIDES + 1);
+            }
+        } else {
+            roll = rigged;
+        }
+
         rigged = null;
         sendAllMessage(MessageType.SYSTEM, player.getConnectionNick() + " rolled a " + roll + "!", player);
         player.sendMessage(MessageType.SYSTEM, "You rolled a " + roll + "!");
@@ -233,8 +252,7 @@ public class MonoGame {
 
         if(playerMap.size() == e.getPool().getCapacity()) {
             log.debug("Game has " + playerMap.size() + " players - commencing game!");
-            sendAllMessage(MessageType.SYSTEM, "Game beginning!");
-            start();
+            startGame();
         } else {
             sendAllMessage(MessageType.SYSTEM, "Waiting for " + (e.getPool().getCapacity() - playerMap.size()) + " more player before beginning the game.");
         }

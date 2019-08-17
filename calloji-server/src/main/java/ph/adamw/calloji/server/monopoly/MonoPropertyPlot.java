@@ -52,7 +52,7 @@ public class MonoPropertyPlot {
     }
 
     public void landedOnBy(MonoPlayer player, int spacesToMove) {
-        if(sellIfUnowned(player)) {
+        if(sellIfUnowned(player) || plot.getOwner().equals(player.getConnectionId()) && !plot.isMortgaged()) {
             return;
         }
 

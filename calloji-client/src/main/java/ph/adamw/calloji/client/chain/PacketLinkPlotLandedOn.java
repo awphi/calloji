@@ -16,6 +16,7 @@ public class PacketLinkPlotLandedOn extends PacketLinkBase {
     public void handle(PacketType type, JsonElement content) {
         final PropertyPlot plot = JsonUtils.getObject(content, PropertyPlot.class);
 
-        Platform.runLater(() -> BuyGuiController.open(Client.getStage(), plot));
+        Platform.runLater(() -> BuyGuiController.open(Client.getStage(), plot,
+                Client.getGui().getBoardUI().getPlotWidth(), Client.getGui().getBoardUI().getPlotHeight()));
     }
 }

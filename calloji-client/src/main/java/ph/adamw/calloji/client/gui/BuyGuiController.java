@@ -16,6 +16,8 @@ import java.io.IOException;
 public class BuyGuiController {
     private static Stage stage;
     private static PropertyPlot plot;
+    private static int plotWidth;
+    private static int plotHeight;
 
     @FXML
     private Label title;
@@ -27,15 +29,19 @@ public class BuyGuiController {
     private void initialize() {
         title.setText("You have been offered the deed to:\n" + plot.getName());
         final PlotUI plotUI = new PlotUI();
-        plotUI.setMinHeight(75);
-        plotUI.setMinWidth(60);
         plotUI.load(plot);
+        plotUI.setMinWidth(plotWidth);
+        plotUI.setMaxWidth(plotWidth);
+        plotUI.setMinHeight(plotHeight);
+        plotUI.setMaxHeight(plotHeight);
         vbox.getChildren().add(plotUI);
         stage.setOnCloseRequest(event -> onAuctionPressed(null));
     }
 
-    public static void open(Window window, PropertyPlot plot) {
+    public static void open(Window window, PropertyPlot plot, int plotWidth, int plotHeight) {
         BuyGuiController.plot = plot;
+        BuyGuiController.plotWidth = plotWidth;
+        BuyGuiController.plotHeight = plotHeight;
 
         try {
             stage = new Stage();

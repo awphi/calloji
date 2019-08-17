@@ -15,6 +15,7 @@ public class PacketLinkAuctionStarted extends PacketLinkBase {
     @Override
     public void handle(PacketType type, JsonElement content) {
         final PropertyPlot plot = JsonUtils.getObject(content, PropertyPlot.class);
-        Platform.runLater(() -> AuctionGuiController.open(Client.getStage(), plot));
+        Platform.runLater(() -> AuctionGuiController.open(Client.getStage(), plot,
+                Client.getGui().getBoardUI().getPlotWidth(), Client.getGui().getBoardUI().getPlotHeight()));
     }
 }

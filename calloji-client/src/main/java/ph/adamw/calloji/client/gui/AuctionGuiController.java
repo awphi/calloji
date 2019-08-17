@@ -25,6 +25,8 @@ import java.io.IOException;
 public class AuctionGuiController {
     private static Stage stage;
     private static PropertyPlot plot;
+    private static int plotWidth;
+    private static int plotHeight;
 
     @Getter
     private static AuctionGuiController activeGui;
@@ -54,9 +56,11 @@ public class AuctionGuiController {
     private void initialize() {
         title.setText("Auction For:\n" + plot.getName());
         final PlotUI plotUI = new PlotUI();
-        plotUI.setMinHeight(75);
-        plotUI.setMinWidth(60);
         plotUI.load(plot);
+        plotUI.setMinWidth(plotWidth);
+        plotUI.setMaxWidth(plotWidth);
+        plotUI.setMinHeight(plotHeight);
+        plotUI.setMaxHeight(plotHeight);
         vbox.getChildren().add(plotUI);
 
         timer = GuiUtils.startRunner("ATimer", this::decrementTimer, 1000);
@@ -90,8 +94,10 @@ public class AuctionGuiController {
         }
     }
 
-    public static void open(Window window, PropertyPlot plot) {
+    public static void open(Window window, PropertyPlot plot, int plotWidth, int plotHeight) {
         AuctionGuiController.plot = plot;
+        AuctionGuiController.plotWidth = plotWidth;
+        AuctionGuiController.plotHeight = plotHeight;
 
         try {
             stage = new Stage();

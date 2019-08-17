@@ -111,6 +111,12 @@ public class GuiController {
 		playerListView.setPlaceholder(new Label("Not connected to a game!"));
 		assetManagementListView.setPlaceholder(new Label("No assets owned!"));
 
+		centerStackPane.widthProperty().addListener((observable, oldValue, newValue)
+				-> boardResized(oldValue.doubleValue(), centerStackPane.getHeight(), newValue.doubleValue(), centerStackPane.getHeight()));
+
+		centerStackPane.heightProperty().addListener((observable, oldValue, newValue)
+				-> boardResized(centerStackPane.getWidth(), oldValue.doubleValue(), centerStackPane.getWidth(), newValue.doubleValue()));
+
 		final Thread timer = GuiUtils.startRunner("TTimer", this::decrementTurnTimer, 1000);
 
 		Client.getStage().setOnCloseRequest(event -> {
@@ -122,13 +128,22 @@ public class GuiController {
 		Client.getStage().setOnShown(event -> {
 			SplashController.open((Window) event.getSource());
 
-			/*
-			boardUI.load(new Board());
-			final Player p = new Player(GamePiece.BATTLESHIP, 1000);
-			loadPlayer(new PlayerUpdate(p, 1000, "Adam"));
-			loadPlayer(new PlayerUpdate(p, 1000, "Adam"));
-			*/
+			//DEBUG
+			//boardUI.load(new Board());
+			//final Player p = new Player(GamePiece.BATTLESHIP, 1000);
+			//loadPlayer(new PlayerUpdate(p, 1000, "Adam"));
+			//loadPlayer(new PlayerUpdate(p, 1000, "Adam"));
 		});
+	}
+
+	private void boardResized(double oldWidth, double oldHeight, double width, double height) {
+		for(GenericPlayerUI ui : playerListView.getItems()) {
+			if(ui.getGamePieceOnBoard().isAnimated()) {
+				ui.getGamePieceOnBoard().cancelAnimation();
+			}
+
+			ui.getGamePieceOnBoard().reposition();
+		}
 	}
 
 	private void decrementTurnTimer() {

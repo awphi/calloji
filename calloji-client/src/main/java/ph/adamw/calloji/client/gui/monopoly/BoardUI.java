@@ -89,6 +89,14 @@ public class BoardUI extends GridPane {
         }
     }
 
+    public int getPlotWidth() {
+        return (int) renderedPlots.get(0).getWidth();
+    }
+
+    public int getPlotHeight() {
+        return (int) renderedPlots.get(0).getHeight();
+    }
+
     public PlotUI getRenderedPlot(int x) {
         return renderedPlots.get(x);
     }

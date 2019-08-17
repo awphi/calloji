@@ -48,7 +48,7 @@ public class MonoPlayer {
             return;
         }
 
-        moveSpaces(Math.floorMod(x - player.getBoardPosition(),40));
+        moveSpaces(Math.floorMod(x - player.getBoardPosition(), 40));
     }
 
     public void addAsset(MonoPropertyPlot plot) {
@@ -67,12 +67,18 @@ public class MonoPlayer {
     }
 
     public void moveSpaces(int x) {
+        log.debug("spaces: " + x);
         if(x > 0) {
             player.lastMoveType = MoveType.FORWARD;
         } else if(x < 0) {
             player.lastMoveType = MoveType.BACKWARD;
         } else {
             player.lastMoveType = MoveType.NONE;
+        }
+
+        if(player.boardPosition + x >= 40 && player.getJailed() <= 0) {
+            addMoney(GameConstants.GO_MONEY);
+            sendMessage(MessageType.SYSTEM, "You have received £" + GameConstants.GO_MONEY + ".00 for passing Go.");
         }
 
         player.boardPosition = (player.boardPosition + x) % 40;
@@ -112,12 +118,6 @@ public class MonoPlayer {
                 }
                 break;
             }
-        }
-
-        // Passed GO
-        if(player.boardPosition + x >= 40) {
-            addMoney(GameConstants.GO_MONEY);
-            sendMessage(MessageType.SYSTEM, "You have received £" + GameConstants.GO_MONEY + ".00 for passing \"Go\".");
         }
 
         game.updateBoardOnAllClients();
