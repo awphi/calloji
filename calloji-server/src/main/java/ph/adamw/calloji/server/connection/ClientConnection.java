@@ -83,7 +83,7 @@ public class ClientConnection extends PacketDispatcher {
         try {
             socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.trace(e);
         }
     }
 

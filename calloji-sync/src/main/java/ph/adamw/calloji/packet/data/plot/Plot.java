@@ -7,6 +7,7 @@ import com.google.gson.JsonSerializer;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 import ph.adamw.calloji.util.JsonUtils;
 
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.io.Serializable;
 @Getter
 @EqualsAndHashCode
 @AllArgsConstructor
+@Log4j2
 public class Plot implements Serializable {
     public final transient static JsonSerializer<Plot> SERIALIZER = (plot, type, jsonSerializationContext) -> {
         final JsonObject object = new JsonObject();
@@ -30,7 +32,7 @@ public class Plot implements Serializable {
             final Class<?> clazz = Class.forName(object.get("class").getAsString());
             return (Plot) JsonUtils.getDefaultObject(object.get("plot"), clazz);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            log.trace(e);
         }
 
         return null;

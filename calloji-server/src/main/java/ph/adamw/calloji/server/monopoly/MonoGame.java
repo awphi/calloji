@@ -160,7 +160,6 @@ public class MonoGame {
             try {
                 Thread.sleep(cache * 1000);
             } catch (InterruptedException e) {
-                //e.printStackTrace();
                 break;
             }
 
@@ -201,7 +200,7 @@ public class MonoGame {
             try {
                 Thread.sleep(GameConstants.AUCTION_TIME * 1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                log.trace(e);
             }
 
             if(activeAuction.getWinner() != null) {

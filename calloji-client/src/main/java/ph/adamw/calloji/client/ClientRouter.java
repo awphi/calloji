@@ -65,7 +65,7 @@ public class ClientRouter extends PacketDispatcher {
 		try {
 			connect(host, port);
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.trace(e);
 			return false;
 		}
 
@@ -86,7 +86,7 @@ public class ClientRouter extends PacketDispatcher {
 
 			socket = new Socket();
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.trace(e);
 		}
 
 		Platform.runLater(() -> {

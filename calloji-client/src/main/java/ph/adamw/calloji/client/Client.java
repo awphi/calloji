@@ -1,16 +1,19 @@
 package ph.adamw.calloji.client;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
 import ph.adamw.calloji.client.gui.GuiController;
 
 import java.io.IOException;
 
+@Log4j2
 public class Client extends Application {
 	@Getter
 	private static ClientRouter router;
@@ -37,7 +40,7 @@ public class Client extends Application {
 		try {
 			root = fxmlLoader.load();
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.trace(e);
 		}
 
 		gui = fxmlLoader.getController();

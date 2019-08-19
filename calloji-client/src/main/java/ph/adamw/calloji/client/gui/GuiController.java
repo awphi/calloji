@@ -19,9 +19,12 @@ import ph.adamw.calloji.client.gui.monopoly.GenericPlayerUI;
 import ph.adamw.calloji.client.gui.monopoly.ManagedAssetUI;
 import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.packet.data.*;
+import ph.adamw.calloji.packet.data.plot.PlotType;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
+import ph.adamw.calloji.packet.data.plot.StreetPlot;
 import ph.adamw.calloji.util.GameConstants;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
@@ -73,6 +76,7 @@ public class GuiController {
 	private ListView<ManagedAssetUI> assetManagementListView;
 
 	@FXML
+	@Getter
 	private StackPane centerStackPane;
 
 	@FXML
@@ -80,6 +84,7 @@ public class GuiController {
 	private MenuItem nickEditButton;
 
 	@FXML
+	@Getter
 	private Button endTurnButton;
 
 	public void displayChatMessage(MessageType type, String txt) {

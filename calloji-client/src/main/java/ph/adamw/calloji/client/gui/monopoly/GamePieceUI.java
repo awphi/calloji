@@ -2,11 +2,8 @@ package ph.adamw.calloji.client.gui.monopoly;
 
 import javafx.animation.PathTransition;
 import javafx.animation.Transition;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.LineTo;
@@ -44,8 +41,6 @@ public class GamePieceUI extends ImageView {
         setFitWidth(GenericPlayerUI.GAME_PIECE_SIZE);
     }
 
-    //TODO fix the going backwards when the direction is forward but we're past the goal already.
-    // i.e. when the dice is rigged to 7 and the first chance card is go to GO
     public void moveTo(final int goal, final MoveType moveType) {
         if(moveType == MoveType.NONE) {
             return;
@@ -67,7 +62,6 @@ public class GamePieceUI extends ImageView {
         int goalPos = goal;
         int cornerPos = currentPos;
 
-        // If the goal is behind us add the offset that we have to go round the whole board
         if(moveType == MoveType.FORWARD && goal <= currentPos) {
             goalPos += 40;
         }

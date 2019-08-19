@@ -18,7 +18,7 @@ public abstract class PacketLinkMonoTurnOnly extends PacketLinkMono {
         final MonoPlayer player = game.getMonoPlayer(connection.getId());
 
         if(player == game.getCurrentTurnPlayer()) {
-            handle(type, content, player);
+            handle(type, content, game.getCurrentTurnPlayer());
         }
     }
 

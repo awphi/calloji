@@ -27,7 +27,7 @@ public class MonoStreetPlot extends MonoPropertyPlot {
         if(plot.getHouses() - 1 >= 0) {
             plot.setHouses(plot.getHouses() - 1);
             game.updateBoardOnAllClients();
-            game.getMonoPlayer(plot.getOwner()).addMoney(1 * (plot.getBuildCost() / 2));
+            game.getMonoPlayer(plot.getOwner()).addMoney(plot.getBuildCost() / 2);
         }
     }
 

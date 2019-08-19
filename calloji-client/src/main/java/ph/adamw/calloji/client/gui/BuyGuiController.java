@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import lombok.extern.log4j.Log4j2;
 import ph.adamw.calloji.client.Client;
 import ph.adamw.calloji.client.gui.monopoly.PlotUI;
 import ph.adamw.calloji.packet.PacketType;
@@ -13,6 +14,7 @@ import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 
 import java.io.IOException;
 
+@Log4j2
 public class BuyGuiController {
     private static Stage stage;
     private static PropertyPlot plot;
@@ -30,26 +32,19 @@ public class BuyGuiController {
         title.setText("You have been offered the deed to:\n" + plot.getName());
         final PlotUI plotUI = new PlotUI();
         plotUI.load(plot);
-        plotUI.setMinWidth(plotWidth);
-        plotUI.setMaxWidth(plotWidth);
-        plotUI.setMinHeight(plotHeight);
-        plotUI.setMaxHeight(plotHeight);
+        GuiUtils.setRegionSize(plotUI, plotWidth, plotHeight);
         vbox.getChildren().add(plotUI);
         stage.setOnCloseRequest(event -> onAuctionPressed(null));
     }
 
-    public static void open(Window window, PropertyPlot plot, int plotWidth, int plotHeight) {
+    public static void open(Window window, PropertyPlot plot) throws IOException {
         BuyGuiController.plot = plot;
-        BuyGuiController.plotWidth = plotWidth;
-        BuyGuiController.plotHeight = plotHeight;
+        BuyGuiController.plotWidth = Client.getGui().getBoardUI().getPlotWidth();
+        BuyGuiController.plotHeight = Client.getGui().getBoardUI().getPlotHeight();
 
-        try {
-            stage = new Stage();
-            stage.setTitle("Purchase Deed [awphi]");
-            GuiUtils.openOwnedWindow(window, "/fxml/buy.fxml", stage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        stage = new Stage();
+        stage.setTitle("Purchase Deed [awphi]");
+        GuiUtils.openOwnedWindow(window, "/fxml/buy.fxml", stage);
     }
 
     @FXML

@@ -2,10 +2,13 @@ package ph.adamw.calloji.client.gui;
 
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -40,17 +43,29 @@ public class GuiUtils {
         return text;
     }
 
-    public static <T> T openOwnedWindow(Window window, String res, Stage stage) throws IOException {
+    public static FXMLLoader loadFXML(String res) throws IOException {
         final FXMLLoader fxmlLoader = new FXMLLoader(Client.class.getResource(res));
-        final Parent p = fxmlLoader.load();
-        final T cache = fxmlLoader.getController();
+        fxmlLoader.load();
+        return fxmlLoader;
+    }
+
+    public static <T> T openOwnedWindow(Window window, String res, Stage stage) throws IOException {
+        final FXMLLoader fxmlLoader = loadFXML(res);
 
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(window);
-        stage.setScene(new Scene(p));
+        stage.setScene(new Scene(fxmlLoader.getRoot()));
         stage.setResizable(false);
         stage.show();
-        return cache;
+
+        return fxmlLoader.getController();
+    }
+
+    public static void setRegionSize(Region region, double width, double height) {
+        region.setMinWidth(width);
+        region.setMaxWidth(width);
+        region.setMinHeight(height);
+        region.setMaxHeight(height);
     }
 
     public static Thread startRunner(String name, Runnable runnable, long millis) {

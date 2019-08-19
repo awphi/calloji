@@ -1,6 +1,5 @@
 package ph.adamw.calloji.client.gui.monopoly;
 
-import com.sun.xml.internal.bind.v2.model.core.ID;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;

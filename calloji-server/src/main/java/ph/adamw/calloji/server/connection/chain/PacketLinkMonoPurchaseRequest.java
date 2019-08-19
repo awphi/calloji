@@ -18,11 +18,11 @@ public class PacketLinkMonoPurchaseRequest extends PacketLinkMonoTurnOnly {
         final PropertyPlot plot = JsonUtils.getObject(content, PropertyPlot.class);
 
         final MonoGame game = ServerRouter.getGame();
-        final PropertyPlot stoodOn = (PropertyPlot) game.getMonoBoard().getIndexedPlot(game.getCurrentTurnPlayer().getPlayer().boardPosition);
+        final PropertyPlot stoodOn = (PropertyPlot) game.getMonoBoard().getIndexedPlot(player.getPlayer().boardPosition);
 
         if(stoodOn.equals(plot)) {
-            game.getCurrentTurnPlayer().tryRemoveMoney(stoodOn.getValue());
-            game.getCurrentTurnPlayer().addAsset(game.getMonoBoard().getMonoPlot(stoodOn));
+            player.tryRemoveMoney(stoodOn.getValue());
+            player.addAsset(game.getMonoBoard().getMonoPlot(stoodOn));
         }
     }
 }

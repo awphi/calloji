@@ -19,7 +19,7 @@ public class PacketLinkMonoHouseRequest extends PacketLinkMono {
         final MonoGame game = ServerRouter.getGame();
         final MonoPlayer player = game.getMonoPlayer(connection.getId());
 
-        if((player != game.getCurrentTurnPlayer() || player != game.getBankruptee())) {
+        if(player != game.getCurrentTurnPlayer() && player != game.getBankruptee()) {
             return;
         }
 

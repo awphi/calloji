@@ -4,10 +4,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import lombok.extern.log4j.Log4j2;
 import ph.adamw.calloji.packet.data.CardUpdate;
 
 import java.io.IOException;
 
+@Log4j2
 public class CardGuiController {
     private static CardUpdate update;
     private static Stage stage;
@@ -31,7 +33,7 @@ public class CardGuiController {
             stage.setTitle(update.getDeck() + " Card [awphi]");
             GuiUtils.openOwnedWindow(window, "/fxml/card.fxml", stage);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.trace(e);
         }
     }
 }

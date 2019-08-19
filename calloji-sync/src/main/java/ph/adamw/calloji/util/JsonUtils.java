@@ -24,7 +24,7 @@ public class JsonUtils {
         gson = gsonBuilder.create();
     }
 
-    public static JsonElement parseJson(String y) {
+    public static JsonElement parseJson(String y) throws JsonSyntaxException {
         return parser.parse(y);
     }
 

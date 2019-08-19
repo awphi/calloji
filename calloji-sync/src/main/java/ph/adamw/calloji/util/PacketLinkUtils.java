@@ -35,7 +35,7 @@ public class PacketLinkUtils {
                     log.info("Loaded "  + clazz.getSimpleName() + " into the packet link chain.");
                 } catch (InstantiationException | IllegalAccessException e) {
                     log.info("Unable to load " + clazz.getSimpleName() + " into the packet link chain.");
-                    e.printStackTrace();
+                    log.trace(e);
                 }
             }
         }

@@ -65,7 +65,7 @@ public class ClientPool {
 		try {
 			cc = new ClientConnection(clientId, this, conn);
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.trace(e);
 			return null;
 		}
 

@@ -18,7 +18,7 @@ public class PacketLinkMonoAuctionRequest extends PacketLinkMonoTurnOnly {
         final PropertyPlot plot = JsonUtils.getObject(content, PropertyPlot.class);
 
         final MonoGame game = ServerRouter.getGame();
-        final PropertyPlot stoodOn = (PropertyPlot) game.getMonoBoard().getIndexedPlot(game.getCurrentTurnPlayer().getPlayer().boardPosition);
+        final PropertyPlot stoodOn = (PropertyPlot) game.getMonoBoard().getIndexedPlot(player.getPlayer().boardPosition);
 
         final boolean plotOwned = player.getPlayer().getOwnedPlots(game.getMonoBoard().getBoard()).contains(stoodOn);
         final boolean plotLandedOn = stoodOn.equals(plot) && stoodOn.getOwner() == null;

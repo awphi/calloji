@@ -7,8 +7,6 @@ import lombok.extern.log4j.Log4j2;
 import ph.adamw.calloji.util.JsonUtils;
 
 import java.io.*;
-import java.net.SocketException;
-import java.util.Arrays;
 
 @Log4j2
 public abstract class PacketDispatcher {
@@ -42,7 +40,7 @@ public abstract class PacketDispatcher {
         try {
             getOutputStream().write((parent.toString() + "\n").getBytes());
         } catch (IOException e) {
-            e.printStackTrace();
+            log.trace(e);
             return false;
         }
 
@@ -60,17 +58,6 @@ public abstract class PacketDispatcher {
 
                 String content = br.readLine();
 
-                /*
-                int ch;
-                final StringBuilder sb = new StringBuilder();
-                while((ch = getInputStream().read()) != -1) {
-                    sb.append((char) ch);
-                    if(getInputStream().available() == 0) {
-                        break;
-                    }
-                }
-                */
-
                 // String is split here as sometimes messages can stack up due to latency and this avoids us trying to parse multiple json
                 // objects as one.
                 final String[] split = content.split("\n");
@@ -80,22 +67,47 @@ public abstract class PacketDispatcher {
                         continue;
                     }
 
-                    //TODO deal w invalid json here
-                    final JsonObject json = JsonUtils.parseJson(i).getAsJsonObject();
-                    final PacketType type = PacketType.getPacket(json.get("packet_id").getAsInt());
+                    final JsonElement json;
+
+                    try {
+                        json = JsonUtils.parseJson(i);
+                    } catch (JsonSyntaxException e) {
+                        log.trace(e);
+                        continue;
+                    }
+
+                    if(!json.isJsonObject()) {
+                        continue;
+                    }
+
+                    final JsonObject obj = json.getAsJsonObject();
+
+                    final JsonElement id = obj.get("packet_id");
+
+                    if(!id.isJsonPrimitive()) {
+                        continue;
+                    }
+
+                    final int idAsInt;
+
+                    try {
+                        idAsInt = id.getAsInt();
+                    } catch (NumberFormatException e) {
+                        log.trace(e);
+                        continue;
+                    }
+
+                    final PacketType type = PacketType.getPacket(idAsInt);
 
                     if(type == null) {
                         continue;
                     }
 
-                    handleLink(type, json.get("data"));
+                    handleLink(type, obj.get("data"));
                 }
+
             } catch(IOException e) {
-                if(e instanceof SocketException && e.getMessage().equals("Connection reset")) {
-                    break;
-                } else {
-                    e.printStackTrace();
-                }
+                log.trace(e);
             }
         }
     }

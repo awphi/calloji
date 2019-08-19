@@ -69,7 +69,7 @@ public class ServerRouter {
 					clientPool.addConn(socket.accept());
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				log.trace(e);
 			}
 		}
 	}

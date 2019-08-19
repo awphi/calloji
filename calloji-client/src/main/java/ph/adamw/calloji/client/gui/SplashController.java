@@ -8,12 +8,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import lombok.extern.log4j.Log4j2;
 import ph.adamw.calloji.client.Client;
 import ph.adamw.calloji.client.gui.anim.ShakeTransition;
 import ph.adamw.calloji.packet.PacketType;
 
 import java.io.IOException;
 
+@Log4j2
 public class SplashController {
     @FXML
     private TextField ipField;
@@ -34,7 +36,7 @@ public class SplashController {
             splashStage.setOnCloseRequest(event -> splashStage = null);
             GuiUtils.openOwnedWindow(window, "/fxml/splash.fxml", splashStage);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.trace(e);
         }
     }
 
