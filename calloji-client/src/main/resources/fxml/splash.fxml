@@ -10,43 +10,43 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane minHeight="157.0" minWidth="348.0" prefHeight="157.0" prefWidth="348.0" xmlns="http://javafx.com/javafx/8.0.191" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.adamw.calloji.client.gui.SplashController">
-   <center>
-      <VBox prefHeight="186.0" prefWidth="348.0" style="-fx-alignment: center;" BorderPane.alignment="CENTER">
-         <children>
-            <HBox alignment="CENTER" prefHeight="0.0" prefWidth="348.0">
-               <children>
-                  <Label opacity="0.88" text="Server IP:" textAlignment="CENTER" textOverrun="CLIP">
-                     <font>
-                        <Font size="19.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets right="8.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField fx:id="ipField" maxWidth="-Infinity" onKeyReleased="#onIpKeyUp" prefHeight="27.0" prefWidth="204.0" />
-               </children>
-               <VBox.margin>
-                  <Insets bottom="10.0" />
-               </VBox.margin>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="0.0" prefWidth="348.0">
-               <children>
-                  <Label opacity="0.88" text="Nickname:" textAlignment="CENTER" textOverrun="CLIP">
-                     <font>
-                        <Font size="19.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets right="8.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField fx:id="nickField" onKeyReleased="#onNickKeyUp" maxWidth="-Infinity" prefHeight="25.0" prefWidth="163.0" />
-               </children>
-               <VBox.margin>
-                  <Insets bottom="10.0" />
-               </VBox.margin>
-            </HBox>
-            <Button mnemonicParsing="false" onAction="#onConnectButtonPressed" text="Connect" />
-         </children>
-      </VBox>
-   </center>
+    <center>
+        <VBox prefHeight="186.0" prefWidth="348.0" style="-fx-alignment: center;" BorderPane.alignment="CENTER">
+            <children>
+                <HBox alignment="CENTER" prefHeight="0.0" prefWidth="348.0">
+                    <children>
+                        <Label opacity="0.88" text="Server IP:" textAlignment="CENTER" textOverrun="CLIP">
+                            <font>
+                                <Font size="19.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets right="8.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField fx:id="ipField" maxWidth="-Infinity" onKeyReleased="#onIpKeyUp" prefHeight="27.0" prefWidth="204.0" />
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="10.0" />
+                    </VBox.margin>
+                </HBox>
+                <HBox alignment="CENTER" prefHeight="0.0" prefWidth="348.0">
+                    <children>
+                        <Label opacity="0.88" text="Nickname:" textAlignment="CENTER" textOverrun="CLIP">
+                            <font>
+                                <Font size="19.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets right="8.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField fx:id="nickField" onKeyReleased="#onNickKeyUp" maxWidth="-Infinity" prefHeight="25.0" prefWidth="163.0" />
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="10.0" />
+                    </VBox.margin>
+                </HBox>
+                <Button mnemonicParsing="false" onAction="#onConnectButtonPressed" text="Connect" />
+            </children>
+        </VBox>
+    </center>
 </BorderPane>

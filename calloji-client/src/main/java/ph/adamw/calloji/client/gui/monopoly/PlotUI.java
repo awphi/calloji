@@ -1,9 +1,7 @@
 package ph.adamw.calloji.client.gui.monopoly;
 
-import com.google.common.collect.ImmutableMap;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.*;
@@ -12,7 +10,6 @@ import lombok.extern.log4j.Log4j2;
 import ph.adamw.calloji.client.Client;
 import ph.adamw.calloji.client.gui.GuiUtils;
 import ph.adamw.calloji.packet.data.plot.Plot;
-import ph.adamw.calloji.packet.data.plot.PlotType;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
 import ph.adamw.calloji.packet.data.plot.StreetPlot;
 import ph.adamw.calloji.util.GameConstants;
@@ -39,17 +36,6 @@ public class PlotUI extends StackPane {
         header.minHeightProperty().bind(heightProperty().multiply(0.2d));
         StackPane.setAlignment(header, Pos.TOP_CENTER);
     }
-
-    static final ImmutableMap<PlotType, Color> COLOR_MAP = new ImmutableMap.Builder<PlotType, Color>()
-            .put(PlotType.RED, Color.RED)
-            .put(PlotType.BROWN, Color.BROWN)
-            .put(PlotType.LIGHT_BLUE, Color.LIGHTBLUE)
-            .put(PlotType.PINK, Color.PINK)
-            .put(PlotType.ORANGE, Color.ORANGE)
-            .put(PlotType.YELLOW, Color.YELLOW)
-            .put(PlotType.GREEN, Color.GREEN)
-            .put(PlotType.BLUE, Color.ROYALBLUE)
-            .build();
 
     public void load(Plot plot) {
         getStyleClass().addAll("border", "border-in", "plot");
@@ -85,7 +71,7 @@ public class PlotUI extends StackPane {
                 getChildren().add(0, header);
             }
 
-            header.setStyle("-fx-background-color: #" + Integer.toHexString(COLOR_MAP.get(plot.getType()).hashCode()) + ";");
+            header.setStyle("-fx-background-color: #" + Integer.toHexString(GuiUtils.PLOT_COLOR_MAP.get(plot.getType()).hashCode()) + ";");
 
             final StreetPlot s = (StreetPlot) plot;
 
@@ -113,14 +99,6 @@ public class PlotUI extends StackPane {
         } else {
             getChildren().remove(header);
         }
-    }
-
-    public void addChild(Node i) {
-        getChildren().add(i);
-    }
-
-    public void removeChild(Node i) {
-        getChildren().remove(i);
     }
 
     public void unload() {

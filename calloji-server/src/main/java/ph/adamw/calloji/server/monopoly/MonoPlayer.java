@@ -1,7 +1,6 @@
 package ph.adamw.calloji.server.monopoly;
 
 import com.google.gson.JsonObject;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import ph.adamw.calloji.packet.data.*;
@@ -18,7 +17,6 @@ import ph.adamw.calloji.util.GameConstants;
 import java.util.Iterator;
 
 @Log4j2
-@AllArgsConstructor
 public class MonoPlayer {
     private final ClientConnection connection;
 
@@ -29,6 +27,16 @@ public class MonoPlayer {
     @Getter
     @Deprecated
     private final Player player;
+
+    public MonoPlayer(ClientConnection connection, MonoGame game) {
+        this.player = new Player(GamePiece.next(), connection.getId());
+        this.game = game;
+        this.connection = connection;
+    }
+
+    public MonoPlayer(MonoPlayer player, MonoGame monoGame) {
+        this(player.connection, monoGame);
+    }
 
     void send(PacketType type, Object content) {
         connection.send(type, content);
@@ -66,26 +74,30 @@ public class MonoPlayer {
         }
     }
 
-    public void moveSpaces(final int x) {
-        if(player.boardPosition + x >= 40 && player.getJailed() <= 0) {
+    public void moveSpaces(final int spaces, boolean wasDice) {
+        if(player.boardPosition + spaces >= 40 && player.getJailed() <= 0) {
             addMoney(GameConstants.GO_MONEY);
             sendMessage(MessageType.SYSTEM, "You have received £" + GameConstants.GO_MONEY + ".00 for passing Go.");
         }
 
-        player.boardPosition = (player.boardPosition + x) % 40;
+        player.boardPosition = (player.boardPosition + spaces) % 40;
 
         game.updateBoardOnAllClients();
 
-        if(x > 0) {
+        if(spaces > 0) {
             player.lastMoveType = MoveType.FORWARD;
-        } else if(x < 0) {
+        } else if(spaces < 0) {
             player.lastMoveType = MoveType.BACKWARD;
         } else {
             player.lastMoveType = MoveType.NONE;
         }
 
+        //TODO dice rolling anim using this with the moving anim as a callback from the dice roll anim finishing
+        player.wasRoll = wasDice;
+
         game.updatePlayerOnAllClients(this);
 
+        player.wasRoll = false;
         player.lastMoveType = MoveType.NONE;
 
 
@@ -94,7 +106,7 @@ public class MonoPlayer {
 
         // i.e. if it's a property or street
         if(mono != null) {
-            mono.landedOnBy(this, x);
+            mono.landedOnBy(this, spaces);
         } else {
             switch (plot.getType()) {
                 case TAX:
@@ -126,6 +138,10 @@ public class MonoPlayer {
                 break;
             }
         }
+    }
+
+    public void moveSpaces(final int spaces) {
+        moveSpaces(spaces, false);
     }
 
     public int getAssetsMortgageValue() {

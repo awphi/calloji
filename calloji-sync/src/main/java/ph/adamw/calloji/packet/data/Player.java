@@ -21,6 +21,8 @@ public class Player implements Serializable {
 
     public MoveType lastMoveType = MoveType.NONE;
 
+    public boolean wasRoll = false;
+
     public int jailed = 0;
 
     public int getOutOfJails = 0;

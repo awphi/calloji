@@ -12,59 +12,59 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane prefHeight="309.0" prefWidth="409.0" xmlns="http://javafx.com/javafx/8.0.191" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.adamw.calloji.client.gui.AuctionGuiController">
-   <stylesheets>
-      <URL value="@style.css" />
-   </stylesheets>
-   <top>
-      <Label fx:id="title" alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="370.0" text="Auction For: Liverpool Street Station" textAlignment="CENTER" BorderPane.alignment="CENTER">
-         <font>
-            <Font size="23.0" />
-         </font>
-      </Label>
-   </top>
-   <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-   </padding>
-   <center>
-      <VBox fx:id="vbox" fillWidth="false" prefHeight="200.0" prefWidth="100.0" style="-fx-alignment: center;" BorderPane.alignment="CENTER" />
-   </center>
-   <bottom>
-      <VBox prefHeight="0.0" prefWidth="460.0" style="-fx-alignment: center;" BorderPane.alignment="CENTER">
-         <children>
-            <Label fx:id="topBidderLabel" alignment="CENTER" prefHeight="21.0" prefWidth="371.0" text="Top Bidder: None - £0.00">
-               <font>
-                  <Font size="15.0" />
-               </font>
-               <VBox.margin>
-                  <Insets bottom="10.0" />
-               </VBox.margin>
-            </Label>
-            <HBox prefHeight="59.0" prefWidth="460.0" style="-fx-alignment: center;">
-               <children>
-                  <VBox fillWidth="false" prefHeight="25.0" prefWidth="103.0" BorderPane.alignment="CENTER">
-                     <children>
-                        <Label fx:id="auctionTimer" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="61.0" text="00:00" textAlignment="CENTER" />
-                     </children>
-                     <styleClass>
-                        <String fx:value="centred" />
-                        <String fx:value="button-look" />
-                     </styleClass>
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </VBox>
-                  <TextField fx:id="bidTextField" onKeyReleased="#onBidFieldKeyUp" promptText="Enter Bid...">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </TextField>
-                  <Button mnemonicParsing="false" onAction="#onBidPressed" prefHeight="37.0" prefWidth="93.0" text="Bid">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin></Button>
-               </children>
-            </HBox>
-         </children>
-      </VBox>
-   </bottom>
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
+    <top>
+        <Label fx:id="title" alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="370.0" text="Auction For: Liverpool Street Station" textAlignment="CENTER" BorderPane.alignment="CENTER">
+            <font>
+                <Font size="23.0" />
+            </font>
+        </Label>
+    </top>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <center>
+        <VBox fx:id="vbox" fillWidth="false" prefHeight="200.0" prefWidth="100.0" style="-fx-alignment: center;" BorderPane.alignment="CENTER" />
+    </center>
+    <bottom>
+        <VBox prefHeight="0.0" prefWidth="460.0" style="-fx-alignment: center;" BorderPane.alignment="CENTER">
+            <children>
+                <Label fx:id="topBidderLabel" alignment="CENTER" prefHeight="21.0" prefWidth="371.0" text="Top Bidder: None - £0.00">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="10.0" />
+                    </VBox.margin>
+                </Label>
+                <HBox prefHeight="59.0" prefWidth="460.0" style="-fx-alignment: center;">
+                    <children>
+                        <VBox fillWidth="false" prefHeight="25.0" prefWidth="103.0" BorderPane.alignment="CENTER">
+                            <children>
+                                <Label fx:id="auctionTimer" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="61.0" text="00:00" textAlignment="CENTER" />
+                            </children>
+                            <styleClass>
+                                <String fx:value="centred" />
+                                <String fx:value="button-look" />
+                            </styleClass>
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </VBox>
+                        <TextField fx:id="bidTextField" onKeyReleased="#onBidFieldKeyUp" promptText="Enter Bid...">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </TextField>
+                        <Button mnemonicParsing="false" onAction="#onBidPressed" prefHeight="37.0" prefWidth="93.0" text="Bid">
+                            <HBox.margin>
+                                <Insets />
+                            </HBox.margin></Button>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </bottom>
 </BorderPane>

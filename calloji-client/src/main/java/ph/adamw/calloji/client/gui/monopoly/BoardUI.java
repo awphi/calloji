@@ -118,6 +118,7 @@ public class BoardUI extends GridPane {
         }
     }
 
+
     public Point2D getPointFromBoardPos(int pos) {
         final PlotUI ui = getRenderedPlot(pos);
         return new Point2D(ui.getLayoutX() + (ui.getWidth() / 2d), ui.getLayoutY() + (ui.getHeight() / 2d));

@@ -2,6 +2,7 @@ package ph.adamw.calloji.client.gui.monopoly;
 
 import javafx.animation.PathTransition;
 import javafx.animation.Transition;
+import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.image.ImageView;
@@ -13,6 +14,7 @@ import javafx.util.Duration;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
+import ph.adamw.calloji.client.Client;
 import ph.adamw.calloji.client.gui.GuiUtils;
 import ph.adamw.calloji.packet.data.GamePiece;
 import ph.adamw.calloji.packet.data.MoveType;
@@ -123,6 +125,7 @@ public class GamePieceUI extends ImageView {
     }
 
     public void reposition() {
+        log.debug("reposing");
         final Point2D point = boardUI.getPointFromBoardPos(currentPos);
         setTranslateX(point.getX() - getFitWidth() / 2);
         setTranslateY(point.getY() - getFitHeight() / 2);

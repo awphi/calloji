@@ -1,20 +1,21 @@
 package ph.adamw.calloji.client.gui;
 
+import com.google.common.collect.ImmutableMap;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import ph.adamw.calloji.client.Client;
 import ph.adamw.calloji.packet.data.GamePiece;
+import ph.adamw.calloji.packet.data.MessageType;
+import ph.adamw.calloji.packet.data.plot.PlotType;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -83,4 +84,22 @@ public class GuiUtils {
         t.start();
         return t;
     }
+
+    public static final ImmutableMap<PlotType, Color> PLOT_COLOR_MAP = new ImmutableMap.Builder<PlotType, Color>()
+            .put(PlotType.RED, Color.RED)
+            .put(PlotType.BROWN, Color.BROWN)
+            .put(PlotType.LIGHT_BLUE, Color.LIGHTBLUE)
+            .put(PlotType.PINK, Color.PINK)
+            .put(PlotType.ORANGE, Color.ORANGE)
+            .put(PlotType.YELLOW, Color.YELLOW)
+            .put(PlotType.GREEN, Color.GREEN)
+            .put(PlotType.BLUE, Color.ROYALBLUE)
+            .build();
+
+    public static final ImmutableMap<MessageType, Color> MESAGE_COLOR_MAP = new ImmutableMap.Builder<MessageType, Color>()
+            .put(MessageType.CHAT, Color.BLACK)
+            .put(MessageType.ADMIN, Color.DARKBLUE)
+            .put(MessageType.WARNING, Color.RED)
+            .put(MessageType.SYSTEM, Color.GRAY)
+            .build();
 }

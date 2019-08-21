@@ -13,43 +13,43 @@
     <stylesheets>
         <URL value="@style.css" />
     </stylesheets>
-   <top>
-      <Label fx:id="title" alignment="CENTER" prefHeight="0.0" prefWidth="460.0" text="You have been offered the deed to: Liverpool Street Station" textAlignment="CENTER" textOverrun="CLIP" BorderPane.alignment="CENTER">
-         <font>
-            <Font size="23.0" />
-         </font>
-         <BorderPane.margin>
-            <Insets bottom="10.0" />
-         </BorderPane.margin></Label>
-   </top>
-   <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-   </padding>
-   <bottom>
-      <VBox prefHeight="0.0" prefWidth="560.0" style="-fx-alignment: center;" BorderPane.alignment="CENTER">
-         <children>
-            <Label text="Would you like to purchase it?">
-               <font>
-                  <Font size="16.0" />
-               </font>
-               <VBox.margin>
-                  <Insets bottom="10.0" top="10.0" />
-               </VBox.margin>
-            </Label>
-            <HBox prefHeight="0.0" prefWidth="200.0" style="-fx-alignment: center;">
-               <children>
-                  <Button mnemonicParsing="false" onAction="#onPurchasePressed" text="Yes">
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button mnemonicParsing="false" onAction="#onAuctionPressed" text="No, send to public auction" />
-               </children>
-            </HBox>
-         </children>
-      </VBox>
-   </bottom>
-   <center>
-      <VBox fx:id="vbox" fillWidth="false" prefHeight="200.0" prefWidth="100.0" style="-fx-alignment: center;" BorderPane.alignment="CENTER" />
-   </center>
+    <top>
+        <Label fx:id="title" alignment="CENTER" prefHeight="0.0" prefWidth="460.0" text="You have been offered the deed to: Liverpool Street Station" textAlignment="CENTER" textOverrun="CLIP" BorderPane.alignment="CENTER">
+            <font>
+                <Font size="23.0" />
+            </font>
+            <BorderPane.margin>
+                <Insets bottom="10.0" />
+            </BorderPane.margin></Label>
+    </top>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <bottom>
+        <VBox prefHeight="0.0" prefWidth="560.0" style="-fx-alignment: center;" BorderPane.alignment="CENTER">
+            <children>
+                <Label text="Would you like to purchase it?">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                    </VBox.margin>
+                </Label>
+                <HBox prefHeight="0.0" prefWidth="200.0" style="-fx-alignment: center;">
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#onPurchasePressed" text="Yes">
+                            <HBox.margin>
+                                <Insets right="20.0" />
+                            </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#onAuctionPressed" text="No, send to public auction" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </bottom>
+    <center>
+        <VBox fx:id="vbox" fillWidth="false" prefHeight="200.0" prefWidth="100.0" style="-fx-alignment: center;" BorderPane.alignment="CENTER" />
+    </center>
 </BorderPane>

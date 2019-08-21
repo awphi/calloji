@@ -11,24 +11,24 @@
     <stylesheets>
         <URL value="@style.css" />
     </stylesheets>
-   <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-   </padding>
-   <center>
-      <VBox fillWidth="false" prefHeight="200.0" prefWidth="100.0" style="-fx-alignment: center;" BorderPane.alignment="CENTER">
-         <children>
-            <Label fx:id="text" prefHeight="137.0" prefWidth="279.0" style="-fx-alignment: center;" text="Make general repairs on all of your houses. For each house pay £25. For each hotel pay £100" textAlignment="CENTER" wrapText="true">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-         </children></VBox>
-   </center>
-   <top>
-      <Label fx:id="deckLabel" prefHeight="36.0" prefWidth="521.0" style="-fx-alignment: center;" text="Chance Card" textAlignment="CENTER" BorderPane.alignment="CENTER">
-         <font>
-            <Font name="System Bold" size="25.0" />
-         </font>
-      </Label>
-   </top>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <center>
+        <VBox fillWidth="false" prefHeight="200.0" prefWidth="100.0" style="-fx-alignment: center;" BorderPane.alignment="CENTER">
+            <children>
+                <Label fx:id="text" prefHeight="137.0" prefWidth="279.0" style="-fx-alignment: center;" text="Make general repairs on all of your houses. For each house pay £25. For each hotel pay £100" textAlignment="CENTER" wrapText="true">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+            </children></VBox>
+    </center>
+    <top>
+        <Label fx:id="deckLabel" prefHeight="36.0" prefWidth="521.0" style="-fx-alignment: center;" text="Chance Card" textAlignment="CENTER" BorderPane.alignment="CENTER">
+            <font>
+                <Font name="System Bold" size="25.0" />
+            </font>
+        </Label>
+    </top>
 </BorderPane>

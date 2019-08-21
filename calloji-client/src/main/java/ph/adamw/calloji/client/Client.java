@@ -7,8 +7,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.core.config.Configurator;
 import ph.adamw.calloji.client.gui.GuiController;
 
 import java.io.IOException;
@@ -37,6 +35,7 @@ public class Client extends Application {
 		Client.stage = stage;
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/gui.fxml"));
 		Parent root = null;
+
 		try {
 			root = fxmlLoader.load();
 		} catch (IOException e) {

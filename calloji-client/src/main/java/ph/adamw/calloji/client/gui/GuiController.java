@@ -3,8 +3,13 @@ package ph.adamw.calloji.client.gui;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -19,12 +24,9 @@ import ph.adamw.calloji.client.gui.monopoly.GenericPlayerUI;
 import ph.adamw.calloji.client.gui.monopoly.ManagedAssetUI;
 import ph.adamw.calloji.packet.PacketType;
 import ph.adamw.calloji.packet.data.*;
-import ph.adamw.calloji.packet.data.plot.PlotType;
 import ph.adamw.calloji.packet.data.plot.PropertyPlot;
-import ph.adamw.calloji.packet.data.plot.StreetPlot;
 import ph.adamw.calloji.util.GameConstants;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
@@ -91,7 +93,7 @@ public class GuiController {
 		final Label label = new Label("[" + DATE_FORMAT.format(new Date()) + "] " + txt);
 		label.maxWidthProperty().bind(chatListView.widthProperty().subtract(15));
 		label.setWrapText(true);
-		label.setTextFill(type.getColor());
+		label.setTextFill(GuiUtils.MESAGE_COLOR_MAP.get(type));
 
 		Platform.runLater(() -> {
 			chatListView.getItems().add(label);
@@ -115,12 +117,7 @@ public class GuiController {
 		chatListView.setPlaceholder(new Label("Not connected to a game!"));
 		playerListView.setPlaceholder(new Label("Not connected to a game!"));
 		assetManagementListView.setPlaceholder(new Label("No assets owned!"));
-
-		centerStackPane.widthProperty().addListener((observable, oldValue, newValue)
-				-> boardResized(oldValue.doubleValue(), centerStackPane.getHeight(), newValue.doubleValue(), centerStackPane.getHeight()));
-
-		centerStackPane.heightProperty().addListener((observable, oldValue, newValue)
-				-> boardResized(centerStackPane.getWidth(), oldValue.doubleValue(), centerStackPane.getWidth(), newValue.doubleValue()));
+		centerStackPane.layoutBoundsProperty().addListener((observable, oldValue, newValue) -> Platform.runLater(this::boardResized));
 
 		final Thread timer = GuiUtils.startRunner("TTimer", this::decrementTurnTimer, 1000);
 
@@ -133,15 +130,14 @@ public class GuiController {
 		Client.getStage().setOnShown(event -> {
 			SplashController.open((Window) event.getSource());
 
-			//DEBUG
-			//boardUI.load(new Board());
-			//final Player p = new Player(GamePiece.BATTLESHIP, 1000);
-			//loadPlayer(new PlayerUpdate(p, 1000, "Adam"));
-			//loadPlayer(new PlayerUpdate(p, 1000, "Adam"));
+			boardUI.load(new Board());
+			final Player p = new Player(GamePiece.BATTLESHIP, 1000);
+			loadPlayer(new PlayerUpdate(p, 1000, "Adam"));
+			loadPlayer(new PlayerUpdate(p, 1000, "Adam"));
 		});
 	}
 
-	private void boardResized(double oldWidth, double oldHeight, double width, double height) {
+	private void boardResized() {
 		for(GenericPlayerUI ui : playerListView.getItems()) {
 			if(ui.getGamePieceOnBoard().isAnimated()) {
 				ui.getGamePieceOnBoard().cancelAnimation();

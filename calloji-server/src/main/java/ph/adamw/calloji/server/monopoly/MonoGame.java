@@ -60,7 +60,10 @@ public class MonoGame {
 
     public MonoGame(MonoGame old) {
         this();
-        this.playerMap = old.playerMap;
+
+        for(Long i : old.playerMap.keySet()) {
+            playerMap.put(i, new MonoPlayer(old.playerMap.get(i), this));
+        }
     }
 
     public void startGame() {
@@ -184,7 +187,7 @@ public class MonoGame {
         rigged = null;
         sendAllMessage(MessageType.SYSTEM, player.getConnectionNick() + " rolled a " + roll + "!", player);
         player.sendMessage(MessageType.SYSTEM, "You rolled a " + roll + "!");
-        player.moveSpaces(roll);
+        player.moveSpaces(roll, true);
         hasRolled = true;
     }
 
@@ -239,7 +242,7 @@ public class MonoGame {
 
     @Subscribe
     public void onClientConnect(ClientConnectedEvent e) {
-        final MonoPlayer n = new MonoPlayer(e.getPool().get(e.getId()), this, new Player(GamePiece.next(), e.getId()));
+        final MonoPlayer n = new MonoPlayer(e.getPool().get(e.getId()), this);
         playerMap.put(e.getId(), n);
 
         log.debug("Created new MonoPlayer for: " + e.getId());
